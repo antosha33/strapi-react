@@ -8,38 +8,50 @@ import usersStore from '../store/users'
 
 function useUsers() {
 
-    const { publicRequest, authRequest } = useContext(AxiosContext);
+	const { publicRequest, authRequest } = useContext(AxiosContext);
 
 
-    const authorize = async ({ identifier, password }) => {
-        return await publicRequest({
-            url: 'auth/local',
-            method: 'POST',
-            data: {
-                identifier,
-                password
-            }
-        })
+	const authorize = async ({ identifier, password }) => {
+		return await publicRequest({
+			url: 'auth/local',
+			method: 'POST',
+			data: {
+				identifier,
+				password
+			}
+		})
 
-    }
+	}
 
-    const getMe = async () => {
-        return await authRequest({
-            url: 'users/me?populate=role',
-        })
-    }
+	const getMe = async () => {
+		return await authRequest({
+			url: 'users/me?populate=role',
+		})
+	}
 
-    const getUsers = async () => {
-        return await authRequest({
-            url: 'users/?populate=role',
-        })
-    }
+	const getUsers = async () => {
+		return await authRequest({
+			url: 'users/?populate=role',
+		})
+	}
 
-    return {
-        authorize,
-        getUsers,
-        getMe
-    };
+	const getUsersByRole = async (role) => {
+		console.log(role)
+		return await authRequest({
+			url: 'users',
+			params: {
+				role
+			}
+		})
+	}
+	
+
+	return {
+		authorize,
+		getUsers,
+		getMe,
+		getUsersByRole
+	};
 }
 
 export default useUsers;

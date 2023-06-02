@@ -2,8 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import { AuthContext } from './context/auth.context';
 import {
-  createBrowserRouter,
-  RouterProvider,
+	createBrowserRouter,
+	RouterProvider,
 } from "react-router-dom";
 import { useAuth } from './hooks/auth.hook';
 import Main from './routes/main';
@@ -15,39 +15,38 @@ import { AxiosProvider } from './context/request.context'
 
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Main></Main>,
-  },
+	{
+		path: "/",
+		element: <Main></Main>,
+	},
 ]);
 
 function App() {
 
 
-  const { authState, login } = useAuth();
-
-  console.log(authState)
+	const { authState, login } = useAuth();
 
 
 
-  return (
 
-    <AuthContext.Provider value={{ authState, login }}>
-      <AxiosProvider>
-        {authState.authenticated ?
-          <Layout>
-            <RouterProvider router={router} />
-          </Layout>
-          :
-          <Authorization></Authorization>
-        }
-      </AxiosProvider>
-    </AuthContext.Provider >
+	return (
 
-    // <ApolloProvider client={client}>
+		<AuthContext.Provider value={{ authState, login }}>
+			<AxiosProvider>
+				{authState.authenticated ?
+					<Layout>
+						<RouterProvider router={router} />
+					</Layout>
+					:
+					<Authorization></Authorization>
+				}
+			</AxiosProvider>
+		</AuthContext.Provider >
 
-    // </ApolloProvider>
-  );
+		// <ApolloProvider client={client}>
+
+		// </ApolloProvider>
+	);
 }
 
 export default App;

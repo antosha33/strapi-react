@@ -1,15 +1,16 @@
 import { makeAutoObservable } from 'mobx';
 
 class Stage {
-    currentStage = null;
+	currentStage = {};
 
-    constructor() {
-        makeAutoObservable(this)
-    }
+	constructor() {
+		makeAutoObservable(this)
+	}
 
-    setCurrentStage(id) {
-        this.currentStage = id
-    }
+	setCurrentStage(stage) {
+		console.log(stage)
+		this.currentStage = stage
+	}
 }
 
 export default new Stage();

@@ -1,0 +1,12 @@
+{
+	"name": "strapi-react",
+	"version": "1.0.0",
+	"description": "",
+	"main": "test.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "concurrently \"nvm use 18\"   \" npm run start develop --prefix ./server\" \"npm run start --prefix ./client\""
+	},
+	"author": "",
+	"license": "ISC"
+}

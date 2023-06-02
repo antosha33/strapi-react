@@ -6,30 +6,30 @@ import useUsers from "./users.hook";
 
 function useDashbord() {
 
-    const { authRequest } = useContext(AxiosContext);
+	const { authRequest } = useContext(AxiosContext);
 
 
-    const getDashbord = async ({ stage }) => {
+	const getDashbord = async ({ stage }) => {
 
-        if (stage) {
-            stage = { 'filters[stage][id]': stage }
-        }else {
-            stage = {}
-        }
+		if (stage) {
+			stage = { 'filters[stage][id]': stage }
+		} else {
+			stage = {}
+		}
 
 
-        return await authRequest({
-            url: 'c-position-stages',
-            params: {
-                populate: '*',
-                ...stage
-            }
-        })
-    }
+		return await authRequest({
+			url: 'c-position-stages',
+			params: {
+				populate: '*',
+				...stage
+			}
+		})
+	}
 
-    return {
-        getDashbord
-    }
+	return {
+		getDashbord
+	}
 
 
 }

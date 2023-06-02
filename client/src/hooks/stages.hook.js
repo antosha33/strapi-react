@@ -8,23 +8,23 @@ import usersStore from '../store/users'
 
 function useStages() {
 
-    const { publicRequest, authRequest } = useContext(AxiosContext);
-    const [stages, setStages] = useState([]);
+	const { publicRequest, authRequest } = useContext(AxiosContext);
+	const [stages, setStages] = useState([]);
 
 
-    useEffect(() => {
-        (async () => {
-            const { data } = await authRequest({
-                url: 'stages',
-            })
-            setStages(data)
-        })();
-    }, [])
+	useEffect(() => {
+		(async () => {
+			const { data } = await authRequest({
+				url: 'stages',
+			})
+			setStages(data)
+		})();
+	}, [])
 
 
-    return {
-        stages
-    };
+	return {
+		stages
+	};
 }
 
 export default useStages;
