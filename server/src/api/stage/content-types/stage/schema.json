@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "stages",
+  "info": {
+    "singularName": "stage",
+    "pluralName": "stages",
+    "displayName": "Stage",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "c_position_stages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::c-position-stage.c-position-stage",
+      "mappedBy": "stage"
+    },
+    "statuses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::status.status",
+      "mappedBy": "stage"
+    },
+    "role": {
+      "type": "string"
+    }
+  }
+}

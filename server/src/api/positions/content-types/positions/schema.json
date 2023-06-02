@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "positionss",
+  "info": {
+    "singularName": "positions",
+    "pluralName": "positionss",
+    "displayName": "Position",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string"
+    },
+    "image": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "integer"
+    },
+    "logo": {
+      "type": "string"
+    },
+    "c_position_stages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::c-position-stage.c-position-stage",
+      "mappedBy": "position"
+    }
+  }
+}

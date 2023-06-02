@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "c_position_stages",
+  "info": {
+    "singularName": "c-position-stage",
+    "pluralName": "c-position-stages",
+    "displayName": "C_Position_Stage",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "stage": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::stage.stage",
+      "inversedBy": "c_position_stages"
+    },
+    "position": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::positions.positions",
+      "inversedBy": "c_position_stages"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "c_position_stage"
+    },
+    "comments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comment.comment",
+      "mappedBy": "c_position_stage"
+    },
+    "status": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::status.status",
+      "inversedBy": "c_position_stage"
+    }
+  }
+}

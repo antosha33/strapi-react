@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "statuses",
+  "info": {
+    "singularName": "status",
+    "pluralName": "statuses",
+    "displayName": "Status",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "stage": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::stage.stage",
+      "inversedBy": "statuses"
+    },
+    "c_position_stage": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::c-position-stage.c-position-stage",
+      "mappedBy": "status"
+    }
+  }
+}
