@@ -27,6 +27,11 @@
       "relation": "oneToOne",
       "target": "api::c-position-stage.c-position-stage",
       "mappedBy": "status"
+    },
+    "stageTrigger": {
+      "type": "boolean",
+      "default": false,
+      "required": true
     }
   }
 }
