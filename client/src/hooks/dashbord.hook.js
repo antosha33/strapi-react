@@ -12,11 +12,14 @@ function useDashbord() {
 	const getDashbord = async ({ stage }) => {
 
 		if (stage) {
-			stage = { 'filters[stage][id]': stage }
+			stage = {
+				'filters[stage][id]': stage,
+				'filters[isCurrentStage]': true
+			}
 		} else {
 			stage = {}
 		}
-		
+
 		return await authRequest({
 			url: 'c-position-stages',
 			params: {

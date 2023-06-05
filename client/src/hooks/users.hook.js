@@ -36,7 +36,6 @@ function useUsers() {
 	}
 
 	const getUsersByRole = async (role) => {
-		console.log(role)
 		return await authRequest({
 			url: 'users',
 			params: {

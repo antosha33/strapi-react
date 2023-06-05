@@ -33,7 +33,7 @@ function UserStageDropdown({ users, currentUser, onSetUser }) {
 		<OutsideAlerter onEvent={closeDropdown} className="w-[100%]">
 			<div
 				onClick={openDropdown}
-				className=" text-Regular(16_18) relative">
+				className=" text-Regular(16_18) relative px-[1.2rem] py-[0.9rem]">
 				{user ?
 					<div className="">{user?.username || currentUser.username}</div> :
 					<div className="text-Accent/Red font-medium">Выбрать ответственного</div>

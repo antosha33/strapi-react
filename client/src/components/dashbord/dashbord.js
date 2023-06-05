@@ -18,14 +18,18 @@ function Dashbord() {
 	const { getStatuses } = useStatus();
 	const [cPositionsStage, setCPositionsStage] = useState([]);
 	const [users, setUsers] = useState([]);
-	const { id, role } = userStore.currentStage;
+	const { id, role, statuses } = userStore.currentStage;
+
+
 
 
 	useEffect(() => {
-		getData();
-		getUsers();
-		getStatusesByStage();
-		intervalId.current = setInterval(getData, 5000);
+		if(id){
+			getData();
+			getUsers();
+			// getStatusesByStage();
+			intervalId.current = setInterval(getData, 30000);
+		}
 		return () => {
 			clearInterval(intervalId.current)
 		}
@@ -45,16 +49,21 @@ function Dashbord() {
 		}
 	}
 
-	const getStatusesByStage =async() => {
-		const data  = await getStatuses({stage: id});
-	}
+
 
 
 	return (
 		<div className="bg-Dominant/Light pt-[3.6rem]">
 			<Container>
-				{cPositionsStage.map(({ position, user, id }) =>
-					<Position key={id} {...position} positionStageId={id} user={user} users={users}></Position>
+				{cPositionsStage.map(({ position, user, id, status:currentStatus }) =>
+					<Position 
+					{...position}
+					positionStageId={id}
+					user={user}
+					users={users}
+					statuses={statuses}
+					status={currentStatus}
+					key={id}   ></Position>
 				)}
 			</Container>
 		</div>

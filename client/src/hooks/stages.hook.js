@@ -1,9 +1,14 @@
 
 import { useContext, useEffect, useState } from 'react';
 import { AxiosContext } from '../context/request.context';
-import { AuthContext } from '../context/auth.context';
+const qs = require('qs');
 
-import usersStore from '../store/users'
+
+const query = qs.stringify({
+	populate: 'statuses',
+}, {
+	encodeValuesOnly: true, // prettify URL
+});
 
 
 function useStages() {
@@ -11,11 +16,10 @@ function useStages() {
 	const { publicRequest, authRequest } = useContext(AxiosContext);
 	const [stages, setStages] = useState([]);
 
-
 	useEffect(() => {
 		(async () => {
 			const { data } = await authRequest({
-				url: 'stages',
+				url: 'stages?' + query,
 			})
 			setStages(data)
 		})();

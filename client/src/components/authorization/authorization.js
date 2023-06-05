@@ -16,7 +16,7 @@ function Authorization({ afterLogin }) {
 
 	const { authRequest } = useContext(AxiosContext);
 	const { login } = useContext(AuthContext);
-	const { authorize, getMe } = useUsers();
+	const { authorize } = useUsers();
 
 
 	const [credentials, setCredentials] = useState({
@@ -44,7 +44,6 @@ function Authorization({ afterLogin }) {
 				identifier: credentials.login,
 				password: credentials.password
 			})
-
 
 			const data = await authRequest({
 				url: 'users/me?populate=role',
