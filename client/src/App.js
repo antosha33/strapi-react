@@ -24,14 +24,14 @@ const router = createBrowserRouter([
 function App() {
 
 
-	const { authState, login } = useAuth();
+	const { authState, login, logout } = useAuth();
 
 
 
 
 	return (
 
-		<AuthContext.Provider value={{ authState, login }}>
+		<AuthContext.Provider value={{ authState, login, logout }}>
 			<AxiosProvider>
 				{authState.authenticated ?
 					<Layout>

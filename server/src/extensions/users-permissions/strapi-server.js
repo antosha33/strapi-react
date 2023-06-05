@@ -52,5 +52,9 @@ module.exports = plugin => {
 		}
 	};
 
+	plugin.controllers.user.create = async (ctx) => {
+		console.log('ctx =>>', ctx)
+	}
+
 	return plugin;
 };

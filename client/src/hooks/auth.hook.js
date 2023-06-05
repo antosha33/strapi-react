@@ -50,16 +50,23 @@ export const useAuth = () => {
 
 
 	const logout = useCallback(async () => {
-		// await del('accessToken');
-		// await del('refreshToken');
-		// await del('delivery');
-		// unsubscribeNotifications();
-		// setAuthState({
-		// 	accessToken: null,
-		// 	refreshToken: null,
-		// 	authenticated: null,
-		// 	delivery: null,
-		// });
+		let localUsers = getData('users');
+		localUsers = localUsers.filter(x => x.accessToken !== authState.accessToken);
+
+		if (localUsers.length) {
+			const candidate = localUsers[0];
+			candidate.active = true
+			login({
+				accessToken: localUsers[0].accessToken,
+				role:  localUsers[0].role
+			})
+		} else {
+			setAuthState(_ => ({
+				accessToken: null,
+				authenticated: null,
+			}));
+		}
+		setData('users', localUsers);
 	});
 
 

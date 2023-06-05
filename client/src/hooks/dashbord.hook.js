@@ -16,8 +16,7 @@ function useDashbord() {
 		} else {
 			stage = {}
 		}
-
-
+		
 		return await authRequest({
 			url: 'c-position-stages',
 			params: {
