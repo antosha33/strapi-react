@@ -1,4 +1,5 @@
 import UserStageDropdown from "../userStageDropdown/userStageDropdown";
+import usePosition from "../../hooks/position.hook";
 
 
 const settings = [{
@@ -30,14 +31,20 @@ function Cell({ children, ...props }) {
 	)
 }
 
-function Position({ title, user, users }) {
+function Position({ title, user, users,  positionStageId}) {
+
+	const { setStageUser } = usePosition();
+
+	const onSetUser = async(userId) => {
+		await setStageUser(positionStageId, userId);
+	}
 
 
 	return (
 		<div className="odd:bg-[#fff] even:bg-Dominant/Light flex border border-Content/Border border-b-0 last:border-b-[1px]">
 			<Cell className="w-[4.8rem]"></Cell>
 			<Cell className="w-[16rem] relative">
-				<UserStageDropdown users={users} currentUser={user}></UserStageDropdown>
+				<UserStageDropdown onSetUser={onSetUser} users={users} currentUser={user}></UserStageDropdown>
 			</Cell>
 			<Cell className="w-[21.7rem] text-Regular(12_14)">{title}</Cell>
 			<Cell className="w-[13.2rem]"></Cell>

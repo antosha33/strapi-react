@@ -16,7 +16,7 @@ function Dashbord() {
 	const { getDashbord } = useDashbord();
 	const { getUsersByRole } = useUsers();
 	const { getStatuses } = useStatus();
-	const [positions, setPositions] = useState([]);
+	const [cPositionsStage, setCPositionsStage] = useState([]);
 	const [users, setUsers] = useState([]);
 	const { id, role } = userStore.currentStage;
 
@@ -41,7 +41,7 @@ function Dashbord() {
 			const { data } = await getDashbord({
 				stage: id
 			});
-			setPositions(data)
+			setCPositionsStage(data)
 		}
 	}
 
@@ -53,8 +53,8 @@ function Dashbord() {
 	return (
 		<div className="bg-Dominant/Light pt-[3.6rem]">
 			<Container>
-				{positions.map(({ position, user }) =>
-					<Position key={position.id} {...position} user={user} users={users}></Position>
+				{cPositionsStage.map(({ position, user, id }) =>
+					<Position key={id} {...position} positionStageId={id} user={user} users={users}></Position>
 				)}
 			</Container>
 		</div>

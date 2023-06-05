@@ -8,11 +8,19 @@ function usePosition() {
 
 	const { authRequest } = useContext(AxiosContext);
 
-
+	const setStageUser = async(positionStageId, userId) => {
+		return await authRequest({
+			method: 'PUT',
+			url: 'c-position-stages/' + positionStageId,
+			data: {
+				user: userId
+			}
+		})
+	}
 
 
 	return {
-		getDashbord
+		setStageUser
 	}
 
 

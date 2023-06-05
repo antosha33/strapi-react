@@ -65,11 +65,11 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "c_position_stage": {
+    "c_position_stages": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "oneToMany",
       "target": "api::c-position-stage.c-position-stage",
-      "inversedBy": "user"
+      "mappedBy": "user"
     }
   }
 }

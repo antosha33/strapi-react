@@ -24,12 +24,6 @@
       "target": "api::positions.positions",
       "inversedBy": "c_position_stages"
     },
-    "user": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "plugin::users-permissions.user",
-      "mappedBy": "c_position_stage"
-    },
     "comments": {
       "type": "relation",
       "relation": "oneToMany",
@@ -41,6 +35,17 @@
       "relation": "oneToOne",
       "target": "api::status.status",
       "inversedBy": "c_position_stage"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "c_position_stages"
+    },
+    "isCurrentStage": {
+      "type": "boolean",
+      "default": true,
+      "required": true
     }
   }
 }

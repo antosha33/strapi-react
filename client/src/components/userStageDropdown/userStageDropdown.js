@@ -1,32 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import OutsideAlerter from '../outsideAlerter/outsideAlerter'
 import Dropdown from "../ui/dropdown/dropdown";
 
-function UserStageDropdown({ users, currentUser }) {
+
+function UserStageDropdown({ users, currentUser, onSetUser }) {
 
 	const [isDropDown, setIsDropDown] = useState(false);
-
+	const [user, setUser] = useState(currentUser)
 
 	const openDropdown = () => {
-		if (!currentUser) {
-			setIsDropDown(true)
-		}
+		setIsDropDown(true)
 	}
 
 	const closeDropdown = () => {
 		setIsDropDown(false)
 	}
 
-	const renderItem = (item) => <span key={item.id} className="block px-[1.2rem] py-[1.2rem]">{item.username}</span>;
+	const onSetUserHandler = (user) => {
+		setUser(user);
+		onSetUser(user.id);
+	}
+
+
+	const renderItem = (item) =>
+		<span
+			onClick={() => onSetUserHandler(item)}
+			key={item.id} className="block px-[1.2rem] py-[1.2rem]">{item.username}
+		</span>;
 
 	return (
-		<OutsideAlerter onEvent={closeDropdown}>
+		<OutsideAlerter onEvent={closeDropdown} className="w-[100%]">
 			<div
 				onClick={openDropdown}
 				className=" text-Regular(16_18) relative">
-				{currentUser ?
-					<div className="">{currentUser.username}</div> :
+				{user ?
+					<div className="">{user?.username || currentUser.username}</div> :
 					<div className="text-Accent/Red font-medium">Выбрать ответственного</div>
 				}
 				<Dropdown active={isDropDown} data={users}>

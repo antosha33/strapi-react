@@ -41,5 +41,14 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 
 
 		return { data, meta };
+	},
+
+	async update(ctx) {
+		// some logic here
+		console.log('ctx =>>', ctx);
+		const response = await super.update(ctx);
+		// some more logic
+
+		return response;
 	}
 }));

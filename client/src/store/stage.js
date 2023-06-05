@@ -8,8 +8,9 @@ class Stage {
 	}
 
 	setCurrentStage(stage) {
-		console.log(stage)
-		this.currentStage = stage
+		if(stage){
+			this.currentStage = stage
+		}
 	}
 }
 
