@@ -54,7 +54,7 @@ export const AxiosProvider = ({ children }) => {
 			)
 			return response.data;
 		} catch (error) {
-			throw error.response?.data;
+			throw error.response?.data?.error;
 		}
 	})
 

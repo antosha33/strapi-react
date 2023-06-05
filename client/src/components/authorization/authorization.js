@@ -63,7 +63,7 @@ function Authorization({ afterLogin }) {
 			afterLogin && afterLogin();
 
 		} catch (error) {
-			console.log(error)
+			alert('Неверные данные для входа')
 		}
 
 
