@@ -11,6 +11,29 @@ body {
 	overflow-y: scroll;
 }
 
+body::-webkit-scrollbar {
+	width: 5px; /* ширина для вертикального скролла */
+	height: 5px; /* высота для горизонтального скролла */
+	border-radius: 0px;
+	background-color: #f5f5f5;
+}
+body::-webkit-scrollbar-thumb {
+	background-color: #bdbdbd;
+	border-radius: 10em;
+}
+
+.overflow-auto::-webkit-scrollbar {
+	width: 5px; /* ширина для вертикального скролла */
+	height: 5px; /* высота для горизонтального скролла */
+	border-radius: 0px;
+	background-color: #f5f5f5;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb {
+	background-color: #bdbdbd;
+	border-radius: 10em;
+}
+
 code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }

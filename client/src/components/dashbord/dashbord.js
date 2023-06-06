@@ -28,7 +28,7 @@ function Dashbord() {
 			getData();
 			getUsers();
 			// getStatusesByStage();
-			intervalId.current = setInterval(getData, 30000);
+			intervalId.current = setInterval(getData, 5000);
 		}
 		return () => {
 			clearInterval(intervalId.current)
@@ -55,10 +55,11 @@ function Dashbord() {
 	return (
 		<div className="bg-Dominant/Light pt-[3.6rem]">
 			<Container>
-				{cPositionsStage.map(({ position, user, id, status:currentStatus }) =>
+				{cPositionsStage.map(({ position, user, id, status:currentStatus, stageChangeTimeStamps }) =>
 					<Position 
 					{...position}
 					positionStageId={id}
+					timestamps={stageChangeTimeStamps}
 					user={user}
 					users={users}
 					statuses={statuses}

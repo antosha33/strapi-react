@@ -6,6 +6,7 @@
 
 const { createCoreController } = require('@strapi/strapi').factories;
 
+
 module.exports = createCoreController('api::c-position-stage.c-position-stage', ({ strapi }) => ({
 	// // Method 1: Creating an entirely custom action
 	// async exampleAction(ctx) {
@@ -44,11 +45,30 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 	},
 
 	async update(ctx) {
-		// some logic here
-		console.log('ctx =>>', ctx);
-		const response = await super.update(ctx);
-		// some more logic
 
-		return response;
+		const { data } = ctx.request.body;
+		const { id } = ctx.params;
+		const { stageTrigger, triggerTimeout } = await strapi.entityService.findOne('api::status.status', data.status);
+
+		data.stageChangeTimeStamps = null;
+
+		if (stageTrigger) {
+			const currentTime = new Date();
+			const changeTime = new Date();
+			changeTime.setSeconds(changeTime.getSeconds() + triggerTimeout);
+			data.stageChangeTimeStamps = JSON.stringify({
+				currentTime: currentTime.getTime(),
+				changeTime: changeTime.getTime()
+			})
+			setTimeout(async () => {
+				const { stageChangeTimeStamps } = await strapi.entityService.findOne('api::c-position-stage.c-position-stage', id);
+				if (stageChangeTimeStamps) {
+					data.isCurrentStage = false;
+					await super.update(ctx);
+				}
+			}, (triggerTimeout && triggerTimeout * 1000) || 0)
+		}
+
+		return await super.update(ctx);
 	}
 }));
