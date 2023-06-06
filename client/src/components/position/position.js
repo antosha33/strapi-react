@@ -42,6 +42,8 @@ function Cell({ padding = true, children, ...props }) {
 
 function Position({ title, user, users, positionStageId, statuses, status, timestamps }) {
 
+	console.log(users);
+
 	
 
 	const { setUser, setStatus } = usePosition();

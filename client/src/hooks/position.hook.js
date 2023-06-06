@@ -21,7 +21,7 @@ function usePosition() {
 	const setStatus = async(positionStageId, statusId) => {
 		return await authRequest({
 			method: 'PUT',
-			url: 'c-position-stages/' + positionStageId,
+			url: 'c-position-stages/updateStatus/' + positionStageId,
 			data: {
 				status: statusId
 			}

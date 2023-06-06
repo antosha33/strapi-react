@@ -24,14 +24,14 @@ const Cell = ({ current, currentData, setIsVisible, timestamps = '{}' }) => {
 	})
 
 	useEffect(() => {
-		if (current.stageTrigger) {
+		if (current?.stageTrigger) {
 			const diff = ((changeTime - new Date().getTime())/1000) > 0 ? Math.ceil((changeTime - new Date().getTime())/1000) : 0
 			start(diff || current.triggerTimeout)
 		}
 		return () => {
 			clear()
 		}
-	}, [current.stageTrigger, changeTime])
+	}, [current?.stageTrigger, changeTime])
 
 	return current ?
 		<div
@@ -41,7 +41,7 @@ const Cell = ({ current, currentData, setIsVisible, timestamps = '{}' }) => {
 				{current?.title || currentData.title}
 			</div>
 			{
-				current.stageTrigger && <span className='p-[0.3rem]'>{value}</span>
+				current?.stageTrigger && <span className='p-[0.3rem]'>{value}</span>
 			}
 		</div>
 		:

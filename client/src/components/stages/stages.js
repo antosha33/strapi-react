@@ -7,7 +7,7 @@ import { useEffect } from "react";
 function Stages() {
 
 	const { stages = [] } = useStages();
-	const { currentStage:id } = stageStore;
+	const { currentStage:{id} } = stageStore;
 	const { role } = usersStore.currentUser;
 
 

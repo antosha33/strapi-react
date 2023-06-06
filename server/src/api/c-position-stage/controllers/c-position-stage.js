@@ -44,12 +44,11 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 		return { data, meta };
 	},
 
-	async update(ctx) {
+	async updateStatus(ctx) {
 
 		const { data } = ctx.request.body;
 		const { id } = ctx.params;
 		const { stageTrigger, triggerTimeout } = await strapi.entityService.findOne('api::status.status', data.status);
-
 		data.stageChangeTimeStamps = null;
 
 		if (stageTrigger) {
@@ -61,9 +60,19 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 				changeTime: changeTime.getTime()
 			})
 			setTimeout(async () => {
-				const { stageChangeTimeStamps } = await strapi.entityService.findOne('api::c-position-stage.c-position-stage', id);
+				const { stageChangeTimeStamps, position } = await strapi.entityService.findOne('api::c-position-stage.c-position-stage', id, {
+					populate: {
+						position: true
+					}
+				});
 				if (stageChangeTimeStamps) {
 					data.isCurrentStage = false;
+					await strapi.entityService.create('api::c-position-stage.c-position-stage', {
+						data: {
+							stage: 2,
+							position: position.id
+						}
+					});
 					await super.update(ctx);
 				}
 			}, (triggerTimeout && triggerTimeout * 1000) || 0)
