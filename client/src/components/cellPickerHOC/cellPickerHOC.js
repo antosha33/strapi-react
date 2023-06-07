@@ -6,9 +6,12 @@ function CellPickerHOC(renderItem, Wrapped) {
 
 	return function CellPicker({ currentData, data, onSetData, ...props }) {
 
-
 		const [isDropDown, setIsDropDown] = useState(false);
 		const [current, setCurrent] = useState(currentData);
+
+		useEffect(() => {
+			setCurrent(currentData)
+		}, [currentData])
 
 		const openDropdown = () => {
 			setIsDropDown(true)

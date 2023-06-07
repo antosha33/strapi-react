@@ -43,6 +43,7 @@ function Cell({ padding = true, children, ...props }) {
 
 function Position({ title, user, users, quantity, positionStageId, statuses, status, timestamps, order }) {
 
+
 	const { setUser, setStatus } = usePosition();
 	const [isVisible, setIsVisible] = useState(true)
 
