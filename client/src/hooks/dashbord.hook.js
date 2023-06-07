@@ -1,6 +1,10 @@
 import { useEffect, useState, useContext } from "react";
 import { AxiosContext } from '../context/request.context';
-import useUsers from "./users.hook";
+const qs = require('qs');
+
+
+
+
 
 // import { GET_DASHBORD } from "../gql";
 
@@ -13,19 +17,36 @@ function useDashbord() {
 
 		if (stage) {
 			stage = {
-				'filters[stage][id]': stage,
-				'filters[isCurrentStage]': true
+				filters: {
+					stage: {
+						id: stage
+					},
+
+					isCurrentStage: true
+				}
 			}
 		} else {
 			stage = {}
 		}
 
+		const query = qs.stringify({
+			populate: {
+				status: true,
+				user: true,
+				position: {
+					populate:{
+						order: true 
+					},
+				},
+			},
+
+			...stage,
+		}, {
+			encodeValuesOnly: true, // prettify URL
+		});
+
 		return await authRequest({
-			url: 'c-position-stages',
-			params: {
-				populate: '*',
-				...stage
-			}
+			url: 'c-position-stages?' + query,
 		})
 	}
 

@@ -1,5 +1,5 @@
 
-const Parser = require("../src/modules/parser/parser");
+const cronTasks = require("./cron-tasks");
 
 module.exports = ({ env }) => ({
 	host: env('HOST', '0.0.0.0'),
@@ -12,15 +12,6 @@ module.exports = ({ env }) => ({
 	},
 	cron: {
 		enabled: true,
-		tasks: {
-			test1: {
-				task: ({ strapi }) => {
-					new Parser(strapi);
-				},
-				options: {
-					rule: "*/5 * * * * *",
-				},
-			}
-		}
+		tasks: cronTasks,
 	}
 });

@@ -22,12 +22,6 @@
       "target": "api::stage.stage",
       "inversedBy": "statuses"
     },
-    "c_position_stage": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::c-position-stage.c-position-stage",
-      "mappedBy": "status"
-    },
     "stageTrigger": {
       "type": "boolean",
       "default": false,
@@ -43,6 +37,12 @@
     },
     "triggerTimeout": {
       "type": "integer"
+    },
+    "c_position_stages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::c-position-stage.c-position-stage",
+      "mappedBy": "status"
     }
   }
 }

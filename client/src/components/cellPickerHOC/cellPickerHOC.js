@@ -26,7 +26,7 @@ function CellPickerHOC(renderItem, Wrapped) {
 		const renderItemWithHandler = renderItem(onChooseHanlder)
 
 		return (
-			<OutsideAlerter onEvent={closeDropdown} className="w-[100%] flex">
+			<OutsideAlerter onEvent={closeDropdown} className="w-[100%] flex self-stretch">
 				<div
 					onClick={openDropdown}
 					className=" text-Regular(16_18) relative  w-[100%]">

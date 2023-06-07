@@ -8,5 +8,8 @@
 		"start": "concurrently \"nvm use 18\"   \" npm run start develop --prefix ./server\" \"npm run start --prefix ./client\""
 	},
 	"author": "",
-	"license": "ISC"
+	"license": "ISC",
+	"dependencies": {
+		"node-fetch": "^2.6.11"
+	}
 }

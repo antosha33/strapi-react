@@ -24,7 +24,7 @@ function Dashbord() {
 
 
 	useEffect(() => {
-		if(id){
+		if (id) {
 			getData();
 			getUsers();
 			// getStatusesByStage();
@@ -53,19 +53,31 @@ function Dashbord() {
 
 
 	return (
-		<div className="bg-Dominant/Light pt-[3.6rem]">
+		<div className="bg-Dominant/Dop py-[2rem] flex-grow-1 flex flex-col gap-[0.8rem] min-h-[100px] relative w-[100%]">
 			<Container>
-				{cPositionsStage.map(({ position, user, id, status:currentStatus, stageChangeTimeStamps }) =>
-					<Position 
-					{...position}
-					positionStageId={id}
-					timestamps={stageChangeTimeStamps}
-					user={user}
-					users={users}
-					statuses={statuses}
-					status={currentStatus}
-					key={id}   ></Position>
-				)}
+				<div className="py-[2rem] bg-white"></div>
+			</Container>
+			<div className="flex-1 overflow-auto ">
+				<div className=' ml-[5px]'>
+					<Container>
+						{cPositionsStage.map(({ position, user, id, status: currentStatus, stageChangeTimeStamps }) =>
+							<Position
+								{...position}
+								positionStageId={id}
+								timestamps={stageChangeTimeStamps}
+								user={user}
+								users={users}
+								statuses={statuses}
+								status={currentStatus}
+								key={id}   ></Position>
+						)}
+					</Container>
+				</div>
+
+			</div>
+
+			<Container>
+				<div className="py-[2rem] bg-white"></div>
 			</Container>
 		</div>
 	);

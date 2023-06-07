@@ -32,6 +32,12 @@
       "relation": "oneToMany",
       "target": "api::c-position-stage.c-position-stage",
       "mappedBy": "position"
+    },
+    "order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::order.order",
+      "inversedBy": "positions"
     }
   }
 }

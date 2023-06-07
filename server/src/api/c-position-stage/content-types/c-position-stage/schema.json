@@ -32,9 +32,9 @@
     },
     "status": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "manyToOne",
       "target": "api::status.status",
-      "inversedBy": "c_position_stage"
+      "inversedBy": "c_position_stages"
     },
     "user": {
       "type": "relation",

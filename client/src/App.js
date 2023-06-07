@@ -10,6 +10,7 @@ import Main from './routes/main';
 import Authorization from './components/authorization/authorization';
 import Layout from './components/layout/layout';
 import { AxiosProvider } from './context/request.context'
+import useCssVariables from './hooks/cssVariables.hook'
 
 
 
@@ -25,6 +26,8 @@ function App() {
 
 
 	const { authState, login, logout } = useAuth();
+
+	useCssVariables()
 
 
 
