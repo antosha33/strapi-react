@@ -37,7 +37,7 @@ class Parser {
 
 
 	async createData(data) {
-		data.forEach(({ id, username, positions }) => {
+		data.forEach(({ id, username, date, positions }) => {
 
 			(async () => {
 				const strapiService = this.strapi.entityService;
@@ -49,30 +49,66 @@ class Parser {
 
 					const stack = [];
 
-
 					//создаем позиции заказа
 					positions.forEach(({ id, title, quantity }) => {
 						stack.push(
 							new Promise(async (resolve, reject) => {
-								const entry = await strapi.entityService.findOne('api::positions.positions', id);
-								let result;
-								if (!entry) {
-									result = await strapiService.create('api::positions.positions', {
-										data: {
-											id,
-											title,
-											quantity
+
+								let stageId;
+								let statusId;
+
+								//СМОДЕЛИРУЕМ СИТУАЦИЮ ЧТО У ПОЗИЦИИ НЕТ ПЕЧАТИ
+								const HAS_STAMP = false;
+
+								if (!HAS_STAMP) {
+									//определим налальный stage позиции
+									const [stage] = await strapiService.findMany('api::stage.stage', {
+										filters: {
+											initial: true
 										}
 									})
-									await strapiService.create('api::c-position-stage.c-position-stage', {
-										data: {
-											isCurrentStage: true,
-											stage: 1,
-											status:2,
-											position: id
+
+									//определим налальный status позиции
+									const statuses = await strapiService.findMany('api::status.status', {
+										filters: {
+											initial: true
+										},
+										populate: {
+											stage: {
+												filters: {
+													id: {
+														$eq: stage.id
+													}
+												}
+											}
 										}
 									})
+
+									const status = statuses.find(x => x.stage)
+
+									statusId = status.id;
+									stageId = stage.id;
 								}
+
+
+								let result;
+
+								result = await strapiService.create('api::positions.positions', {
+									data: {
+										title,
+										quantity
+									}
+								})
+
+								await strapiService.create('api::c-position-stage.c-position-stage', {
+									data: {
+										isCurrentStage: true,
+										stage: stageId,
+										status: statusId,
+										position: result.id
+									}
+								})
+
 								resolve(result)
 							})
 						)
@@ -81,11 +117,13 @@ class Parser {
 
 					//создаем сам заказ
 					Promise.all(stack).then(async (ev) => {
+
 						const ids = ev.map(x => x.id);
 						if (ids.length) {
 							await strapiService.create('api::order.order', {
 								data: {
 									id,
+									date,
 									username,
 									positions: ids
 								}
@@ -104,8 +142,10 @@ Parser.prepareOrderData = ({
 }) => {
 	const result = Object.entries(orders).reduce((acc, [id, { ORDER_DATA, ORDER_ITEMS_DATA }]) => {
 
+
 		const item = {
 			id,
+			date: Parser.formatDate(ORDER_DATA.DATE_STATUS_SHORT),
 			username: ORDER_DATA.USER_LAST_NAME + ' ' + ORDER_DATA.USER_NAME,
 			positions: ORDER_ITEMS_DATA.map(x => ({
 				id: x.ID,
@@ -120,6 +160,11 @@ Parser.prepareOrderData = ({
 	}, [])
 
 	return result
+}
+
+Parser.formatDate = (date) => {
+	date = date.split('.');
+	return date[2] + '-' + date[1] + '-' + date[0];
 }
 
 

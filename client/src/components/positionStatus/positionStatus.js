@@ -8,7 +8,7 @@ import CellPickerHOC from "../cellPickerHOC/cellPickerHOC";
 
 const renderItem = (onClickHandler) => (item) =>
 	<span
-		onClick={() => onClickHandler(item)}
+		onClick={(ev) => {ev.stopPropagation();onClickHandler(item)}}
 		style={{
 			background: item.color
 		}}

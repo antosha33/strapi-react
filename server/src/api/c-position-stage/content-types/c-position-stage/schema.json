@@ -18,12 +18,6 @@
       "target": "api::stage.stage",
       "inversedBy": "c_position_stages"
     },
-    "position": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::positions.positions",
-      "inversedBy": "c_position_stages"
-    },
     "comments": {
       "type": "relation",
       "relation": "oneToMany",
@@ -49,6 +43,15 @@
     },
     "stageChangeTimeStamps": {
       "type": "json"
+    },
+    "position": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::positions.positions",
+      "inversedBy": "c_position_stages"
+    },
+    "timeoutId": {
+      "type": "biginteger"
     }
   }
 }

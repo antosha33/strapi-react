@@ -9,6 +9,9 @@ function CellPickerHOC(renderItem, Wrapped) {
 		const [isDropDown, setIsDropDown] = useState(false);
 		const [current, setCurrent] = useState(currentData);
 
+		//не показываем выбранный элемент в дропдауне
+		const filteredData = data.filter(x => x.id !== currentData?.id)
+
 		useEffect(() => {
 			setCurrent(currentData)
 		}, [currentData])
@@ -22,11 +25,13 @@ function CellPickerHOC(renderItem, Wrapped) {
 		}
 
 		const onChooseHanlder = (user) => {
+			setIsDropDown(false)
 			setCurrent(user);
 			onSetData(user.id);
 		}
 
 		const renderItemWithHandler = renderItem(onChooseHanlder)
+
 
 		return (
 			<OutsideAlerter onEvent={closeDropdown} className="w-[100%] flex self-stretch">
@@ -34,7 +39,7 @@ function CellPickerHOC(renderItem, Wrapped) {
 					onClick={openDropdown}
 					className=" text-Regular(16_18) relative  w-[100%]">
 					<Wrapped current={current} currentData={currentData} {...props}></Wrapped>
-					<Dropdown active={isDropDown} data={data}>
+					<Dropdown active={isDropDown} data={filteredData}>
 						{renderItemWithHandler}
 					</Dropdown>
 				</div>

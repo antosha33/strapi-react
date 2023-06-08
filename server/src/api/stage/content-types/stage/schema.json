@@ -21,14 +21,18 @@
       "target": "api::c-position-stage.c-position-stage",
       "mappedBy": "stage"
     },
+    "role": {
+      "type": "string"
+    },
     "statuses": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::status.status",
       "mappedBy": "stage"
     },
-    "role": {
-      "type": "string"
+    "initial": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

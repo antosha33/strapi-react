@@ -99,7 +99,6 @@ function UsersPanel() {
 				<Modal
 					isOpen={isModalOpened}
 					closeModal={() => setIsModalOpened(false)}
-					title="Авторизуйтесь в системе"
 				>
 					<Authorization
 						afterLogin={() => setIsModalOpened(false)}

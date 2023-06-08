@@ -20,6 +20,9 @@
       "relation": "oneToMany",
       "target": "api::positions.positions",
       "mappedBy": "order"
+    },
+    "date": {
+      "type": "date"
     }
   }
 }

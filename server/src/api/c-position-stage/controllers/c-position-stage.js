@@ -60,17 +60,64 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 				changeTime: changeTime.getTime()
 			})
 			setTimeout(async () => {
+
+				const nextStageID = 33;
 				const { stageChangeTimeStamps, position } = await strapi.entityService.findOne('api::c-position-stage.c-position-stage', id, {
 					populate: {
 						position: true
 					}
 				});
-				if (stageChangeTimeStamps) {
+
+				//не будем чистить интервал, просто проверим, возможно уже создана позиция на этом stage
+				const candidates = await strapi.entityService.findMany('api::c-position-stage.c-position-stage', {
+					populate: {
+						position: {
+							filters: {
+								id: {
+									$eq: position.id
+								}
+							},
+
+						},
+						stage: {
+							filters: {
+								id: {
+									$eq: nextStageID
+								}
+							}
+						}
+					}
+				});
+				const isExist = candidates.find(x => x.position && x.stage);
+
+
+
+				if (stageChangeTimeStamps && !isExist) {
 					data.isCurrentStage = false;
+
+					//определим налальный status позиции
+					const statuses = await strapi.entityService.findMany('api::status.status', {
+						filters: {
+							initial: true
+						},
+						populate: {
+							stage: {
+								filters: {
+									id: {
+										$eq: nextStageID
+									}
+								}
+							}
+						}
+					})
+
+					const status = statuses.find(x => x.stage)
+
 					await strapi.entityService.create('api::c-position-stage.c-position-stage', {
 						data: {
-							stage: 2,
-							position: position.id
+							stage: nextStageID,
+							position: position.id,
+							status: status.id
 						}
 					});
 					await super.update(ctx);

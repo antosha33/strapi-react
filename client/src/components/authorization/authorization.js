@@ -72,28 +72,32 @@ function Authorization({ afterLogin }) {
 
 
 	return (
-		<div className="p-[5rem] bg-Dominant/Dop w-[62.6rem]">
-			<div>
-				<Input
-					onInput={onLoginHandler}
-					label="Введите ваш логин"
-					placeholder="Введите ваш логин"
-				></Input>
-				<Input
-					onInput={onPasswordHandler}
-					label="Введите ваш пароль"
-					placeholder="Введите ваш пароль"
-				></Input>
-			</div>
-			<span className="bg-Accent/Rose p-[1rem] text-Regular(12_14) text-Content/Dark mt-[1.2rem] block text-left">Получить ваш логин и пароль вы можете у начальника производства Александра Иванова</span>
-			<div className="mt-[5rem] max-w-[23rem] m-auto">
-				<Button
-					onPress={onSubmitHandler}
-					name="Авторизоваться"
-				></Button>
-			</div>
+		<div className="p-[7rem]">
+			<span className='block text-center text-Regular(48_52) text-Content/Dark mb-[5rem]'>Авторизуйтесь в системе</span>
+			<div className="p-[5rem] bg-Dominant/Dop w-[62.6rem]">
+				<div>
+					<Input
+						onInput={onLoginHandler}
+						label="Введите ваш логин"
+						placeholder="Введите ваш логин"
+					></Input>
+					<Input
+						onInput={onPasswordHandler}
+						label="Введите ваш пароль"
+						placeholder="Введите ваш пароль"
+					></Input>
+				</div>
+				<span className="bg-Accent/Rose p-[1rem] text-Regular(12_14) text-Content/Dark mt-[1.2rem] block text-left">Получить ваш логин и пароль вы можете у начальника производства Александра Иванова</span>
+				<div className="mt-[5rem] max-w-[23rem] m-auto">
+					<Button
+						onPress={onSubmitHandler}
+						name="Авторизоваться"
+					></Button>
+				</div>
 
+			</div>
 		</div>
+
 	);
 }
 

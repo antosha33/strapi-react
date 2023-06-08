@@ -4,44 +4,18 @@ import usePosition from "../../hooks/position.hook";
 import PositionUser from "../positionUser/positionUser";
 import Checkbox from "../ui/checkbox/checkbox";
 import { useState } from "react";
-
-
-const settings = [{
-	user: {
-		available: true,
-		title: 'Ответственный'
-	},
-	code: {
-		available: true,
-		title: 'Ответственный'
-	},
-	title: {
-		available: true,
-		title: 'Назв-е товара'
-	},
-	qauntity: {
-		available: true,
-		title: 'Кол-во'
-	}
-}]
-
-
-function Cell({ padding = true, children, ...props }) {
-
-	return (
-		<div className={`
-			${padding ? 'px-[1.2rem] py-[0.9rem]' : ''}
-			h-[6rem]  flex justify-center items-center border border-Content/Border border-t-0 border-l-0 border-b-0 ${props.className}
-			`} >
-			{children}
-		</div>
-	)
-}
+import Cell from "../cell/cell";
 
 
 
 
-function Position({ title, user, users, quantity, positionStageId, statuses, status, timestamps, order }) {
+
+
+
+
+
+
+function Position({ settings, title, onOrderDetail, user, users, quantity, positionStageId, statuses, status, timestamps, order }) {
 
 
 	const { setUser, setStatus } = usePosition();
@@ -60,27 +34,28 @@ function Position({ title, user, users, quantity, positionStageId, statuses, sta
 
 	return (
 		<div className="odd:bg-[#fff] even:bg-Dominant/Light flex border border-Content/Border border-b-0 border-l-0 last:border-b-[1px]">
-			<Cell className="w-[4.8rem] flex items-center">
+			<Cell {...settings.Checkbox}>
 				<Checkbox></Checkbox>
 			</Cell>
-			<Cell className="w-[16rem]" padding={false}>
+			<Cell {...settings.user}>
 				<PositionUser
 					data={users}
 					currentData={user}
 					onSetData={onSetUser}
 				></PositionUser>
 			</Cell>
-			<Cell className="w-[21.7rem] text-Regular(12_14) ">
+			<Cell {...settings.title} >
 				<span className="line-clamp-3">{title}</span>
 			</Cell>
-			<Cell className="w-[10rem] text-Regular(16_18)">{quantity}</Cell>
-			<Cell className="w-[12.2rem] flex justify-center">
-				<span className="text-Accent/Blue text-Regular(16_18)">
+			<Cell {...settings.qauntity}>{quantity}</Cell>
+			<Cell {...settings.order}>
+				<span
+					onClick={() => onOrderDetail(order.id)}
+					className="text-Accent/Blue text-Regular(16_18)">
 					{order.id}
 				</span>
-
 			</Cell>
-			<Cell className="w-[18.7rem]" padding={false}>
+			<Cell {...settings.status}>
 				<PositionStatus
 					data={statuses}
 					currentData={status}

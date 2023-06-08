@@ -9,7 +9,7 @@ const Cell = ({ current, currentData }) => {
 
 const renderItem = (onClickHandler) => (item) =>
 <span
-	onClick={() => onClickHandler(item)}
+	onClick={(ev) => {ev.stopPropagation();onClickHandler(item)}}
 	key={item.id} className="block px-[1.2rem] py-[1.2rem]">{item.username}
 </span>;
 
