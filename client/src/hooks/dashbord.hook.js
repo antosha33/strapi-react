@@ -22,7 +22,6 @@ function useDashbord() {
 					stage: {
 						id: stage
 					},
-
 					isCurrentStage: true
 				}
 			}

@@ -10,8 +10,8 @@ module.exports = {
 	routes: [
 		{ // Path defined with an URL parameter
 			method: 'POST',
-			path: '/c-position-stages/setUrgent',
-			handler: 'c-position-stage.setUrgent',
+			path: '/c-position-stages/setUrgentPosition',
+			handler: 'c-position-stage.setUrgentPosition',
 		},
 		{ // Path defined with an URL parameter
 			method: 'PUT',

@@ -9,10 +9,27 @@ const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('api::c-position-stage.c-position-stage', ({ strapi }) => ({
 
-	async setUrgent(ctx) {
+	async setUrgentPosition(ctx) {
 		const { data } = ctx.request.body;
 
-		return await strapi.service('api::c-position-stage.c-position-stage').updateById(data ,{
+		await strapi.service('api::positions.positions').updateById(data, {
+			isUrgent: true
+		})
+
+		const positions = await strapi.entityService.findMany('api::c-position-stage.c-position-stage', {
+			populate: {
+				position: {
+					filters: {
+						id: {
+							$in: data
+						}
+					},
+				}
+			}
+		})
+		const candidates = positions.filter(x => x.position).map(x => x.id);
+
+		return await strapi.service('api::c-position-stage.c-position-stage').updateById(candidates, {
 			isUrgent: true
 		})
 
@@ -108,6 +125,7 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 						stage: nextStageID,
 						position: position.id,
 						status: status.id,
+						isUrgent: position.isUrgent
 					}
 				});
 				await super.update(ctx);

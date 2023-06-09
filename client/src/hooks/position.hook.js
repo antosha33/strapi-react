@@ -31,7 +31,7 @@ function usePosition() {
 	const setPositionsToUrgent = async(ids) => {
 		return await authRequest({
 			method: 'POST',
-			url: 'c-position-stages/setUrgent',
+			url: 'c-position-stages/setUrgentPosition',
 			data: ids
 		})
 	}

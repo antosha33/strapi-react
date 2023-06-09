@@ -12,12 +12,14 @@ import dashbordStore from '../../store/dashbord'
 
 
 
-function Position({cPositionStageId, isUrgent, settings, title, onOrderDetail, user, users, quantity, positionStageId, statuses, status, timestamps, order }) {
+function Position({ id, isUrgent, settings, title, onOrderDetail, user, users, quantity, positionStageId, statuses, status, timestamps, order }) {
 
 
 	const { setUser, setStatus } = usePosition();
 	const [isVisible, setIsVisible] = useState(true);
-	const isSelected = dashbordStore.getIsPositionsSelected(positionStageId);
+	const isSelected = dashbordStore.getIsPositionsSelected(id);
+
+	console.log(isSelected)
 
 	const onSetUser = async (userId) => {
 		await setUser(positionStageId, userId);
@@ -28,12 +30,11 @@ function Position({cPositionStageId, isUrgent, settings, title, onOrderDetail, u
 	}
 
 	const onSelectPosition = () => {
-		dashbordStore.addPosition(cPositionStageId)
+		dashbordStore.addPosition(id)
 	}
 
 
-	if (!isVisible) return null;
-
+	if (!isVisible) return null; 
 	return (
 		<div className={`
 			${isUrgent ? 'after:absolute after:top-[0] after:bottom-0 after:w-[0.4rem] after:bg-Accent/Red' : ''}

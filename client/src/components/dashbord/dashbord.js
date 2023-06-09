@@ -181,27 +181,38 @@ function Dashbord() {
 
 					<div className=' ml-[5px]'>
 						<Container>
-							<div className="flex bg-white">
 
-								{Object.values(settings).map(x => <TdCell {...x}></TdCell>)}
-							</div>
 
 							{
 								Array.isArray(items[0]) ?
 
+
 									items?.map(([id, item]) => {
+
 										return (
 											<div key={id}>
 												<span className='text-Content/Dark block font-semibold text-Regular(16_18) mb-[1.1rem]'>{id}</span>
+												<div className="flex bg-white">
+													{Object.values(settings).map(x => <TdCell {...x}></TdCell>)}
+												</div>
+
 												<div className='mb-[3.6rem]'>
 													{item.map(render)}
 												</div>
 											</div>
+
 										)
 									})
 
 									:
-									items?.map(render)
+									<>
+										<div className="flex bg-white">
+											{Object.values(settings).map(x => <TdCell {...x}></TdCell>)}
+
+										</div>
+										{items?.map(render)}
+									</>
+
 							}
 						</Container>
 

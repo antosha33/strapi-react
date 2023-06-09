@@ -21,13 +21,13 @@ function ActionDropdown({ onEvent }) {
 
 
 	const finishAction = () => {
+		console.log('!!')
 		dashbordStore.clearSelected();
 		// setIsOpen(false);
 		onEvent && onEvent();
 	}
 
 	const setUrgent = async () => {
-		console.log('here')
 		await setPositionsToUrgent(dashbordStore.getSelected());
 		finishAction()
 	}

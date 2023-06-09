@@ -38,6 +38,10 @@
       "relation": "manyToOne",
       "target": "api::order.order",
       "inversedBy": "positions"
+    },
+    "isUrgent": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
