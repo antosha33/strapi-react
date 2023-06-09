@@ -8,12 +8,12 @@ module.exports = {
 			const parser = new Parser(strapi);
 			parser.setOptions({
 				url,
-				time: 500,
+				time: 1440,
 			});
 			parser.getData();
 		},
 		options: {
-			rule: "*/10 * * * * ",
+			rule: "*/2 * * * * ",
 		},
 	}
 };

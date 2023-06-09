@@ -1,25 +1,23 @@
+import { useState } from "react";
+import { observer } from "mobx-react-lite";
 
 import PositionStatus from "../positionStatus/positionStatus";
 import usePosition from "../../hooks/position.hook";
 import PositionUser from "../positionUser/positionUser";
 import Checkbox from "../ui/checkbox/checkbox";
-import { useState } from "react";
 import Cell from "../cell/cell";
+import dashbordStore from '../../store/dashbord'
 
 
 
 
 
-
-
-
-
-
-function Position({ settings, title, onOrderDetail, user, users, quantity, positionStageId, statuses, status, timestamps, order }) {
+function Position({cPositionStageId, isUrgent, settings, title, onOrderDetail, user, users, quantity, positionStageId, statuses, status, timestamps, order }) {
 
 
 	const { setUser, setStatus } = usePosition();
-	const [isVisible, setIsVisible] = useState(true)
+	const [isVisible, setIsVisible] = useState(true);
+	const isSelected = dashbordStore.getIsPositionsSelected(positionStageId);
 
 	const onSetUser = async (userId) => {
 		await setUser(positionStageId, userId);
@@ -29,13 +27,23 @@ function Position({ settings, title, onOrderDetail, user, users, quantity, posit
 		await setStatus(positionStageId, statusId);
 	}
 
+	const onSelectPosition = () => {
+		dashbordStore.addPosition(cPositionStageId)
+	}
+
 
 	if (!isVisible) return null;
 
 	return (
-		<div className="odd:bg-[#fff] even:bg-Dominant/Light flex border border-Content/Border border-b-0 border-l-0 last:border-b-[1px]">
+		<div className={`
+			${isUrgent ? 'after:absolute after:top-[0] after:bottom-0 after:w-[0.4rem] after:bg-Accent/Red' : ''}
+			odd:bg-[#fff] even:bg-Dominant/Light relative flex border border-Content/Border border-b-0 border-l-0 last:border-b-[1px]
+			`}>
 			<Cell {...settings.Checkbox}>
-				<Checkbox></Checkbox>
+				<Checkbox
+					active={isSelected}
+					onChange={onSelectPosition}
+				></Checkbox>
 			</Cell>
 			<Cell {...settings.user}>
 				<PositionUser
@@ -71,4 +79,4 @@ function Position({ settings, title, onOrderDetail, user, users, quantity, posit
 	);
 }
 
-export default Position;
+export default observer(Position);

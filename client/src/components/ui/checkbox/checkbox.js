@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 function Checkbox({label, active=false, onChange}) {
 
-	const [isActive, setIsActive] = useState(active)
+	const [isActive, setIsActive] = useState(active);
+
+	useEffect(() => {
+		setIsActive(active)
+	}, [active])
 
 	const onChangeHandler = () => {
 		setIsActive(!isActive);

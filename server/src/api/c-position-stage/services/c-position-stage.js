@@ -7,15 +7,14 @@
 const { createCoreService } = require('@strapi/strapi').factories;
 
 module.exports = createCoreService('api::c-position-stage.c-position-stage', ({ strapi }) => ({
-	async find(...args) {
-		// Calling the default core controller
-		const { results, pagination } = await super.find(...args);
-
-		// some custom logic
-		results.forEach(result => {
-			result.counter = 1;
+	async updateById(ids, data) {
+		return await strapi.db.query("api::c-position-stage.c-position-stage").updateMany({
+			where: {
+				id: {
+					$in: ids
+				}
+			},
+			data: data,
 		});
-
-		return { results, pagination };
-	},
+	}
 }));

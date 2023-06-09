@@ -9,6 +9,11 @@
 module.exports = {
 	routes: [
 		{ // Path defined with an URL parameter
+			method: 'POST',
+			path: '/c-position-stages/setUrgent',
+			handler: 'c-position-stage.setUrgent',
+		},
+		{ // Path defined with an URL parameter
 			method: 'PUT',
 			path: '/c-position-stages/updateStatus/:id',
 			handler: 'c-position-stage.updateStatus',

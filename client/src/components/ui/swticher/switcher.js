@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function Switcher({label, active=false, onChange}) {
+function Switcher({ label, active = false, onChange }) {
 
 	const [isActive, setIsActive] = useState(active)
 
@@ -10,10 +10,10 @@ function Switcher({label, active=false, onChange}) {
 	}
 
 	return (
-		<div 
+		<div
 			onClick={onChangeHandler}
 			className="hover:cursor-pointer ease-in-out duration-300 border border-Content/Border p-[1.2rem] flex gap-[0.8rem] hover:border-Accent/Blue">
-			<div 
+			<div
 				className={`
 					${isActive ? 'after:left-[1.6rem] bg-Accent/Blue' : 'after:left-[0.2rem] bg-Content/Light'}
 					after:absolute
@@ -28,7 +28,10 @@ function Switcher({label, active=false, onChange}) {
 					ease-in-out duration-300 rounded-[10rem] w-[3.4rem] h-[2rem]  relative
 					`}
 			></div>
-			<div className="text-Regular(16_18) select-none text-Content/Middle">{label}</div>
+			<div className={`
+				${isActive ? 'text-Content/Dark' : 'text-Content/Middle'}
+				text-Regular(16_18) select-none 
+				`}>{label}</div>
 		</div>
 	);
 }

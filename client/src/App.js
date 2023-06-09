@@ -11,6 +11,7 @@ import Authorization from './components/authorization/authorization';
 import Layout from './components/layout/layout';
 import { AxiosProvider } from './context/request.context'
 import useCssVariables from './hooks/cssVariables.hook'
+import "./fontello/css/fontello.css"
 
 
 

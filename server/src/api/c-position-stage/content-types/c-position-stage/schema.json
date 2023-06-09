@@ -52,6 +52,10 @@
     },
     "timeoutId": {
       "type": "biginteger"
+    },
+    "isUrgent": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

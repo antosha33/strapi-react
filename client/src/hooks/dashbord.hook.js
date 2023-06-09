@@ -17,7 +17,7 @@ function useDashbord() {
 
 		if (stage) {
 			stage = {
-				sort: ['quantity:desc'],
+				sort: [ 'isUrgent:desc', 'id:desc'],
 				filters: {
 					stage: {
 						id: stage

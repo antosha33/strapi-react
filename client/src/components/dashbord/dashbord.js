@@ -10,7 +10,8 @@ import OrderModal from '../orderModal/orderModal';
 import Modal from '../modal/modal'
 import Switcher from '../ui/swticher/switcher'
 import Pagination from '../pagination/pagination';
-import Cell from '../cell/cell';
+import ActionDropdown from '../actionDropdown/actionDropdown';
+import SortDropdown from '../sortDropdown/sortDropdown';
 
 
 const TdCell = ({ height = 'h-[6rem]', available = true, ...props }) => {
@@ -69,10 +70,9 @@ const settings = {
 }
 
 
-
-
 function Dashbord() {
 
+	const idsToAction = useRef([]);
 	const intervalId = useRef(null);
 	const { getDashbord } = useDashbord();
 	const { getUsersByRole } = useUsers();
@@ -83,6 +83,22 @@ function Dashbord() {
 	const [groupMod, setGroupMod] = useState(false);
 	const [detailModal, setDetailModal] = useState(false);
 	const { id, role, statuses } = userStore.currentStage;
+
+
+	useEffect(() => {
+		if (id) {
+			getData();
+			getUsers();
+			intervalId.current = setInterval(getData, 50000);
+		}
+		return () => {
+			clearInterval(intervalId.current)
+		}
+	}, [id, groupMod, page])
+
+	useEffect(() => {
+		setPage(1)
+	}, [id])
 
 	const getData = async () => {
 		if (id) {
@@ -99,23 +115,10 @@ function Dashbord() {
 		}
 	}
 
-
-
 	const getUsers = async () => {
 		const data = await getUsersByRole(role);
 		setUsers(data)
 	}
-
-	useEffect(() => {
-		if (id) {
-			getData();
-			getUsers();
-			intervalId.current = setInterval(getData, 5000);
-		}
-		return () => {
-			clearInterval(intervalId.current)
-		}
-	}, [id, groupMod, page])
 
 	const onPageChange = (page) => {
 		setPage(page)
@@ -124,7 +127,6 @@ function Dashbord() {
 	const onOrderDetail = (id) => {
 		setDetailModal(id);
 	}
-
 
 	const groupItems = (data) => {
 		const group = data.reduce((acc, curr) => {
@@ -139,18 +141,19 @@ function Dashbord() {
 	}
 
 
-
-	const render = ({ position, user, id, status: currentStatus, stageChangeTimeStamps }) => {
+	const render = ({ isUrgent, position, user, id, status: currentStatus, stageChangeTimeStamps }) => {
 
 		return (
 			<Position
 				{...position}
+				isUrgent={isUrgent}
 				positionStageId={id}
 				timestamps={stageChangeTimeStamps}
 				user={user}
 				users={users}
 				statuses={statuses}
 				status={currentStatus}
+				cPositionStageId={id}
 				key={id}
 				onOrderDetail={onOrderDetail}
 				settings={settings}
@@ -165,11 +168,12 @@ function Dashbord() {
 		<>
 			<div className="bg-Dominant/Dop py-[2rem] flex-1 flex flex-col gap-[0.8rem] min-h-[100px] relative w-[100%]">
 				<Container>
-					<div className="p-[1.2rem] bg-white">
+					<div className="p-[1.2rem] bg-white flex gap-[2.6rem]">
 						<Switcher
 							onChange={() => setGroupMod(!groupMod)}
 							label="Сгруппировать по заказам"
 						></Switcher>
+						<SortDropdown></SortDropdown>
 					</div>
 				</Container>
 				<div className="flex-1 overflow-auto ">
@@ -208,8 +212,14 @@ function Dashbord() {
 
 
 				<Container>
-					<div className="p-[1.2rem] bg-white">
-						<Pagination {...meta} onPageChange={onPageChange}></Pagination>
+					<div className="p-[1.2rem] bg-white flex relative">
+						<div className="w-[50%]">
+							<ActionDropdown onEvent={getData}></ActionDropdown>
+						</div>
+						<div className="w-[50%] ">
+							<Pagination {...meta} onPageChange={onPageChange}></Pagination>
+						</div>
+
 					</div>
 				</Container>
 			</div>
