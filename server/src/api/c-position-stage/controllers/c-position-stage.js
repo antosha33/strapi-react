@@ -70,7 +70,7 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 		setTimeout(async () => {
 
 			//HARDCODE
-			const nextStageID = 46;
+			const nextStageID = 59;
 
 			const { stageChangeTimeStamps, position } = await strapi.entityService.findOne('api::c-position-stage.c-position-stage', id, {
 				populate: {

@@ -2,30 +2,36 @@ import { makeAutoObservable } from 'mobx';
 
 class Dashbord {
 
-	selectedPositions=[];
+	selectedPositions = [];
+	settings = null;
+
 
 	constructor() {
 		makeAutoObservable(this)
 	}
 
-	addPosition(id){
+	addPosition(id) {
 		const isExist = this.selectedPositions.indexOf(id);
-		if(isExist > -1){
-			this.selectedPositions.splice(isExist,1)
-		} else{
+		if (isExist > -1) {
+			this.selectedPositions.splice(isExist, 1)
+		} else {
 			this.selectedPositions.push(id)
 		}
 	}
 
-	getSelected(){
+	setSettings(settings){
+		this.settings = settings;
+	}
+
+	getSelected() {
 		return this.selectedPositions;
 	}
 
-	clearSelected(){
+	clearSelected() {
 		this.selectedPositions = [];
 	}
 
-	getIsPositionsSelected(id){
+	getIsPositionsSelected(id) {
 		return this.selectedPositions.indexOf(id) > -1;
 	}
 

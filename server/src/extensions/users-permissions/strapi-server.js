@@ -23,37 +23,54 @@ module.exports = plugin => {
 
 		const service = strapi.entityService;
 
-		if(ctx.query.role){
+		if (ctx.query.role) {
 			const users = await service.findMany(
 				'plugin::users-permissions.user',
 				{
 					...ctx.params,
-					populate:{
+					populate: {
 						role: {
-							filters:{
+							filters: {
 								type: {
-									$eq : ctx.query.role
+									$eq: ctx.query.role
 								}
 							},
 						}
-					} 
+					}
 				}
 			);
 			ctx.body = users.map(user => sanitizeOutput(user)).filter(x => x.role);
-		}else{
+		} else {
 			const users = await service.findMany(
 				'plugin::users-permissions.user',
 				{
 					...ctx.params,
-					populate:['role']
+					populate: ['role']
 				}
 			);
 			ctx.body = users.map(user => sanitizeOutput(user));
 		}
 	};
 
-	plugin.controllers.user.create = async (ctx) => {
-		console.log('ctx =>>', ctx)
+	plugin.routes["content-api"].routes.push(
+		{
+			method: "PUT",
+			path: "/user/update",
+			handler: "user.update",
+			config: {
+				prefix: "",
+				policies: []
+			}
+		}
+	);
+
+	plugin.controllers.user.update = async (ctx) => {
+		await strapi.query('plugin::users-permissions.user').update({
+			where: { id: ctx.state.user.id },
+			data: ctx.request.body
+		}).then((res) => {
+			ctx.response.status = 200;
+		})
 	}
 
 	return plugin;

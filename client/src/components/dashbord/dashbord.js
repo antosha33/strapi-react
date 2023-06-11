@@ -12,6 +12,9 @@ import Switcher from '../ui/swticher/switcher'
 import Pagination from '../pagination/pagination';
 import ActionDropdown from '../actionDropdown/actionDropdown';
 import SortDropdown from '../sortDropdown/sortDropdown';
+import Settings from './settings/settings';
+import dashbordStore from '../../store/dashbord'
+
 
 
 const TdCell = ({ height = 'h-[6rem]', available = true, ...props }) => {
@@ -29,45 +32,7 @@ const TdCell = ({ height = 'h-[6rem]', available = true, ...props }) => {
 }
 
 
-const settings = {
-	checkbox: {
-		type: 'checkbox',
-		available: true,
-		className: 'w-[4.8rem] flex items-center',
-	},
-	user: {
-		title: 'Ответственный',
-		available: true,
-		className: 'w-[16rem]',
-		padding: false
-	},
-	title: {
-		available: true,
-		title: 'Назв-е товара',
-		className: 'w-[21.7rem] text-Regular(12_14)',
-	},
-	// code: {
-	// 	available: true,
-	// 	title: 'Назв-е товара'
-	// },
-	qauntity: {
-		available: true,
-		title: 'Кол-во',
-		className: 'w-[10rem] text-Regular(16_18)'
-	},
-	order: {
-		available: true,
-		title: '№ зак.',
-		className: 'w-[12.2rem] '
-	},
-	status: {
-		available: true,
-		title: 'Статус',
-		className: 'w-[18.7rem]',
-		padding: false
-	},
 
-}
 
 
 function Dashbord() {
@@ -83,6 +48,10 @@ function Dashbord() {
 	const [groupMod, setGroupMod] = useState(false);
 	const [detailModal, setDetailModal] = useState(false);
 	const { id, role, statuses } = userStore.currentStage;
+	const { settings } = dashbordStore;
+
+
+	// console.log(settings);
 
 
 	useEffect(() => {
@@ -114,6 +83,7 @@ function Dashbord() {
 			setMeta(pagination)
 		}
 	}
+
 
 	const getUsers = async () => {
 		const data = await getUsersByRole(role);
@@ -164,11 +134,19 @@ function Dashbord() {
 	}
 
 
+	console.log(settings)
+
+
 	return (
 		<>
 			<div className="bg-Dominant/Dop py-[2rem] flex-1 flex flex-col gap-[0.8rem] min-h-[100px] relative w-[100%]">
 				<Container>
+
 					<div className="p-[1.2rem] bg-white flex gap-[2.6rem]">
+						<div className="flex">
+							<Settings></Settings>
+
+						</div>
 						<Switcher
 							onChange={() => setGroupMod(!groupMod)}
 							label="Сгруппировать по заказам"
@@ -178,8 +156,7 @@ function Dashbord() {
 				</Container>
 				<div className="flex-1 overflow-auto ">
 
-
-					<div className=' ml-[5px]'>
+					{settings && <div className=' ml-[5px]'>
 						<Container>
 
 
@@ -217,7 +194,8 @@ function Dashbord() {
 						</Container>
 
 
-					</div>
+					</div>}
+
 
 				</div>
 

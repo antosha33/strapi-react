@@ -71,15 +71,6 @@ export const useAuth = () => {
 
 
 
-	const updateState = useCallback((accessToken, refreshToken) => {
-		// setAuthState(prev => ({
-		// 	...prev,
-		// 	accessToken,
-		// 	refreshToken
-		// }));
-	})
-
-
 
 	const loadJWT = () => {
 		const localUsers = getData('users') || [];
@@ -106,8 +97,7 @@ export const useAuth = () => {
 		login,
 		authState,
 		logout,
-		loadJWT,
-		updateState
+		loadJWT
 	}
 
 }

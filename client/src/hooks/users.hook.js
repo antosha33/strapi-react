@@ -43,13 +43,24 @@ function useUsers() {
 			}
 		})
 	}
-	
+
+	const saveSettings = async ({settings}) => {
+		return await authRequest({
+			method: 'PUT',
+			url: 'user/update',
+			data: {
+				settings
+			}
+		})
+	}
+
 
 	return {
 		authorize,
 		getUsers,
 		getMe,
-		getUsersByRole
+		getUsersByRole,
+		saveSettings
 	};
 }
 

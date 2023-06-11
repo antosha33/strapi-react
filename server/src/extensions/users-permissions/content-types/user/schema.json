@@ -70,6 +70,9 @@
       "relation": "oneToMany",
       "target": "api::c-position-stage.c-position-stage",
       "mappedBy": "user"
+    },
+    "settings": {
+      "type": "json"
     }
   }
 }

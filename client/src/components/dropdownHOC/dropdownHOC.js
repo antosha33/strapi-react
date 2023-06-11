@@ -19,6 +19,7 @@ function DropdownHOC({ title, items }) {
 	const renderItem = ({ onEvent, title, color }) => {
 		return (
 			<span
+				key={title}
 				onClick={() => onEvent() && closeDropdown()}
 				className="block px-[1.2rem] py-[1.2rem] text-Regular(16_18) flex gap-[0.8rem] items-center">
 				{color && <span
