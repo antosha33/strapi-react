@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "fontello": "fontello-cli --config src/fontello-config.json install",
+    "fontello": "fontello-cli install",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

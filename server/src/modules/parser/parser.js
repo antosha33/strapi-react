@@ -43,9 +43,17 @@ class Parser {
 				const strapiService = this.strapi.entityService;
 
 				//проверяем существует ли  заказ с таким id в системе
-				const entry = await strapi.entityService.findOne('api::order.order', id);
+				const entry = await strapi.entityService.findMany('api::order.order', {
+					filters: {
+						orderId: {
+							$eq: id
+						}
+					}
+				});
 
-				if (!entry) {
+
+
+				if (!entry.length) {
 
 					const stack = [];
 
@@ -117,12 +125,11 @@ class Parser {
 
 					//создаем сам заказ
 					Promise.all(stack).then(async (ev) => {
-
 						const ids = ev.map(x => x.id);
 						if (ids.length) {
 							await strapiService.create('api::order.order', {
 								data: {
-									id,
+									orderId: id,
 									date,
 									username,
 									positions: ids

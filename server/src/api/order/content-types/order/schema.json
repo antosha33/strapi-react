@@ -23,6 +23,9 @@
     },
     "date": {
       "type": "date"
+    },
+    "orderId": {
+      "type": "biginteger"
     }
   }
 }

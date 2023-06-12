@@ -1,4 +1,33 @@
-till don't wish to put char codes
+additional authors crediting is welcome.
+================================================================================
+
+
+Comments on archive content
+---------------------------
+
+- /font/* - fonts in different formats
+
+- /css/*  - different kinds of css, for all situations. Should be ok with 
+  twitter bootstrap. Also, you can skip <i> style and assign icon classes
+  directly to text elements, if you don't mind about IE7.
+
+- demo.html - demo file, to show your webfont content
+
+- LICENSE.txt - license info about source fonts, used to build your one.
+
+- config.json - keeps your settings. You can import it back into fontello
+  anytime, to continue your work
+
+
+Why so many CSS files ?
+-----------------------
+
+Because we like to fit all your needs :)
+
+- basic file, <your_font_name>.css - is usually enough, it contains @font-face
+  and character code definitions
+
+- *-ie7.css - if you need IE7 support, but still don't wish to put char codes
   directly into html
 
 - *-codes.css and *-ie7-codes.css - if you like to use your own @font-face
@@ -44,33 +73,4 @@ webfont pack. Details available in LICENSE.txt file.
   file publicly available in your repository.
 
 - Fonts, used in Fontello, don't require a clickable link on your site.
-  But any kind of additional authors crediting is welcome.
-================================================================================
-
-
-Comments on archive content
----------------------------
-
-- /font/* - fonts in different formats
-
-- /css/*  - different kinds of css, for all situations. Should be ok with 
-  twitter bootstrap. Also, you can skip <i> style and assign icon classes
-  directly to text elements, if you don't mind about IE7.
-
-- demo.html - demo file, to show your webfont content
-
-- LICENSE.txt - license info about source fonts, used to build your one.
-
-- config.json - keeps your settings. You can import it back into fontello
-  anytime, to continue your work
-
-
-Why so many CSS files ?
------------------------
-
-Because we like to fit all your needs :)
-
-- basic file, <your_font_name>.css - is usually enough, it contains @font-face
-  and character code definitions
-
-- *-ie7.css - if you need IE7 support, but s
+  But any kind of 

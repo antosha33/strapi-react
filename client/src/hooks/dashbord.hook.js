@@ -5,15 +5,12 @@ const qs = require('qs');
 
 
 
-
-// import { GET_DASHBORD } from "../gql";
-
 function useDashbord() {
 
 	const { authRequest } = useContext(AxiosContext);
 
 
-	const getDashbord = async ({ stage, page }) => {
+	const getDashbord = async ({ stage, page, filter }) => {
 
 		if (stage) {
 			stage = {
@@ -22,6 +19,7 @@ function useDashbord() {
 					stage: {
 						id: stage
 					},
+					...filter,
 					isCurrentStage: true
 				}
 			}

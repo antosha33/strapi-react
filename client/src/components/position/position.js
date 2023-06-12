@@ -19,8 +19,6 @@ function Position({ id, isUrgent, settings, title, onOrderDetail, user, users, q
 	const [isVisible, setIsVisible] = useState(true);
 	const isSelected = dashbordStore.getIsPositionsSelected(id);
 
-	console.log(isSelected)
-
 	const onSetUser = async (userId) => {
 		await setUser(positionStageId, userId);
 	}
@@ -34,7 +32,7 @@ function Position({ id, isUrgent, settings, title, onOrderDetail, user, users, q
 	}
 
 
-	if (!isVisible) return null; 
+	if (!isVisible) return null;
 	return (
 		<div className={`
 			${isUrgent ? 'after:absolute after:top-[0] after:bottom-0 after:w-[0.4rem] after:bg-Accent/Red' : ''}
@@ -61,7 +59,7 @@ function Position({ id, isUrgent, settings, title, onOrderDetail, user, users, q
 				<span
 					onClick={() => onOrderDetail(order.id)}
 					className="text-Accent/Blue text-Regular(16_18)">
-					{order.id}
+					{order.orderId}
 				</span>
 			</Cell>
 			<Cell {...settings.status}>

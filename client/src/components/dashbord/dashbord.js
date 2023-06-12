@@ -14,6 +14,7 @@ import ActionDropdown from '../actionDropdown/actionDropdown';
 import SortDropdown from '../sortDropdown/sortDropdown';
 import Settings from './settings/settings';
 import dashbordStore from '../../store/dashbord'
+import Search from './search/search';
 
 
 
@@ -37,7 +38,7 @@ const TdCell = ({ height = 'h-[6rem]', available = true, ...props }) => {
 
 function Dashbord() {
 
-	const idsToAction = useRef([]);
+	const [filter, setFilter] = useState(null);
 	const intervalId = useRef(null);
 	const { getDashbord } = useDashbord();
 	const { getUsersByRole } = useUsers();
@@ -51,9 +52,6 @@ function Dashbord() {
 	const { settings } = dashbordStore;
 
 
-	// console.log(settings);
-
-
 	useEffect(() => {
 		if (id) {
 			getData();
@@ -63,7 +61,7 @@ function Dashbord() {
 		return () => {
 			clearInterval(intervalId.current)
 		}
-	}, [id, groupMod, page])
+	}, [id, groupMod, page, filter])
 
 	useEffect(() => {
 		setPage(1)
@@ -73,7 +71,8 @@ function Dashbord() {
 		if (id) {
 			const { data, meta: { pagination } } = await getDashbord({
 				stage: id,
-				page
+				page,
+				filter
 			});
 			if (groupMod) {
 				setItems(groupItems(data))
@@ -83,6 +82,7 @@ function Dashbord() {
 			setMeta(pagination)
 		}
 	}
+
 
 
 	const getUsers = async () => {
@@ -134,19 +134,16 @@ function Dashbord() {
 	}
 
 
-	console.log(settings)
-
-
 	return (
 		<>
 			<div className="bg-Dominant/Dop py-[2rem] flex-1 flex flex-col gap-[0.8rem] min-h-[100px] relative w-[100%]">
 				<Container>
 
 					<div className="p-[1.2rem] bg-white flex gap-[2.6rem]">
-						<div className="flex">
-							<Settings></Settings>
-
-						</div>
+						<Settings></Settings>
+						<Search
+							setFilter={setFilter}
+							statuses={statuses}></Search>
 						<Switcher
 							onChange={() => setGroupMod(!groupMod)}
 							label="Сгруппировать по заказам"

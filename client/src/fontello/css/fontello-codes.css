@@ -1,2 +1,5 @@
 
 .icon-arrow:before { content: '\e800'; } /* '' */
+.icon-arrow-right:before { content: '\e801'; } /* '' */
+.icon-close:before { content: '\e802'; } /* '' */
+.icon-mark:before { content: '\e803'; } /* '' */

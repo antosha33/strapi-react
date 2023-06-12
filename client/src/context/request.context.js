@@ -71,6 +71,9 @@ export const AxiosProvider = ({ children }) => {
 			)
 			return response.data;
 		} catch (error) {
+			if(error.response.status == 401){
+				logout();
+			}
 			throw error.response?.data;
 		}
 	})

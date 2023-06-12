@@ -35,10 +35,10 @@ function DropdownHOC({ title, items }) {
 
 	return (
 		<OutsideAlerter onEvent={closeDropdown} className="flex self-stretch">
-			<div className='relative'>
+			<div className='relative w-[100%]'>
 				<div
 					onClick={toggleDropdown}
-					className="hover:cursor-pointer hover:border-Accent/Blue ease-in-out duration-300 border border-Content/Border p-[1.2rem] text-Regular(16_18) flex gap-[0.8rem]">
+					className="hover:cursor-pointer hover:border-Accent/Blue ease-in-out duration-300 border border-Content/Border p-[1.2rem] text-Regular(16_18) flex gap-[0.8rem] justify-between">
 					<span>{title}</span>
 					<i className={`icon-arrow ease-in-out duration-300
 						${isOpen ? 'text-Accent/Blue rotate-180' : 'text-Content/Middle'}

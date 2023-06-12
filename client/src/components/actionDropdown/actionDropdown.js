@@ -34,23 +34,27 @@ function ActionDropdown({ onEvent }) {
 
 
 	return (
-		<DropdownHOC
-			items={[
-				{
-					onEvent: setUrgent,
-					title: "Сделать позиции срочными"
-				},
-				{
-					onEvent: setUrgent,
-					title: "Отменить позиции"
-				},
-				{
-					onEvent: setUrgent,
-					title: "Сменить ответственного"
-				},
-			]}
-			title="Действия с выбранными"
-		></DropdownHOC>
+		<div className="max-w-[24rem]">
+
+			<DropdownHOC
+				items={[
+					{
+						onEvent: setUrgent,
+						title: "Сделать позиции срочными"
+					},
+					{
+						onEvent: setUrgent,
+						title: "Отменить позиции"
+					},
+					{
+						onEvent: setUrgent,
+						title: "Сменить ответственного"
+					},
+				]}
+				title="Действия с выбранными"
+			></DropdownHOC>
+		</div>
+
 	);
 }
 

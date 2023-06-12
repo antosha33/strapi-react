@@ -8,7 +8,7 @@ module.exports = {
 			const parser = new Parser(strapi);
 			parser.setOptions({
 				url,
-				time: 1440,
+				time: 10080,
 			});
 			parser.getData();
 		},
