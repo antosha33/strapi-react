@@ -18,17 +18,19 @@ function Checkbox({ label, active = false, onChange }) {
 	return (
 		<div
 			onClick={onChangeHandler}
-			className="flex items-center gap-[1.8rem]">
+			className={`
+				${label ? 'px-[1.2rem] py-[0.9rem]' : ''}
+				 flex items-center gap-[0.8rem] group hover:cursor-pointer hover:bg-Dominant/Dop ease-in-out duration-300`}>
 			<div
 				className={`
 					${isActive ? 'bg-Accent/Yellow' : 'bg-white'}
 					flex items-center justify-center
-					hover:cursor-pointer hover:border-Accent/Yellow ease-in-out duration-300 w-[2rem] h-[2rem] border border-Content/Border
+					 group-hover:border-Accent/Yellow ease-in-out duration-300 w-[2rem] h-[2rem] border border-Content/Border
 				`}>
-					{isActive && 					<i className="icon-mark before:!font-bold"></i>}
+				{isActive && <i className="icon-mark before:!font-bold"></i>}
 
 			</div>
-			<div className="text text-Regular(16_18)">{label}</div>
+			{label && <div className="text text-Regular(16_18)">{label}</div>}
 		</div>
 
 	);

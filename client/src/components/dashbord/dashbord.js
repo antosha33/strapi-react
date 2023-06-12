@@ -143,6 +143,7 @@ function Dashbord() {
 						<Settings></Settings>
 						<Search
 							setFilter={setFilter}
+							users={users}
 							statuses={statuses}></Search>
 						<Switcher
 							onChange={() => setGroupMod(!groupMod)}

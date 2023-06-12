@@ -8,7 +8,7 @@ import CellPickerHOC from "../cellPickerHOC/cellPickerHOC";
 
 const renderItem = (onClickHandler) => (item) =>
 	<span
-		onClick={(ev) => {ev.stopPropagation();onClickHandler(item)}}
+		onClick={(ev) => { ev.stopPropagation(); onClickHandler(item) }}
 		style={{
 			background: item.color
 		}}
@@ -17,7 +17,7 @@ const renderItem = (onClickHandler) => (item) =>
 
 const Cell = ({ current, currentData, setIsVisible, timestamps = '{}' }) => {
 
-	const { changeTime} = JSON.parse(timestamps) || {};
+	const { changeTime } = JSON.parse(timestamps) || {};
 
 	const { start, clear, value } = useTimer({
 		onFinish: () => setIsVisible(false)
@@ -25,7 +25,7 @@ const Cell = ({ current, currentData, setIsVisible, timestamps = '{}' }) => {
 
 	useEffect(() => {
 		if (current?.stageTrigger) {
-			const diff = ((changeTime - new Date().getTime())/1000) > 0 ? Math.ceil((changeTime - new Date().getTime())/1000) : 0
+			const diff = ((changeTime - new Date().getTime()) / 1000) > 0 ? Math.ceil((changeTime - new Date().getTime()) / 1000) : 0
 			start(diff || current.triggerTimeout)
 		}
 		return () => {
@@ -41,7 +41,12 @@ const Cell = ({ current, currentData, setIsVisible, timestamps = '{}' }) => {
 				{current?.title || currentData.title}
 			</div>
 			{
-				current?.stageTrigger && <span className='p-[0.3rem]'>{value}</span>
+				current?.stageTrigger && 
+				<div className="relative">
+					<i className="icon-watch text-[2.2rem]"></i>
+					<span className='p-[0.3rem] absolute'>{value}</span>
+				</div>
+
 			}
 		</div>
 		:

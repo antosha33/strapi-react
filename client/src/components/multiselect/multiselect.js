@@ -17,9 +17,7 @@ function Multiselect({ onEvent, items, placeholder, label, current }) {
 
 
 	useEffect(() => {
-		if (selected.length) {
-			onEvent && onEvent(selected);
-		}
+		onEvent && onEvent(selected);
 	}, [selected])
 
 	const closeDropdown = () => {
@@ -31,7 +29,7 @@ function Multiselect({ onEvent, items, placeholder, label, current }) {
 	}
 
 
-	const renderItem = ({ id, title }) => {
+	const renderItem = ({ id, title, username }) => {
 		const isActive = selected.findIndex(x => x.id == id) > -1;
 		const onChooseHandler = () => {
 			if (selected.findIndex(x => x.id == id) > -1) {
@@ -39,16 +37,16 @@ function Multiselect({ onEvent, items, placeholder, label, current }) {
 				setSelected(filtered)
 			} else {
 				setSelected(prev => {
-					return [...prev, { id, title, label }]
+					return [...prev, { id, title: title || username, label }]
 				})
 			};
 		}
 		return (
-			<div key={id} className="block px-[1.2rem] py-[1.2rem]">
+			<div key={id} className="block ">
 				<Checkbox
 					active={isActive}
 					onChange={onChooseHandler}
-					label={title}
+					label={title || username}
 				></Checkbox>
 			</div>
 		)
