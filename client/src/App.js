@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { useAuth } from './hooks/auth.hook';
 import Main from './routes/main';
-import Authorization from './components/authorization/authorization';
+import Auth from './routes/auth';
 import Layout from './components/layout/layout';
 import { AxiosProvider } from './context/request.context'
 import useCssVariables from './hooks/cssVariables.hook'
@@ -42,7 +42,8 @@ function App() {
 						<RouterProvider router={router} />
 					</Layout>
 					:
-					<Authorization></Authorization>
+					
+					<Auth></Auth>
 				}
 			</AxiosProvider>
 		</AuthContext.Provider >

@@ -6,10 +6,14 @@ import Checkbox from '../ui/checkbox/checkbox';
 
 const PREVIEW_COUNT = 2;
 
-function Multiselect({ onEvent, items, placeholder }) {
+function Multiselect({ onEvent, items, placeholder, label, current }) {
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [selected, setSelected] = useState([]);
+
+	useEffect(() => {
+		setSelected(current?.val || [])
+	}, [current])
 
 
 	useEffect(() => {
@@ -27,7 +31,7 @@ function Multiselect({ onEvent, items, placeholder }) {
 	}
 
 
-	const renderItem = ({ onEvent, id, title, color }) => {
+	const renderItem = ({ id, title }) => {
 		const isActive = selected.findIndex(x => x.id == id) > -1;
 		const onChooseHandler = () => {
 			if (selected.findIndex(x => x.id == id) > -1) {
@@ -35,7 +39,7 @@ function Multiselect({ onEvent, items, placeholder }) {
 				setSelected(filtered)
 			} else {
 				setSelected(prev => {
-					return [...prev, { id, title }]
+					return [...prev, { id, title, label }]
 				})
 			};
 		}
@@ -59,6 +63,7 @@ function Multiselect({ onEvent, items, placeholder }) {
 	return (
 		<OutsideAlerter onEvent={closeDropdown} className="flex self-stretch">
 			<div className='relative w-[100%]'>
+				{label && <span className='block text-Regular(12_14) text-Content/Light mb-[0.6rem]'>{label}</span>}
 				<div
 					onClick={toggleDropdown}
 					className="items-center hover:cursor-pointer hover:border-Accent/Blue ease-in-out duration-300 border border-Content/Border px-[1.2rem] h-[5rem] text-Regular(16_18) flex gap-[0.8rem] justify-between">
