@@ -43,8 +43,10 @@ const Cell = ({ current, currentData, setIsVisible, timestamps = '{}' }) => {
 			{
 				current?.stageTrigger && 
 				<div className="relative">
-					<i className="icon-watch text-[2.2rem]"></i>
-					<span className='p-[0.3rem] absolute'>{value}</span>
+					{/* <i className="icon-watch text-[2.2rem] ">
+
+					</i> */}
+					<span className='absolute left-0 top-0'>{value}</span>
 				</div>
 
 			}

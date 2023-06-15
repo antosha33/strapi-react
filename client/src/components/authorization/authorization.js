@@ -74,8 +74,8 @@ function Authorization({ afterLogin }) {
 	return (
 		<div className="p-[7rem]">
 			<span className='block text-center text-Regular(48_52) text-Content/Dark mb-[5rem]'>Авторизуйтесь в системе</span>
-			<div className="p-[5rem] bg-Dominant/Dop w-[62.6rem]">
-				<div>
+			<div className="p-[5rem] bg-Dominant/Dop w-[62.6rem] ">
+				<div className="flex flex-col gap-[2.6rem]">
 					<Input
 						onInput={onLoginHandler}
 						label="Введите ваш логин"

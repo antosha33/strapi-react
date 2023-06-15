@@ -16,42 +16,49 @@ const defaultSettings = {
 		available: true,
 		configurable: false,
 		className: 'w-[4.8rem] flex items-center',
+
 	},
 	user: {
 		title: 'Ответственный',
 		available: true,
 		className: 'w-[16rem]',
 		configurable: true,
-		padding: false
+		padding: false,
+		sortPath: 'user.username'
+		
 	},
 	title: {
 		available: true,
 		title: 'Назв-е товара',
 		configurable: true,
 		className: 'w-[21.7rem] text-Regular(12_14)',
+		sortPath: 'position.title'
 	},
 	// code: {
 	// 	available: true,
 	// 	title: 'Назв-е товара'
 	// },
-	qauntity: {
+	quantity: {
 		available: true,
 		title: 'Кол-во',
 		configurable: true,
-		className: 'w-[10rem] text-Regular(16_18)'
+		className: 'w-[10rem] text-Regular(16_18)',
+		sortPath: 'position.quantity'
 	},
 	order: {
 		available: true,
 		title: '№ зак.',
 		configurable: true,
-		className: 'w-[12.2rem] '
+		className: 'w-[12.2rem]',
+		sortPath: 'position.order.orderId'
 	},
 	status: {
 		available: true,
 		title: 'Статус',
 		configurable: true,
 		className: 'w-[18.7rem]',
-		padding: false
+		padding: false,
+		sortPath: 'status.title'
 	},
 
 };

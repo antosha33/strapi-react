@@ -54,7 +54,7 @@ function Position({ id, isUrgent, settings, title, onOrderDetail, user, users, q
 			<Cell {...settings.title} >
 				<span className="line-clamp-3">{title}</span>
 			</Cell>
-			<Cell {...settings.qauntity}>{quantity}</Cell>
+			<Cell {...settings.quantity}>{quantity}</Cell>
 			<Cell {...settings.order}>
 				<span
 					onClick={() => onOrderDetail(order.id)}

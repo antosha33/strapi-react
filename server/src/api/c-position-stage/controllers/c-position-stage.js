@@ -36,13 +36,32 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 	},
 
 	async find(ctx) {
-		// some custom logic here
-		ctx.query = { ...ctx.query, local: 'en' }
+		const sanitizedQueryParams = await this.sanitizeQuery(ctx);
+		
+		//глубокая сортировка
+		let sort = {};
+		let  {sort:{path, correction} = {}} = ctx.query;
+		if(path){
+			path = path.split('.');
+			const buildSortQuery = (obj) => {
+				if (!path.length) {
+					return;
+				};
+				const key = path.splice(0, 1);
+				if (!obj[key]) {
+					obj[key] = path.length ? {} : correction;
+				}
+				buildSortQuery(obj[key])
+			}
+			buildSortQuery(sort)
+		}
 
-		// Calling the default core action
-		const { data, meta } = await super.find(ctx);
-
-		return { data, meta };
+		const { results, pagination } = await strapi.service('api::c-position-stage.c-position-stage').find({
+			...sanitizedQueryParams,
+			sort,
+		});
+		const sanitizedResults = await this.sanitizeOutput(results, ctx);
+		return this.transformResponse(sanitizedResults, { pagination });
 	},
 
 	async updateStatus(ctx) {

@@ -18,11 +18,16 @@ import Search from './search/search';
 
 
 
-const TdCell = ({ height = 'h-[6rem]', available = true, ...props }) => {
-	if (!available) return null
+const TdCell = ({ height = 'h-[6rem]', name, available = true, onClick, ...props }) => {
+
+
+
+	if (!available) return null;
 
 	return (
-		<div className={`
+		<div
+			onClick={() => dashbordStore.setSort(props.sortPath)}
+			className={`
 			${height}
 			${props.className}
 			p-[1.2rem] flex items-center
@@ -49,7 +54,7 @@ function Dashbord() {
 	const [groupMod, setGroupMod] = useState(false);
 	const [detailModal, setDetailModal] = useState(false);
 	const { id, role, statuses } = userStore.currentStage;
-	const { settings } = dashbordStore;
+	const { settings, sort } = dashbordStore;
 
 
 	useEffect(() => {
@@ -61,7 +66,7 @@ function Dashbord() {
 		return () => {
 			clearInterval(intervalId.current)
 		}
-	}, [id, groupMod, page, filter])
+	}, [id, groupMod, page, filter, sort])
 
 	useEffect(() => {
 		setPage(1)
@@ -72,18 +77,17 @@ function Dashbord() {
 			const { data, meta: { pagination } } = await getDashbord({
 				stage: id,
 				page,
-				filter
+				filter,
+				sort
 			});
 			if (groupMod) {
 				setItems(groupItems(data))
 			} else {
-				setItems(data)
+				setItems(data);
 			}
 			setMeta(pagination)
 		}
 	}
-
-
 
 	const getUsers = async () => {
 		const data = await getUsersByRole(role);
@@ -134,6 +138,36 @@ function Dashbord() {
 	}
 
 
+	const sortBy = (items) => {
+		if (!sort.key) return items;
+
+		const { key, correction } = sort;
+
+		const callback = (a, b) => {
+			const getField = (obj) => {
+				let field = obj;
+				key.split('.').forEach(x => {
+					if (field && field[x]) {
+						field = field[x];
+					}
+
+				});
+				return field;
+			}
+			a = getField(a)
+			b = getField(b)
+			if (a < b) {
+				return -1 * correction
+			}
+			if (a > b) {
+				return 1 * correction
+			}
+			return 0
+		}
+		return items.sort(callback);
+	}
+
+
 	return (
 		<>
 			<div className="bg-Dominant/Dop py-[2rem] flex-1 flex flex-col gap-[0.8rem] min-h-[100px] relative w-[100%]">
@@ -156,48 +190,41 @@ function Dashbord() {
 
 					{settings && <div className=' ml-[5px]'>
 						<Container>
-
-
 							{
 								Array.isArray(items[0]) ?
-
-
 									items?.map(([id, item]) => {
 
 										return (
 											<div key={id}>
 												<span className='text-Content/Dark block font-semibold text-Regular(16_18) mb-[1.1rem]'>{id}</span>
 												<div className="flex bg-white">
-													{Object.values(settings).map(x => <TdCell {...x}></TdCell>)}
+													{Object.entries(settings).map(([key, x]) => <TdCell
+														onClick={() => { }}
+														key={key} name={'s'} {...x}>
+													</TdCell>)}
 												</div>
 
 												<div className='mb-[3.6rem]'>
 													{item.map(render)}
 												</div>
 											</div>
-
 										)
 									})
-
 									:
 									<>
 										<div className="flex bg-white">
-											{Object.values(settings).map(x => <TdCell {...x}></TdCell>)}
+											{Object.entries(settings).map(([key, x]) => <TdCell
+												// onClick={sortBy}
+												key={key} name={key} {...x}>
+											</TdCell>)}
 
 										</div>
 										{items?.map(render)}
 									</>
-
 							}
 						</Container>
-
-
 					</div>}
-
-
 				</div>
-
-
 				<Container>
 					<div className="p-[1.2rem] bg-white flex relative">
 						<div className="w-[50%]">
@@ -206,7 +233,6 @@ function Dashbord() {
 						<div className="w-[50%] ">
 							<Pagination {...meta} onPageChange={onPageChange}></Pagination>
 						</div>
-
 					</div>
 				</Container>
 			</div>

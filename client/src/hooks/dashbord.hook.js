@@ -10,11 +10,13 @@ function useDashbord() {
 	const { authRequest } = useContext(AxiosContext);
 
 
-	const getDashbord = async ({ stage, page, filter }) => {
+	const getDashbord = async ({ stage, page, filter, sort }) => {
+
+		console.log('sot',sort)
 
 		if (stage) {
 			stage = {
-				sort: [ 'isUrgent:desc', 'id:desc'],
+				// sort: [ 'isUrgent:desc', 'id:desc'],
 				filters: {
 					stage: {
 						id: stage
@@ -41,6 +43,7 @@ function useDashbord() {
 				page
 			},
 			...stage,
+			sort
 		}, {
 			encodeValuesOnly: true, // prettify URL
 		});

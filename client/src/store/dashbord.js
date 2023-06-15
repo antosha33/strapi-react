@@ -4,6 +4,7 @@ class Dashbord {
 
 	selectedPositions = [];
 	settings = null;
+	sort = {};
 
 
 	constructor() {
@@ -19,7 +20,14 @@ class Dashbord {
 		}
 	}
 
-	setSettings(settings){
+	setSort(path ) {
+		this.sort = {
+			path,
+			correction: this.sort?.correction == 'asc' ? 'desc' : 'asc'
+		}
+	}
+
+	setSettings(settings) {
 		this.settings = settings;
 	}
 

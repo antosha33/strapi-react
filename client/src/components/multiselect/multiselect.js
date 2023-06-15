@@ -8,8 +8,11 @@ const PREVIEW_COUNT = 2;
 
 function Multiselect({ onEvent, items, placeholder, label, current }) {
 
+
 	const [isOpen, setIsOpen] = useState(false);
 	const [selected, setSelected] = useState([]);
+
+	
 
 	useEffect(() => {
 		setSelected(current?.val || [])
@@ -61,6 +64,7 @@ function Multiselect({ onEvent, items, placeholder, label, current }) {
 	return (
 		<OutsideAlerter onEvent={closeDropdown} className="flex self-stretch">
 			<div className='relative w-[100%]'>
+
 				{label && <span className='block text-Regular(12_14) text-Content/Light mb-[0.6rem]'>{label}</span>}
 				<div
 					onClick={toggleDropdown}
