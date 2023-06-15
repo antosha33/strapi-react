@@ -6,7 +6,6 @@ class Dashbord {
 	settings = null;
 	sort = {};
 
-
 	constructor() {
 		makeAutoObservable(this)
 	}
@@ -20,11 +19,16 @@ class Dashbord {
 		}
 	}
 
-	setSort(path ) {
+	setSort({ path, name }) {
 		this.sort = {
 			path,
+			name,
 			correction: this.sort?.correction == 'asc' ? 'desc' : 'asc'
 		}
+	}
+
+	resetSort() {
+		this.sort = {};
 	}
 
 	setSettings(settings) {

@@ -18,21 +18,37 @@ import Search from './search/search';
 
 
 
-const TdCell = ({ height = 'h-[6rem]', name, available = true, onClick, ...props }) => {
-
-
+const TdCell = ({ height = 'h-[6rem]', name, sort: { path, correction } = {}, available = true, onClick, title, sortPath, ...props }) => {
 
 	if (!available) return null;
 
+
+	let direction;
+
+	if (path == sortPath) {
+		direction = correction;
+	}
+
 	return (
 		<div
-			onClick={() => dashbordStore.setSort(props.sortPath)}
+			onClick={() => dashbordStore.setSort({
+				path: sortPath,
+				name: title
+			})}
 			className={`
 			${height}
 			${props.className}
 			p-[1.2rem] flex items-center
 		`} >
-			<span className='text-Regular(12_14) text-Content/Dark font-semibold'>{props.title}</span>
+			<div className="flex gap-[0.6rem] items-center">
+				<span className='text-Regular(12_14) text-Content/Dark font-semibold'>{title}</span>
+				{props.configurable &&
+					<span className={`${direction == 'asc' ? 'text-Content/Dark' : direction == 'desc' ? 'text-Content/Dark rotate-180' : 'text-Content/Light'}`}>
+						<i className={`icon-sort text-[1.6rem] flex-auto`}></i>
+					</span>
+				}
+			</div>
+
 		</div>
 	)
 }
@@ -167,7 +183,6 @@ function Dashbord() {
 		return items.sort(callback);
 	}
 
-
 	return (
 		<>
 			<div className="bg-Dominant/Dop py-[2rem] flex-1 flex flex-col gap-[0.8rem] min-h-[100px] relative w-[100%]">
@@ -179,6 +194,14 @@ function Dashbord() {
 							setFilter={setFilter}
 							users={users}
 							statuses={statuses}></Search>
+						{!!Object.keys(sort).length && 
+						<div 
+							onClick={() => dashbordStore.resetSort()}
+							className='bg-Dominant/Dop text-Regular(16_18) p-[0.8rem] flex gap-[0.3rem] items-center'>
+							<span className="text-Content/Middle">Сортировка:</span>
+							<span>{sort.name}</span>
+							<i className='icon-close-1'></i>
+						</div>}
 						<Switcher
 							onChange={() => setGroupMod(!groupMod)}
 							label="Сгруппировать по заказам"
@@ -198,9 +221,7 @@ function Dashbord() {
 											<div key={id}>
 												<span className='text-Content/Dark block font-semibold text-Regular(16_18) mb-[1.1rem]'>{id}</span>
 												<div className="flex bg-white">
-													{Object.entries(settings).map(([key, x]) => <TdCell
-														onClick={() => { }}
-														key={key} name={'s'} {...x}>
+													{Object.entries(settings).map(([key, x]) => <TdCell key={key} sort={sort} {...x}>
 													</TdCell>)}
 												</div>
 
@@ -213,9 +234,7 @@ function Dashbord() {
 									:
 									<>
 										<div className="flex bg-white">
-											{Object.entries(settings).map(([key, x]) => <TdCell
-												// onClick={sortBy}
-												key={key} name={key} {...x}>
+											{Object.entries(settings).map(([key, x]) => <TdCell sort={sort} key={key} name={key} {...x}>
 											</TdCell>)}
 
 										</div>

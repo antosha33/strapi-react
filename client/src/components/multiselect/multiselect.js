@@ -82,7 +82,7 @@ function Multiselect({ onEvent, items, placeholder, label, current }) {
 											{x.title}
 										</span>
 										<i
-											className='icon-close text-[1.6rem]'
+											className='icon-close-1 text-[1.6rem]'
 											onClick={() => { onRemoveHandler(x.id) }}
 										></i>
 									</div>
