@@ -1,11 +1,12 @@
 import OutsideAlerter from '../outsideAlerter/outsideAlerter'
 import Dropdown from "../ui/dropdown/dropdown";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 function CellPickerHOC(renderItem, Wrapped) {
 
 	return function CellPicker({ currentData, data, onSetData, ...props }) {
 
+		const dropdownRef = useRef(null);
 		const [isDropDown, setIsDropDown] = useState(false);
 		const [current, setCurrent] = useState(currentData);
 
@@ -16,9 +17,41 @@ function CellPickerHOC(renderItem, Wrapped) {
 			setCurrent(currentData)
 		}, [currentData])
 
-		const openDropdown = () => {
-			setIsDropDown(true)
+		useEffect(() => {
+			const scrollableDashbord = dropdownRef.current.closest('.js-scrollable-dashbord');
+			const handler = () => {
+				if(isDropDown){
+					setIsDropDown(false)
+				}
+			}
+			scrollableDashbord.addEventListener('scroll', handler)
+			document.addEventListener('scroll', handler)
+			return () => {
+				scrollableDashbord.removeEventListener('scroll', handler)
+			}
+		}, [isDropDown])
+
+		const openDropdown = (ev) => {
+			const dropdownHeight = dropdownRef.current.getBoundingClientRect().height
+			const { x, y, height, width } = ev.currentTarget.getBoundingClientRect();
+
+			let top;
+
+			if ((window.innerHeight - (y + height)) > dropdownHeight) {
+				top = y + height;
+			} else {
+				top = y - dropdownHeight
+			}
+
+
+			setIsDropDown({
+				left: x,
+				top,
+				width
+			})
 		}
+
+
 
 		const closeDropdown = () => {
 			setIsDropDown(false)
@@ -37,11 +70,31 @@ function CellPickerHOC(renderItem, Wrapped) {
 			<OutsideAlerter onEvent={closeDropdown} className="w-[100%] flex self-stretch">
 				<div
 					onClick={openDropdown}
-					className=" text-Regular(16_18) relative  w-[100%]">
+					className={`
+						${isDropDown ? 'shadow-default' : ''}
+						text-Regular(16_18) relative  w-[100%]
+					`}>
 					<Wrapped current={current} currentData={currentData} {...props}></Wrapped>
-					<Dropdown active={isDropDown} data={filteredData}>
-						{renderItemWithHandler}
-					</Dropdown>
+					<div
+						ref={dropdownRef}
+						className={`
+							${isDropDown ? 'visible' : 'invisible'}
+							fixed z-30
+						`}
+
+						style={{
+							left: isDropDown.left,
+							top: isDropDown.top,
+							width: isDropDown.width
+						}}
+					>
+						<Dropdown
+
+							positon='static' active={!!isDropDown} data={filteredData}>
+							{renderItemWithHandler}
+						</Dropdown>
+					</div>
+
 				</div>
 			</OutsideAlerter>
 

@@ -3,13 +3,15 @@ function Cell({ padding = true, height = 'h-[6rem]', available = true, children,
     if (!available) return null
 
     return (
-        <div className={`
-			${padding ? 'px-[1.2rem] py-[0.9rem]' : ''}
+        <td
+            className={`
+			${padding ? 'px-[1.2rem] py-[0.9rem]' : 'p-[0px]'}
             ${height}
-			 flex justify-center items-center border border-Content/Border border-t-0 border-l-0 border-b-0 ${props.className}
+
+			 flex flex-shrink-0  justify-center items-center ${props.className}
 			`} >
             {children}
-        </div>
+        </td>
     )
 }
 export default Cell;

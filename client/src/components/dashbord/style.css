@@ -1,0 +1,13 @@
+.product-table {
+    width: 100%;
+    background-color: #fff;
+    border-collapse: collapse;
+    empty-cells: show;
+}
+hr{
+    height: 0.5px;
+}
+
+.position:hover + div{
+    border-top-color: #2F80ED;
+}

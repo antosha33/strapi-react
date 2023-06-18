@@ -3,7 +3,7 @@ import Footer from "../footer/footer";
 
 function Layout({ children }) {
     return (
-        <div className="h-[100vh] flex flex-col">
+        <div className=" flex flex-col min-h-[100vh]">
             <Header></Header>
             {children}
 				{/* <Footer></Footer> */}

@@ -15,6 +15,7 @@ import SortDropdown from '../sortDropdown/sortDropdown';
 import Settings from './settings/settings';
 import dashbordStore from '../../store/dashbord'
 import Search from './search/search';
+import './style.css'
 
 
 
@@ -186,7 +187,7 @@ function Dashbord() {
 	return (
 		<>
 			<div className="bg-Dominant/Dop py-[2rem] flex-1 flex flex-col gap-[0.8rem] min-h-[100px] relative w-[100%]">
-				<Container>
+				<div className='max-w-[164rem] w-[calc(100vw-15rem)] m-auto'>
 
 					<div className="p-[1.2rem] bg-white flex gap-[2.6rem]">
 						<Settings></Settings>
@@ -194,25 +195,25 @@ function Dashbord() {
 							setFilter={setFilter}
 							users={users}
 							statuses={statuses}></Search>
-						{!!Object.keys(sort).length && 
-						<div 
-							onClick={() => dashbordStore.resetSort()}
-							className='bg-Dominant/Dop text-Regular(16_18) p-[0.8rem] flex gap-[0.3rem] items-center'>
-							<span className="text-Content/Middle">Сортировка:</span>
-							<span>{sort.name}</span>
-							<i className='icon-close-1'></i>
-						</div>}
+						{!!Object.keys(sort).length &&
+							<div
+								onClick={() => dashbordStore.resetSort()}
+								className='bg-Dominant/Dop text-Regular(16_18) p-[0.8rem] flex gap-[0.3rem] items-center'>
+								<span className="text-Content/Middle">Сортировка:</span>
+								<span>{sort.name}</span>
+								<i className='icon-close-1'></i>
+							</div>}
 						<Switcher
 							onChange={() => setGroupMod(!groupMod)}
 							label="Сгруппировать по заказам"
 						></Switcher>
 						<SortDropdown></SortDropdown>
 					</div>
-				</Container>
-				<div className="flex-1 overflow-auto ">
+				</div>
 
-					{settings && <div className=' ml-[5px]'>
-						<Container>
+				<div className="flex-1  max-w-[164rem] w-[calc(100vw-15rem)] m-auto relative overflow-hidden">
+					<div className="js-scrollable-dashbord overflow-auto h-[100%]">
+						{settings && <>
 							{
 								Array.isArray(items[0]) ?
 									items?.map(([id, item]) => {
@@ -232,18 +233,22 @@ function Dashbord() {
 										)
 									})
 									:
-									<>
-										<div className="flex bg-white">
+									<table className='product-table'>
+										<tbody>
+											<div className="flex bg-white">
+												
 											{Object.entries(settings).map(([key, x]) => <TdCell sort={sort} key={key} name={key} {...x}>
 											</TdCell>)}
-
 										</div>
-										{items?.map(render)}
-									</>
+											{items?.map(render)}
+										</tbody>
+
+									</table>
 							}
-						</Container>
-					</div>}
+						</>}
+					</div>
 				</div>
+
 				<Container>
 					<div className="p-[1.2rem] bg-white flex relative">
 						<div className="w-[50%]">

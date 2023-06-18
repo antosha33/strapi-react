@@ -36,7 +36,7 @@ const Cell = ({ current, currentData, setIsVisible, timestamps = '{}' }) => {
 	return current ?
 		<div
 			style={{ background: current.color }}
-			className=" flex h-[100%] gap-[0.8rem] justify-between">
+			className=" flex h-[100%] gap-[0.8rem] justify-between w-[100%]">
 			<div className="px-[1.2rem] py-[0.9rem] h-[100%]">
 				{current?.title || currentData.title}
 			</div>
