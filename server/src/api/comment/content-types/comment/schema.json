@@ -4,14 +4,15 @@
   "info": {
     "singularName": "comment",
     "pluralName": "comments",
-    "displayName": "Comment"
+    "displayName": "Comment",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
-    "descr": {
+    "comment": {
       "type": "string",
       "required": true
     },
@@ -23,6 +24,12 @@
       "relation": "manyToOne",
       "target": "api::c-position-stage.c-position-stage",
       "inversedBy": "comments"
+    },
+    "roleOwner": {
+      "type": "string"
+    },
+    "nameOwner": {
+      "type": "string"
     }
   }
 }

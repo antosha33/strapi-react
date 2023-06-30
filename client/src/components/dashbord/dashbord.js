@@ -6,7 +6,7 @@ import userStore from '../../store/stage'
 import Position from "../position/position";
 import Container from "../container/container";
 import useUsers from '../../hooks/users.hook';
-import OrderModal from '../orderModal/orderModal';
+import OrderModal from '../modals/orderModal/orderModal';
 import Modal from '../modal/modal'
 import Switcher from '../ui/swticher/switcher'
 import Pagination from '../pagination/pagination';
@@ -15,7 +15,9 @@ import SortDropdown from '../sortDropdown/sortDropdown';
 import Settings from './settings/settings';
 import dashbordStore from '../../store/dashbord'
 import Search from './search/search';
+import CommentModal from '../modals/commentModal/commentModal';
 import './style.css'
+
 
 
 
@@ -70,6 +72,7 @@ function Dashbord() {
 	const [users, setUsers] = useState([]);
 	const [groupMod, setGroupMod] = useState(false);
 	const [detailModal, setDetailModal] = useState(false);
+	const [commentModal, setCommentModal] = useState(false);
 	const { id, role, statuses } = userStore.currentStage;
 	const { settings, sort } = dashbordStore;
 
@@ -131,6 +134,10 @@ function Dashbord() {
 		return Object.entries(group);
 	}
 
+	const setComment = (stageId) => {
+		setCommentModal(stageId);
+	}
+
 
 	const render = ({ isUrgent, position, user, id, status: currentStatus, stageChangeTimeStamps }) => {
 
@@ -148,6 +155,7 @@ function Dashbord() {
 				key={id}
 				onOrderDetail={onOrderDetail}
 				settings={settings}
+				setComment={setComment}
 			>
 
 			</Position>
@@ -155,34 +163,34 @@ function Dashbord() {
 	}
 
 
-	const sortBy = (items) => {
-		if (!sort.key) return items;
+	// const sortBy = (items) => {
+	// 	if (!sort.key) return items;
 
-		const { key, correction } = sort;
+	// 	const { key, correction } = sort;
 
-		const callback = (a, b) => {
-			const getField = (obj) => {
-				let field = obj;
-				key.split('.').forEach(x => {
-					if (field && field[x]) {
-						field = field[x];
-					}
+	// 	const callback = (a, b) => {
+	// 		const getField = (obj) => {
+	// 			let field = obj;
+	// 			key.split('.').forEach(x => {
+	// 				if (field && field[x]) {
+	// 					field = field[x];
+	// 				}
 
-				});
-				return field;
-			}
-			a = getField(a)
-			b = getField(b)
-			if (a < b) {
-				return -1 * correction
-			}
-			if (a > b) {
-				return 1 * correction
-			}
-			return 0
-		}
-		return items.sort(callback);
-	}
+	// 			});
+	// 			return field;
+	// 		}
+	// 		a = getField(a)
+	// 		b = getField(b)
+	// 		if (a < b) {
+	// 			return -1 * correction
+	// 		}
+	// 		if (a > b) {
+	// 			return 1 * correction
+	// 		}
+	// 		return 0
+	// 	}
+	// 	return items.sort(callback);
+	// }
 
 	return (
 		<>
@@ -201,7 +209,7 @@ function Dashbord() {
 								className='bg-Dominant/Dop text-Regular(16_18) p-[0.8rem] flex gap-[0.3rem] items-center'>
 								<span className="text-Content/Middle">Сортировка:</span>
 								<span>{sort.name}</span>
-								<i className='icon-close-1'></i>
+								<i className='icon-close'></i>
 							</div>}
 						<Switcher
 							onChange={() => setGroupMod(!groupMod)}
@@ -236,10 +244,10 @@ function Dashbord() {
 									<table className='product-table'>
 										<tbody>
 											<div className="flex bg-white">
-												
-											{Object.entries(settings).map(([key, x]) => <TdCell sort={sort} key={key} name={key} {...x}>
-											</TdCell>)}
-										</div>
+
+												{Object.entries(settings).map(([key, x]) => <TdCell sort={sort} key={key} name={key} {...x}>
+												</TdCell>)}
+											</div>
 											{items?.map(render)}
 										</tbody>
 
@@ -265,6 +273,12 @@ function Dashbord() {
 				isOpen={!!detailModal}
 			>
 				<OrderModal orderId={detailModal}></OrderModal>
+			</Modal>
+			<Modal
+				closeModal={() => setCommentModal(false)}
+				isOpen={!!commentModal}
+			>
+				<CommentModal setCommentModal={setCommentModal} positionStageId={commentModal}></CommentModal>
 			</Modal>
 		</>
 

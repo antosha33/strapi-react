@@ -17,7 +17,8 @@ function Modal({ isOpen, title, children, closeModal }) {
                     alignItems: 'center',
                     justifyContent: 'center',
                     backgroundColor: 'rgba(	114, 112, 112, 0.6)',
-                    overflow:'auto'
+                    overflow:'auto',
+                    zIndex:10
                 },
                 content: {
                     top: '50%',

@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "comment_suggests",
+  "info": {
+    "singularName": "comment-suggest",
+    "pluralName": "comment-suggests",
+    "displayName": "CommentSuggest",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "suggest": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::stage.stage",
+      "inversedBy": "suggests"
+    }
+  }
+}

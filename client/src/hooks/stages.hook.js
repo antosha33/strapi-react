@@ -5,7 +5,10 @@ const qs = require('qs');
 
 
 const query = qs.stringify({
-	populate: 'statuses',
+	populate: {
+		statuses:true,
+		suggests: true
+	},
 }, {
 	encodeValuesOnly: true, // prettify URL
 });

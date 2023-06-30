@@ -109,7 +109,7 @@ function Search({ statuses, setFilter, users }) {
 									className="max-w-[30rem] px-[0.7rem] h-[3.2rem] text-Regular(16_18) flex gap-[0.6rem]  items-center whitespace-nowrap bg-[#BDDAF6]">
 									<span className="overflow-hidden text-ellipsis inline-block">{x.label} : {x.value}</span>
 									<i
-										className='icon-close-1 text-[2.4rem] text-Content/Middle hover:cursor-pointer'
+										className='icon-close text-[2.4rem] text-Content/Middle hover:cursor-pointer'
 										onClick={(ev) => { ev.stopPropagation(); onRemove(x.prop) }}
 									></i>
 								</div>

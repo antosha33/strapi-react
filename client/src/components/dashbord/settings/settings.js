@@ -25,7 +25,7 @@ const defaultSettings = {
 		configurable: true,
 		padding: false,
 		sortPath: 'user.username'
-		
+
 	},
 	title: {
 		available: true,
@@ -117,17 +117,19 @@ function Settings() {
 
 
 	return (
-		<div className="relative">
-			<div
-				onClick={() => setIsOpen(true)}
-				className="border bg-slate-100 border-Content/Border w-[4.6rem] h-[4.6rem]">
-			</div>
+		<OutsideAlerter onEvent={() => setIsOpen(false)}>
+			<div className="relative">
+				<div
+					onClick={() => setIsOpen(!isOpen)}
+					className="border hover:cursor-pointer hover:border-Accent/Blue ease-in-out duration-300 flex items-center justify-center border-Content/Border w-[4.6rem] h-[4.6rem] group">
+						<i className="icon-gear  group-hover:text-Accent/Blue text-Regular(18_24) text-Content/Light"></i>
+				</div>
 
-			{isOpen &&
-				<OutsideAlerter onEvent={() => setIsOpen(false)}>
+				{isOpen &&
+
 
 					<div
-						className="border z-10 w-[80rem] bg-white border-Content/Border absolute top-[100%] left-0">
+						className="border z-30 w-[80rem] bg-white border-Content/Border absolute top-[100%] left-0">
 						<div className="flex border-Dominant/Dop border border-t-0 border-r-0 border-l-0 justify-between p-[2.6rem]">
 							<span className="block text-Regular(16_18)">Настроить таблицу</span>
 							<span className="block">Close</span>
@@ -170,12 +172,12 @@ function Settings() {
 							</div>
 						</div>
 					</div>
-				</OutsideAlerter>
 
-			}
 
-		</div>
+				}
 
+			</div>
+		</OutsideAlerter>
 
 	);
 }

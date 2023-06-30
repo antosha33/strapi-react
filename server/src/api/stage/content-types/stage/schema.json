@@ -33,6 +33,12 @@
     "initial": {
       "type": "boolean",
       "default": false
+    },
+    "suggests": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comment-suggest.comment-suggest",
+      "mappedBy": "stage"
     }
   }
 }

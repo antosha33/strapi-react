@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import useOrder from "../../hooks/order.hook";
-import Cell from "../cell/cell";
-import stageStore from "../../store/stage";
+import useOrder from "../../../hooks/order.hook";
+import Cell from "../../cell/cell";
+import stageStore from "../../../store/stage";
 
 function OrderModal({ orderId }) {
 

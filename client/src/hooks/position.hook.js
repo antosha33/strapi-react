@@ -36,11 +36,20 @@ function usePosition() {
 		})
 	}
 
+	const setComment = async(data) => {
+		return await authRequest({
+			method: 'POST',
+			url: 'comments',
+			data,
+		})
+	}
+
 
 	return {
 		setUser,
 		setStatus,
-		setPositionsToUrgent
+		setPositionsToUrgent,
+		setComment
 	}
 
 

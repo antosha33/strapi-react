@@ -13,12 +13,28 @@ import OutsideAlerter from "../outsideAlerter/outsideAlerter";
 
 
 
-function Position({ id, isUrgent, settings, title, onOrderDetail, user, users, quantity, positionStageId, statuses, status, timestamps, order }) {
+function Position({ 
+	id,
+	isUrgent,
+	settings,
+	title,
+	onOrderDetail,
+	user,
+	users,
+	quantity,
+	positionStageId,
+	statuses,
+	status,
+	timestamps,
+	order,
+	setComment
+}) {
 
 
 	const [positionRef, setPositionRef] = useState(null)
 	const { setUser, setStatus } = usePosition();
 	const [isVisible, setIsVisible] = useState(true);
+	const [actionsPanelOpen, setActionsPanelOpen] = useState(false);
 	const isSelected = dashbordStore.getIsPositionsSelected(id);
 	const [active, setIsActive] = useState(false);
 	const [extra, setExtra] = useState(false);
@@ -26,6 +42,10 @@ function Position({ id, isUrgent, settings, title, onOrderDetail, user, users, q
 	const onSetUser = async (userId) => {
 		await setUser(positionStageId, userId);
 	}
+
+	useEffect(() => {
+		!extra && setActionsPanelOpen(false);
+	}, [extra])
 
 	const onSetStatus = async (statusId) => {
 		await setStatus(positionStageId, statusId);
@@ -38,6 +58,11 @@ function Position({ id, isUrgent, settings, title, onOrderDetail, user, users, q
 	const onPositionHandler = () => {
 		setIsActive(!active)
 	}
+
+	const onSetCommentHandler = () => {
+		setComment(positionStageId)
+	}
+	
 
 	useEffect(() => {
 
@@ -54,23 +79,22 @@ function Position({ id, isUrgent, settings, title, onOrderDetail, user, users, q
 		document.addEventListener('scroll', outHandler)
 		if (positionRef) {
 			positionRef.addEventListener('mouseover', overHandler)
-			positionRef.addEventListener('mouseleave', outHandler)
+			positionRef.addEventListener('mouseout', outHandler)
 		}
 		return () => {
 			document.removeEventListener('scroll', outHandler)
 			if (positionRef) {
 				positionRef.removeEventListener('mouseover', overHandler)
-				positionRef.removeEventListener('mouseover', outHandler)
+				positionRef.removeEventListener('mouseout', outHandler)
 			}
 		}
 	}, [positionRef])
 
-	console.log('ex=>', extra)
+
 
 	if (!isVisible) return null;
 	return (
 		<OutsideAlerter
-
 			onEvent={() => setIsActive(false)}
 			className={`
 				${active ? ' border-Accent/Blue ' : 'border-Content/Border'}
@@ -106,18 +130,7 @@ function Position({ id, isUrgent, settings, title, onOrderDetail, user, users, q
 					<span className="line-clamp-3">{title}</span>
 				</Cell>
 				<Cell {...settings.quantity}>{quantity}</Cell>
-				<Cell {...settings.quantity}>{quantity}</Cell>
-				<Cell {...settings.quantity}>{quantity}</Cell>
-				<Cell {...settings.quantity}>{quantity}</Cell>
-				<Cell {...settings.quantity}>{quantity}</Cell>
-				<Cell {...settings.quantity}>{quantity}</Cell>
-				<Cell {...settings.quantity}>{quantity}</Cell>
-				<Cell {...settings.quantity}>{quantity}</Cell>
-				<Cell {...settings.quantity}>{quantity}</Cell>
-				<Cell {...settings.quantity}>{quantity}</Cell>
-				<Cell {...settings.quantity}>{quantity}</Cell>
-				<Cell {...settings.quantity}>{quantity}</Cell>
-				<Cell {...settings.quantity}>{quantity}</Cell>
+
 
 				<Cell {...settings.order}>
 					<span
@@ -154,15 +167,33 @@ function Position({ id, isUrgent, settings, title, onOrderDetail, user, users, q
 					}}
 					className={`
 					${extra ? 'visible opacity-100 translate-x-[100%]' : 'invisible opacity-0 translate-x-[0%]'}
-					border   border-Accent/Blue  top-0 fixed  w-[6rem] bg-black
+					border   border-Accent/Blue   top-0 fixed z-20  w-[6rem] flex items-center justify-center
 				`}>
-
+					<div
+						onClick={() => setActionsPanelOpen(!actionsPanelOpen)}
+						className="flex bg-white group hover:cursor-pointer p-[0.8rem]">
+						<i className="icon-list group-hover:text-Accent/Blue text-Regular(18_24) text-Content/Light"></i>
+					</div>
+					<ul className={`
+						${actionsPanelOpen ? 'visible opacity-100' : 'invisible opacity-0'}
+							before:absolute
+							before:left-0
+							before:right-0
+							before:bottom-[100%]
+							before:h-[10px]
+							absolute z-30 top-[calc(100%+4px)] right-0 shadow-default bg-white`
+						}
+						>
+						<li 
+							onClick={onSetCommentHandler}
+							className="px-[1.2rem] py-[0.9rem] ease-in-out duration-300 hover:bg-Dominant/Dop hover:cursor-pointer flex items-center gap-[0.8rem]">
+							<i className="icon-comment text-Accent/Blue text-Regular(18_24)"></i>
+							<span className="text-Regular(16_18)">Комментарий</span>
+						</li>
+					</ul>
 				</div>
 			</tr>
-
-
 		</OutsideAlerter>
-
 	);
 }
 
