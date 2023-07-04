@@ -1,6 +1,8 @@
 import OutsideAlerter from '../outsideAlerter/outsideAlerter'
 import Dropdown from "../ui/dropdown/dropdown";
 import { useEffect, useState, useRef } from "react";
+import stageStore from '../../store/stage'
+import usersStore from "../../store/users";
 
 function CellPickerHOC(renderItem, Wrapped) {
 
@@ -9,6 +11,20 @@ function CellPickerHOC(renderItem, Wrapped) {
 		const dropdownRef = useRef(null);
 		const [isDropDown, setIsDropDown] = useState(false);
 		const [current, setCurrent] = useState(currentData);
+		const [isDisabled, setIsDisabled] = useState(true);
+		const { currentUser } = usersStore;
+		const { currentStage } = stageStore;
+
+		useEffect(() => {
+			if (currentUser?.role?.toLowerCase() !== currentStage?.role?.toLowerCase()) {
+				setIsDisabled(true)
+			}else{
+				setIsDisabled(false)
+			}
+		}, [
+			currentUser.role,
+			currentStage.role
+		])
 
 		//не показываем выбранный элемент в дропдауне
 		const filteredData = data.filter(x => x.id !== currentData?.id)
@@ -20,7 +36,7 @@ function CellPickerHOC(renderItem, Wrapped) {
 		useEffect(() => {
 			const scrollableDashbord = dropdownRef.current.closest('.js-scrollable-dashbord');
 			const handler = () => {
-				if(isDropDown){
+				if (isDropDown) {
 					setIsDropDown(false)
 				}
 			}
@@ -67,7 +83,11 @@ function CellPickerHOC(renderItem, Wrapped) {
 
 
 		return (
-			<OutsideAlerter onEvent={closeDropdown} className="w-[100%] flex self-stretch">
+			<OutsideAlerter
+				onEvent={closeDropdown}
+				className={`
+					${isDisabled ? 'pointer-events-none' : 'hover:cursor-pointer'} w-[100%] flex self-stretch
+				`}>
 				<div
 					onClick={openDropdown}
 					className={`
@@ -89,7 +109,6 @@ function CellPickerHOC(renderItem, Wrapped) {
 						}}
 					>
 						<Dropdown
-
 							positon='static' active={!!isDropDown} data={filteredData}>
 							{renderItemWithHandler}
 						</Dropdown>

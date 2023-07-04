@@ -57,7 +57,7 @@ function UsersPanel() {
 		<div>
 			<span
 				onClick={logout}
-				className="text-Regular(12_14) text-Content/Middle mb-[4rem]">Выйти</span>
+				className="hover:cursor-pointer text-Regular(12_14) text-Content/Middle mb-[0.4rem] block">Выйти</span>
 			<div
 				onClick={() => setIsOtherShowed(!isOtherShowed)}
 				className="w-[32.8rem] relative">
@@ -68,7 +68,7 @@ function UsersPanel() {
 						active={true}
 					></User>
 				</div>
-				<div className={`${isOtherShowed ? 'opacity-100 translate-y-0 duration-300 ease-in-out visible' : 'opacity-0 translate-y-[10%] invisible'}  absolute  top-[100%] left-0 right-0 bg-white border border-Content/Border border-t-0`}>
+				<div className={`${isOtherShowed ? 'opacity-100 translate-y-0 duration-300 ease-in-out visible' : 'opacity-0 translate-y-[10%] invisible'} z-20  absolute  top-[100%] left-0 right-0 bg-white border border-Content/Border border-t-0`}>
 					<div className="max-h-[30rem] overflow-auto">
 						{candidates.map(({ accessToken, username, role, id }) =>
 							<div
@@ -88,7 +88,7 @@ function UsersPanel() {
 
 						)}
 					</div>
-					<div className="p-[1.2rem]">
+					<div className="p-[1.2rem] hover:cursor-pointer">
 						<span className="w-[2.4rem]h - [2.4rem]"></span>
 						<span
 							onClick={() => setIsModalOpened(true)}

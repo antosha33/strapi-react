@@ -8,25 +8,32 @@
 
 module.exports = {
 	routes: [
-		{ // Path defined with an URL parameter
+		{
 			method: 'POST',
 			path: '/c-position-stages/setUrgentPosition',
 			handler: 'c-position-stage.setUrgentPosition',
 		},
-		{ // Path defined with an URL parameter
+		{
 			method: 'PUT',
 			path: '/c-position-stages/updateStatus/:id',
 			handler: 'c-position-stage.updateStatus',
+			config: {
+				middlewares: ['api::c-position-stage.role'],
+			},
 		},
-		{ // Path defined with an URL parameter
+		{
 			method: 'PUT',
-			path: '/c-position-stages/:id',
-			handler: 'c-position-stage.update',
+			path: '/c-position-stages/updateUser/:id',
+			handler: 'c-position-stage.updateUser',
+			config: {
+				middlewares: ['api::c-position-stage.role'],
+			},
 		},
-		{ // Path defined with an URL parameter
+		{
 			method: 'GET',
 			path: '/c-position-stages',
 			handler: 'c-position-stage.find',
 		},
+
 	]
 }

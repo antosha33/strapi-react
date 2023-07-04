@@ -10,7 +10,7 @@ const Cell = ({ current, currentData }) => {
 const renderItem = (onClickHandler) => (item) =>
 <span
 	onClick={(ev) => {ev.stopPropagation();onClickHandler(item)}}
-	key={item.id} className="block px-[1.2rem] py-[1.2rem]">{item.username}
+	key={item.id} className="hover:opacity-60 ease-in-out duration-300 block px-[1.2rem] py-[1.2rem]">{item.username}
 </span>;
 
 const UserCellPicker = CellPickerHOC(renderItem, Cell)

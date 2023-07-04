@@ -8,7 +8,7 @@ function Dropdown({ active, data, children, positon="top-[100%] absolute"}) {
 			{data?.length ?
 				data.map(children)
 				:
-				children
+				<span></span>
 			}
 		</div>
 	);

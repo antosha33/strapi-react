@@ -6,7 +6,7 @@ function Layout({ children }) {
         <div className=" flex flex-col min-h-[100vh]">
             <Header></Header>
             {children}
-				{/* <Footer></Footer> */}
+				<Footer></Footer>
         </div>
     );
 }

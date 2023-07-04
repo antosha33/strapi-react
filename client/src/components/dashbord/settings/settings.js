@@ -34,10 +34,12 @@ const defaultSettings = {
 		className: 'w-[21.7rem] text-Regular(12_14)',
 		sortPath: 'position.title'
 	},
-	// code: {
-	// 	available: true,
-	// 	title: 'Назв-е товара'
-	// },
+	code: {
+		available: true,
+		configurable: true,
+		title: 'Артикул',
+		className: 'w-[10rem] text-Regular(16_18) relative',
+	},
 	quantity: {
 		available: true,
 		title: 'Кол-во',

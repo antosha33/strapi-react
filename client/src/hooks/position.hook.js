@@ -8,27 +8,37 @@ function usePosition() {
 
 	const { authRequest } = useContext(AxiosContext);
 
-	const setUser = async(positionStageId, userId) => {
-		return await authRequest({
-			method: 'PUT',
-			url: 'c-position-stages/' + positionStageId,
-			data: {
-				user: userId
-			}
-		})
+	const setUser = async (positionStageId, userId) => {
+		try {
+			return await authRequest({
+				method: 'PUT',
+				url: 'c-position-stages/updateUser/' + positionStageId,
+				data: {
+					user: userId
+				}
+			})
+		} catch {
+
+		}
+
 	}
 
-	const setStatus = async(positionStageId, statusId) => {
-		return await authRequest({
-			method: 'PUT',
-			url: 'c-position-stages/updateStatus/' + positionStageId,
-			data: {
-				status: statusId
-			}
-		})
+	const setStatus = async (positionStageId, statusId) => {
+		try {
+			return await authRequest({
+				method: 'PUT',
+				url: 'c-position-stages/updateStatus/' + positionStageId,
+				data: {
+					status: statusId
+				}
+			})
+		} catch {
+
+		}
+
 	}
 
-	const setPositionsToUrgent = async(ids) => {
+	const setPositionsToUrgent = async (ids) => {
 		return await authRequest({
 			method: 'POST',
 			url: 'c-position-stages/setUrgentPosition',
@@ -36,7 +46,7 @@ function usePosition() {
 		})
 	}
 
-	const setComment = async(data) => {
+	const setComment = async (data) => {
 		return await authRequest({
 			method: 'POST',
 			url: 'comments',

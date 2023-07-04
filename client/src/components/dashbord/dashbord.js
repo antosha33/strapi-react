@@ -2,7 +2,7 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 
 import { observer } from "mobx-react-lite";
 import useDashbord from '../../hooks/dashbord.hook';
-import userStore from '../../store/stage'
+import stageStore from '../../store/stage'
 import Position from "../position/position";
 import Container from "../container/container";
 import useUsers from '../../hooks/users.hook';
@@ -33,7 +33,7 @@ const TdCell = ({ height = 'h-[6rem]', name, sort: { path, correction } = {}, av
 	}
 
 	return (
-		<div
+		<td
 			onClick={() => dashbordStore.setSort({
 				path: sortPath,
 				name: title
@@ -52,7 +52,7 @@ const TdCell = ({ height = 'h-[6rem]', name, sort: { path, correction } = {}, av
 				}
 			</div>
 
-		</div>
+		</td>
 	)
 }
 
@@ -73,7 +73,7 @@ function Dashbord() {
 	const [groupMod, setGroupMod] = useState(false);
 	const [detailModal, setDetailModal] = useState(false);
 	const [commentModal, setCommentModal] = useState(false);
-	const { id, role, statuses } = userStore.currentStage;
+	const { id, role, statuses } = stageStore.currentStage;
 	const { settings, sort } = dashbordStore;
 
 
@@ -138,8 +138,13 @@ function Dashbord() {
 		setCommentModal(stageId);
 	}
 
+	const closeCommentModalAndReftesh = () => {
+		setCommentModal(false);
+		getData();
+	}
 
-	const render = ({ isUrgent, position, user, id, status: currentStatus, stageChangeTimeStamps }) => {
+
+	const render = ({ isUrgent, comments, position, user, id, status: currentStatus, stageChangeTimeStamps }) => {
 
 		return (
 			<Position
@@ -152,12 +157,13 @@ function Dashbord() {
 				statuses={statuses}
 				status={currentStatus}
 				cPositionStageId={id}
+				comments={comments}
 				key={id}
 				onOrderDetail={onOrderDetail}
 				settings={settings}
 				setComment={setComment}
+				getData={getData}
 			>
-
 			</Position>
 		)
 	}
@@ -192,6 +198,7 @@ function Dashbord() {
 	// 	return items.sort(callback);
 	// }
 
+
 	return (
 		<>
 			<div className="bg-Dominant/Dop py-[2rem] flex-1 flex flex-col gap-[0.8rem] min-h-[100px] relative w-[100%]">
@@ -225,7 +232,6 @@ function Dashbord() {
 							{
 								Array.isArray(items[0]) ?
 									items?.map(([id, item]) => {
-
 										return (
 											<div key={id}>
 												<span className='text-Content/Dark block font-semibold text-Regular(16_18) mb-[1.1rem]'>{id}</span>
@@ -233,7 +239,6 @@ function Dashbord() {
 													{Object.entries(settings).map(([key, x]) => <TdCell key={key} sort={sort} {...x}>
 													</TdCell>)}
 												</div>
-
 												<div className='mb-[3.6rem]'>
 													{item.map(render)}
 												</div>
@@ -243,11 +248,10 @@ function Dashbord() {
 									:
 									<table className='product-table'>
 										<tbody>
-											<div className="flex bg-white">
-
+											<tr className="flex bg-white">
 												{Object.entries(settings).map(([key, x]) => <TdCell sort={sort} key={key} name={key} {...x}>
 												</TdCell>)}
-											</div>
+											</tr>
 											{items?.map(render)}
 										</tbody>
 
@@ -278,7 +282,7 @@ function Dashbord() {
 				closeModal={() => setCommentModal(false)}
 				isOpen={!!commentModal}
 			>
-				<CommentModal setCommentModal={setCommentModal} positionStageId={commentModal}></CommentModal>
+				<CommentModal setCommentModal={closeCommentModalAndReftesh} positionStageId={commentModal}></CommentModal>
 			</Modal>
 		</>
 

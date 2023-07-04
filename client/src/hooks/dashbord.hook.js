@@ -12,11 +12,12 @@ function useDashbord() {
 
 	const getDashbord = async ({ stage, page, filter, sort }) => {
 
-		console.log('sot',sort)
+		if (!sort.path) {
+			sort = ['isUrgent:desc', 'id:desc']
+		}
 
 		if (stage) {
 			stage = {
-				// sort: [ 'isUrgent:desc', 'id:desc'],
 				filters: {
 					stage: {
 						id: stage
@@ -33,7 +34,9 @@ function useDashbord() {
 			populate: {
 				status: true,
 				user: true,
-				comments: true,
+				comments: {
+					sort: ['createdAt:desc']
+				},
 				position: {
 					populate: {
 						order: true
@@ -49,6 +52,7 @@ function useDashbord() {
 			encodeValuesOnly: true, // prettify URL
 		});
 
+		console.log(sort.path)
 
 		return await authRequest({
 			url: 'c-position-stages?' + query,

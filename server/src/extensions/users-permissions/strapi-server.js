@@ -7,6 +7,7 @@ module.exports = plugin => {
 	};
 
 	plugin.controllers.user.me = async (ctx) => {
+
 		if (!ctx.state.user) {
 			return ctx.unauthorized();
 		}

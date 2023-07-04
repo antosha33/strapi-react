@@ -39,7 +39,7 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 		const sanitizedQueryParams = await this.sanitizeQuery(ctx);
 		
 		//глубокая сортировка
-		let sort = {};
+		let sort = sanitizedQueryParams.sort || {};
 		let  {sort:{path, correction} = {}} = ctx.query;
 		if(path){
 			path = path.split('.');
@@ -55,7 +55,6 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 			}
 			buildSortQuery(sort)
 		}
-
 		const { results, pagination } = await strapi.service('api::c-position-stage.c-position-stage').find({
 			...sanitizedQueryParams,
 			sort,
@@ -72,6 +71,10 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 			ctx.params.triggerTimeout = triggerTimeout
 			this.updateStage(ctx);
 		}
+		return await super.update(ctx);
+	},
+
+	async updateUser(ctx) {
 		return await super.update(ctx);
 	},
 

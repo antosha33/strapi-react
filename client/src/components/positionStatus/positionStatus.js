@@ -12,7 +12,7 @@ const renderItem = (onClickHandler) => (item) =>
 		style={{
 			background: item.color
 		}}
-		key={item.id} className="block px-[1.2rem] py-[1.2rem]">{item.title}
+		key={item.id} className="hover:opacity-60 ease-in-out duration-300 block px-[1.2rem] py-[1.2rem]">{item.title}
 	</span>;
 
 const Cell = ({ current, currentData, setIsVisible, timestamps = '{}' }) => {

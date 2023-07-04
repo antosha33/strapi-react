@@ -7,9 +7,9 @@ function Footer() {
 		<div className="py-[1.8rem] bg-white">
 			<Container>
 				<div className="pb-[1.2rem] flex gap-[2.6rem]">
-					<Switcher
+					{/* <Switcher
 						label="Загрузка специалистов"
-					></Switcher>
+					></Switcher> */}
 					<Switcher
 						label="Загрузка печати"
 					></Switcher>
