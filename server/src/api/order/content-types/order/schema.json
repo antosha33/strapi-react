@@ -26,6 +26,10 @@
     },
     "orderId": {
       "type": "biginteger"
+    },
+    "shipped": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

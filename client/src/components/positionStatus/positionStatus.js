@@ -9,9 +9,7 @@ import CellPickerHOC from "../cellPickerHOC/cellPickerHOC";
 const renderItem = (onClickHandler) => (item) =>
 	<span
 		onClick={(ev) => { ev.stopPropagation(); onClickHandler(item) }}
-		style={{
-			background: item.color
-		}}
+
 		key={item.id} className="hover:opacity-60 ease-in-out duration-300 block px-[1.2rem] py-[1.2rem]">{item.title}
 	</span>;
 
@@ -42,11 +40,10 @@ const Cell = ({ current, currentData, setIsVisible, timestamps = '{}' }) => {
 			</div>
 			{
 				current?.stageTrigger && 
-				<div className="relative">
-					{/* <i className="icon-watch text-[2.2rem] ">
-
-					</i> */}
-					<span className='absolute left-0 top-0'>{value}</span>
+				<div className="relative p-[0.4rem]">
+					<i className="icon-ready text-Accent/Blue text-[2.4rem] ">
+					</i>
+					<span className='absolute right-[0.9rem] top-[1.3rem] text-Accent/Blue text-[1.2rem]'>{value}</span>
 				</div>
 
 			}

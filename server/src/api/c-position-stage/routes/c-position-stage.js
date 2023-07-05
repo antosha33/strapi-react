@@ -14,6 +14,11 @@ module.exports = {
 			handler: 'c-position-stage.setUrgentPosition',
 		},
 		{
+			method: 'POST',
+			path: '/c-position-stages/setPositionsToCanceled',
+			handler: 'c-position-stage.setPositionsToCanceled',
+		},
+		{
 			method: 'PUT',
 			path: '/c-position-stages/updateStatus/:id',
 			handler: 'c-position-stage.updateStatus',

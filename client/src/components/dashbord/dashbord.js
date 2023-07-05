@@ -16,6 +16,7 @@ import Settings from './settings/settings';
 import dashbordStore from '../../store/dashbord'
 import Search from './search/search';
 import CommentModal from '../modals/commentModal/commentModal';
+import Loader from '../loader/loader';
 import './style.css'
 
 
@@ -75,6 +76,7 @@ function Dashbord() {
 	const [commentModal, setCommentModal] = useState(false);
 	const { id, role, statuses } = stageStore.currentStage;
 	const { settings, sort } = dashbordStore;
+	const [loading, setLoading] = useState(false);
 
 
 	useEffect(() => {
@@ -92,7 +94,8 @@ function Dashbord() {
 		setPage(1)
 	}, [id])
 
-	const getData = async () => {
+	const getData = async (silent = false) => {
+		!silent && setLoading(true)
 		if (id) {
 			const { data, meta: { pagination } } = await getDashbord({
 				stage: id,
@@ -107,6 +110,7 @@ function Dashbord() {
 			}
 			setMeta(pagination)
 		}
+		!silent && setLoading(false)
 	}
 
 	const getUsers = async () => {
@@ -140,7 +144,7 @@ function Dashbord() {
 
 	const closeCommentModalAndReftesh = () => {
 		setCommentModal(false);
-		getData();
+		getData(true);
 	}
 
 
@@ -228,43 +232,46 @@ function Dashbord() {
 
 				<div className="flex-1  max-w-[164rem] w-[calc(100vw-15rem)] m-auto relative overflow-hidden">
 					<div className="js-scrollable-dashbord overflow-auto h-[100%]">
-						{settings && <>
-							{
-								Array.isArray(items[0]) ?
-									items?.map(([id, item]) => {
-										return (
-											<div key={id}>
-												<span className='text-Content/Dark block font-semibold text-Regular(16_18) mb-[1.1rem]'>{id}</span>
-												<div className="flex bg-white">
-													{Object.entries(settings).map(([key, x]) => <TdCell key={key} sort={sort} {...x}>
+						{loading ? <Loader></Loader> :
+							settings && <>
+								{
+									Array.isArray(items[0]) ?
+										items?.map(([id, item]) => {
+											return (
+												<div key={id}>
+													<span className='text-Content/Dark block font-semibold text-Regular(16_18) mb-[1.1rem]'>{id}</span>
+													<div className="flex bg-white">
+														{Object.entries(settings).map(([key, x]) => <TdCell key={key} sort={sort} {...x}>
+														</TdCell>)}
+													</div>
+													<div className='mb-[3.6rem]'>
+														{item.map(render)}
+													</div>
+												</div>
+											)
+										})
+										:
+										<table className='product-table'>
+											<tbody>
+												<tr className="flex bg-white">
+													{Object.entries(settings).map(([key, x]) => <TdCell sort={sort} key={key} name={key} {...x}>
 													</TdCell>)}
-												</div>
-												<div className='mb-[3.6rem]'>
-													{item.map(render)}
-												</div>
-											</div>
-										)
-									})
-									:
-									<table className='product-table'>
-										<tbody>
-											<tr className="flex bg-white">
-												{Object.entries(settings).map(([key, x]) => <TdCell sort={sort} key={key} name={key} {...x}>
-												</TdCell>)}
-											</tr>
-											{items?.map(render)}
-										</tbody>
+												</tr>
+												{items?.map(render)}
+											</tbody>
 
-									</table>
-							}
-						</>}
+										</table>
+								}
+							</>
+						}
+
 					</div>
 				</div>
 
 				<Container>
 					<div className="p-[1.2rem] bg-white flex relative">
 						<div className="w-[50%]">
-							<ActionDropdown onEvent={getData}></ActionDropdown>
+							<ActionDropdown onEvent={() =>getData(true)}></ActionDropdown>
 						</div>
 						<div className="w-[50%] ">
 							<Pagination {...meta} onPageChange={onPageChange}></Pagination>

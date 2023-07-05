@@ -57,7 +57,7 @@ function Position({
 	}
 
 	const onSelectPosition = () => {
-		dashbordStore.addPosition(id)
+		dashbordStore.addPosition({positionStageId , positionId : id})
 	}
 
 	const onPositionHandler = () => {

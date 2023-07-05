@@ -16,19 +16,22 @@ function DropdownItem({ title, onClick }) {
 function ActionDropdown({ onEvent }) {
 
 
-	const { setPositionsToUrgent } = usePosition();
+	const { setPositionsToUrgent, setPositionsToCanceled } = usePosition();
 
 
 
 	const finishAction = () => {
-		console.log('!!')
 		dashbordStore.clearSelected();
-		// setIsOpen(false);
 		onEvent && onEvent();
 	}
 
 	const setUrgent = async () => {
 		await setPositionsToUrgent(dashbordStore.getSelected());
+		finishAction()
+	}
+
+	const cancelPositions = async () => {
+		await setPositionsToCanceled(dashbordStore.getSelected());
 		finishAction()
 	}
 
@@ -43,7 +46,7 @@ function ActionDropdown({ onEvent }) {
 						title: "Сделать позиции срочными"
 					},
 					{
-						onEvent: setUrgent,
+						onEvent: cancelPositions,
 						title: "Отменить позиции"
 					},
 					{

@@ -42,6 +42,10 @@
     "isUrgent": {
       "type": "boolean",
       "default": false
+    },
+    "shipped": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

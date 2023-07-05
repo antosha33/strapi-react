@@ -39,6 +39,13 @@
       "relation": "oneToMany",
       "target": "api::comment-suggest.comment-suggest",
       "mappedBy": "stage"
+    },
+    "step": {
+      "type": "integer"
+    },
+    "endStage": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

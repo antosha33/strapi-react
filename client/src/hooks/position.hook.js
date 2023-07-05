@@ -46,6 +46,14 @@ function usePosition() {
 		})
 	}
 
+	const setPositionsToCanceled = async (ids) => {
+		return await authRequest({
+			method: 'POST',
+			url: 'c-position-stages/setPositionsToCanceled',
+			data: ids
+		})
+	}
+
 	const setComment = async (data) => {
 		return await authRequest({
 			method: 'POST',
@@ -59,7 +67,8 @@ function usePosition() {
 		setUser,
 		setStatus,
 		setPositionsToUrgent,
-		setComment
+		setComment,
+		setPositionsToCanceled
 	}
 
 

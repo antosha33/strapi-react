@@ -65,38 +65,36 @@ class Parser {
 								let stageId;
 								let statusId;
 
-								//СМОДЕЛИРУЕМ СИТУАЦИЮ ЧТО У ПОЗИЦИИ НЕТ ПЕЧАТИ
-								const HAS_STAMP = false;
+								//СМОДЕЛИРУЕМ СИТУАЦИЮ ЧТО У ПОЗИЦИИ ЕСТЬ/НЕТ ПЕЧАТИ
+								const HAS_STAMP = true;
 
-								if (!HAS_STAMP) {
-									//определим налальный stage позиции
-									const [stage] = await strapiService.findMany('api::stage.stage', {
-										filters: {
-											initial: true
-										}
-									})
+								//определим налальный stage позиции
+								const [stage] = await strapiService.findMany('api::stage.stage', {
+									filters: {
+										step: HAS_STAMP ? 1 : 3
+									}
+								})
 
-									//определим налальный status позиции
-									const statuses = await strapiService.findMany('api::status.status', {
-										filters: {
-											initial: true
-										},
-										populate: {
-											stage: {
-												filters: {
-													id: {
-														$eq: stage.id
-													}
+								//определим налальный status позиции
+								const statuses = await strapiService.findMany('api::status.status', {
+									filters: {
+										initial: true
+									},
+									populate: {
+										stage: {
+											filters: {
+												id: {
+													$eq: stage.id
 												}
 											}
 										}
-									})
+									}
+								})
 
-									const status = statuses.find(x => x.stage)
+								const status = statuses.find(x => x.stage)
 
-									statusId = status.id;
-									stageId = stage.id;
-								}
+								statusId = status.id;
+								stageId = stage.id;
 
 
 								let result;
@@ -148,7 +146,6 @@ Parser.prepareOrderData = ({
 	data: { orders },
 }) => {
 	const result = Object.entries(orders).reduce((acc, [id, { ORDER_DATA, ORDER_ITEMS_DATA }]) => {
-
 
 		const item = {
 			id,

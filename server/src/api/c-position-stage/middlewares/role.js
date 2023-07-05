@@ -10,8 +10,9 @@ module.exports = (config, { strapi }) => {
 				stage: true
 			}
 		});
-		//если роли совпадают продолжаем запрос
-		if (role === type) {
+
+		//если роли совпадают или у пользователя неограниченный доступ то продолжаем запрос
+		if (role === type || type === 'master') {
 			await next()
 		}
 	}

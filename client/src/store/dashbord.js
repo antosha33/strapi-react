@@ -10,12 +10,12 @@ class Dashbord {
 		makeAutoObservable(this)
 	}
 
-	addPosition(id) {
-		const isExist = this.selectedPositions.indexOf(id);
+	addPosition(item) {
+		const isExist = this.selectedPositions.findIndex(x => x.positionStageId === item.positionStageId);
 		if (isExist > -1) {
 			this.selectedPositions.splice(isExist, 1)
 		} else {
-			this.selectedPositions.push(id)
+			this.selectedPositions.push(item)
 		}
 	}
 

@@ -1,0 +1,32 @@
+.preloader:after {
+	position: absolute;
+	z-index: 1031;
+	top: calc(50% - 15px);
+	left: calc(50% - 15px);
+	display: block;
+	width: 30px;
+	height: 30px;
+	content: "";
+	-webkit-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+	-webkit-animation-name: rotate;
+	animation-name: rotate;
+	-webkit-animation-duration: 0.6s;
+	animation-duration: 0.6s;
+	-webkit-animation-timing-function: linear;
+	animation-timing-function: linear;
+	-webkit-animation-iteration-count: infinite;
+	animation-iteration-count: infinite;
+	border: 2px solid #ccc;
+	border-top-color: #ffdf00;
+	border-radius: 100%;
+}
+
+@keyframes rotate {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

@@ -15,11 +15,11 @@ function CommentModal({ positionStageId, setCommentModal }) {
 	const { currentUser } = usersStore;
 	const { currentStage } = stageStore;
 
-	const onCommentHandler = () => {
+	const onCommentHandler = async() => {
 		if (!textareaRef.current.value) {
 			return;
 		}
-		setComment({
+		await setComment({
 			roleOwner: currentUser.role,
 			nameOwner: currentUser.username,
 			'c_position_stage': positionStageId,
