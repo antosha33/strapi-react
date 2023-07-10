@@ -37,7 +37,7 @@ class Parser {
 
 
 	async createData(data) {
-		data.forEach(({ id, username, date, positions }) => {
+		data.forEach(({ id, userinfo, date, positions }) => {
 
 			(async () => {
 				const strapiService = this.strapi.entityService;
@@ -123,13 +123,14 @@ class Parser {
 
 					//создаем сам заказ
 					Promise.all(stack).then(async (ev) => {
+						console.log('->>',userinfo)
 						const ids = ev.map(x => x.id);
 						if (ids.length) {
 							await strapiService.create('api::order.order', {
 								data: {
 									orderId: id,
 									date,
-									username,
+									userinfo,
 									positions: ids
 								}
 							})
@@ -145,12 +146,21 @@ class Parser {
 Parser.prepareOrderData = ({
 	data: { orders },
 }) => {
-	const result = Object.entries(orders).reduce((acc, [id, { ORDER_DATA, ORDER_ITEMS_DATA }]) => {
+	const result = Object.entries(orders).reduce((
+		acc, 
+		[id, 
+			{ ORDER_DATA : {DATE_STATUS_SHORT, USER_NAME, USER_EMAIL, USER_LAST_NAME}, ORDER_ITEMS_DATA }
+		]
+		) => {
 
 		const item = {
 			id,
-			date: Parser.formatDate(ORDER_DATA.DATE_STATUS_SHORT),
-			username: ORDER_DATA.USER_LAST_NAME + ' ' + ORDER_DATA.USER_NAME,
+			date: Parser.formatDate(DATE_STATUS_SHORT),
+			userinfo: {
+				name: USER_NAME,
+				surname: USER_LAST_NAME,
+				email: USER_EMAIL
+			},
 			positions: ORDER_ITEMS_DATA.map(x => ({
 				id: x.ID,
 				title: x.NAME,

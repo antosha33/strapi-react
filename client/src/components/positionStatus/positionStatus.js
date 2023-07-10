@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 
 import useTimer from '../../hooks/timer.hook';
@@ -9,16 +9,18 @@ import CellPickerHOC from "../cellPickerHOC/cellPickerHOC";
 const renderItem = (onClickHandler) => (item) =>
 	<span
 		onClick={(ev) => { ev.stopPropagation(); onClickHandler(item) }}
-
 		key={item.id} className="hover:opacity-60 ease-in-out duration-300 block px-[1.2rem] py-[1.2rem]">{item.title}
 	</span>;
 
 const Cell = ({ current, currentData, setIsVisible, timestamps = '{}' }) => {
 
+	const prevStatusRef = useRef(current.stageTrigger);
+	const showTimer  = prevStatusRef.current !== current.stageTrigger;
+
 	const { changeTime } = JSON.parse(timestamps) || {};
 
 	const { start, clear, value } = useTimer({
-		onFinish: () => setIsVisible(false)
+		onFinish: () => setIsVisible && setIsVisible(false)
 	})
 
 	useEffect(() => {
@@ -39,7 +41,7 @@ const Cell = ({ current, currentData, setIsVisible, timestamps = '{}' }) => {
 				{current?.title || currentData.title}
 			</div>
 			{
-				current?.stageTrigger && 
+				current?.stageTrigger  && (changeTime || showTimer) &&
 				<div className="relative p-[0.4rem]">
 					<i className="icon-ready text-Accent/Blue text-[2.4rem] ">
 					</i>

@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_userinfo_userinfos",
+  "info": {
+    "displayName": "userinfo"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "surname": {
+      "type": "string"
+    },
+    "login": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "company": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    }
+  }
+}

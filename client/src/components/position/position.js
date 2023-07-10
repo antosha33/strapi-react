@@ -10,7 +10,7 @@ import Checkbox from "../ui/checkbox/checkbox";
 import Cell from "../cell/cell";
 import dashbordStore from '../../store/dashbord'
 import OutsideAlerter from "../outsideAlerter/outsideAlerter";
-import Comment from "../comment/comment";
+import Comments from "../comments/comments";
 
 
 
@@ -57,7 +57,7 @@ function Position({
 	}
 
 	const onSelectPosition = () => {
-		dashbordStore.addPosition({positionStageId , positionId : id})
+		dashbordStore.addPosition({ positionStageId, positionId: id })
 	}
 
 	const onPositionHandler = () => {
@@ -136,29 +136,8 @@ function Position({
 			</Cell>
 			<Cell {...settings.code} >
 				<span className="">34543.34</span>
-				{comments.length > 0 &&
-					<div className="absolute right-0 top-0">
-						<i data-tooltip-id={'my-tooltip' + id} className="hover:cursor-pointer icon-comment text-Accent/Blue_Light"></i>
-						<div className="absolute z-30 left-[100%] bottom-[100%]">
-							<Tooltip
-								className="comment-tooltip"
-								openOnClick={true}
-								opacity="1"
-								style={{
-									backgroundColor: "#fff",
-
-									padding: 0,
-									boxShadow: 'none',
-
-								}}
-								id={'my-tooltip' + id} >
-								<Comment comments={comments}></Comment>
-							</Tooltip>
-
-						</div>
-
-					</div>
-
+				{comments?.length > 0 &&
+					<Comments comments={comments}></Comments>
 				}
 			</Cell>
 			<Cell {...settings.quantity}>{quantity}</Cell>

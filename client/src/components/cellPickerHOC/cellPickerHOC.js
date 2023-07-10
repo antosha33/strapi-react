@@ -19,7 +19,7 @@ function CellPickerHOC(renderItem, Wrapped) {
 			if (currentUser?.role?.toLowerCase() !== currentStage?.role?.toLowerCase()) {
 				setIsDisabled(false)
 				// setIsDisabled(true)
-			}else{
+			} else {
 				setIsDisabled(false)
 			}
 		}, [
@@ -41,16 +41,33 @@ function CellPickerHOC(renderItem, Wrapped) {
 					setIsDropDown(false)
 				}
 			}
-			scrollableDashbord.addEventListener('scroll', handler)
+			scrollableDashbord?.addEventListener('scroll', handler)
 			document.addEventListener('scroll', handler)
 			return () => {
-				scrollableDashbord.removeEventListener('scroll', handler)
+				scrollableDashbord?.removeEventListener('scroll', handler)
 			}
 		}, [isDropDown])
 
 		const openDropdown = (ev) => {
-			const dropdownHeight = dropdownRef.current.getBoundingClientRect().height
+			const dropdownHeight = dropdownRef.current.getBoundingClientRect().height;
 			const { x, y, height, width } = ev.currentTarget.getBoundingClientRect();
+			
+			// let target = dropdownRef.current
+			// const els = [];
+
+			// while (target) {
+			// 	els.unshift(target);
+			// 	target = target.parentNode;
+			// }
+
+			// els.forEach(x => {
+			// 	console.log(typeof x)
+				
+			// 	// console.log(els)
+			// 	// if(x.style?.fixed){
+			// 	// 	console.log('fixed')
+			// 	// }
+			// })
 
 			let top;
 
@@ -99,8 +116,8 @@ function CellPickerHOC(renderItem, Wrapped) {
 					<div
 						ref={dropdownRef}
 						className={`
-							${isDropDown ? 'visible' : 'invisible'}
-							fixed z-30
+							${isDropDown ? 'visible' : 'invisible pointer-events-none  left-0 top-0'}
+							fixed z-30 min-w-[200px]
 						`}
 
 						style={{

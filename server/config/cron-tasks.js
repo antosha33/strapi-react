@@ -13,7 +13,7 @@ module.exports = {
 			parser.getData();
 		},
 		options: {
-			rule: "*/10 * * * * ",
+			rule: "*/1 * * * * ",
 		},
 	},
 	closePositions: {

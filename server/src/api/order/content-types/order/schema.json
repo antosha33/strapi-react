@@ -12,9 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "username": {
-      "type": "string"
-    },
     "positions": {
       "type": "relation",
       "relation": "oneToMany",
@@ -30,6 +27,11 @@
     "shipped": {
       "type": "boolean",
       "default": false
+    },
+    "userinfo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "userinfo.userinfo"
     }
   }
 }

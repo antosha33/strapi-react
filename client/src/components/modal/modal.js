@@ -18,7 +18,7 @@ function Modal({ isOpen, title, children, closeModal }) {
 					alignItems: 'flex-start',
 					backgroundColor: 'rgba(	114, 112, 112, 0.6)',
 					overflow: 'auto',
-					padding: '1.75rem auto',
+
 					zIndex: 10,
 					top: '0',
 					left: '0',
@@ -33,7 +33,8 @@ function Modal({ isOpen, title, children, closeModal }) {
 					padding: '0px',
 					border: '0px',
 					background: 'transparent',
-					overflow: 'visible'
+					overflow: 'visible',
+					margin: '1.75rem auto',
 				}
 			}}
 
