@@ -12,8 +12,8 @@ const renderItem = (onClickHandler) => (item) =>
 		key={item.id} className="hover:opacity-60 ease-in-out duration-300 block px-[1.2rem] py-[1.2rem]">{item.title}
 	</span>;
 
-const Cell = ({ current, currentData, setIsVisible, timestamps = '{}' }) => {
-
+const Cell = ({ current, currentData, setIsVisible, timestamps = '{}', small }) => {
+	
 	const prevStatusRef = useRef(current.stageTrigger);
 	const showTimer  = prevStatusRef.current !== current.stageTrigger;
 
@@ -36,8 +36,10 @@ const Cell = ({ current, currentData, setIsVisible, timestamps = '{}' }) => {
 	return current ?
 		<div
 			style={{ background: current.color }}
-			className=" flex h-[100%] gap-[0.8rem] justify-between w-[100%]">
-			<div className="px-[1.2rem] py-[0.9rem] h-[100%]">
+			className="flex h-[100%] gap-[0.8rem] justify-between w-[100%]">
+			<div className={`
+				${small ? 'overflow-hidden text-ellipsis whitespace-nowrap' : ''}
+				px-[1.2rem] py-[0.9rem] h-[100%]`}>
 				{current?.title || currentData.title}
 			</div>
 			{

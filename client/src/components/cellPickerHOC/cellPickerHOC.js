@@ -6,7 +6,9 @@ import usersStore from "../../store/users";
 
 function CellPickerHOC(renderItem, Wrapped) {
 
-	return function CellPicker({ currentData, data, onSetData, ...props }) {
+	return function CellPicker({ currentData, isCurrentStage, data, onSetData, small, ...props }) {
+
+
 
 		const dropdownRef = useRef(null);
 		const [isDropDown, setIsDropDown] = useState(false);
@@ -16,15 +18,19 @@ function CellPickerHOC(renderItem, Wrapped) {
 		const { currentStage } = stageStore;
 
 		useEffect(() => {
-			if (currentUser?.role?.toLowerCase() !== currentStage?.role?.toLowerCase()) {
-				setIsDisabled(false)
-				// setIsDisabled(true)
+			if (
+				(currentUser?.role?.toLowerCase() !== currentStage?.role?.toLowerCase()) &&
+				(isCurrentStage !== undefined &&  isCurrentStage === false)
+			) {
+				// setIsDisabled(false)
+				setIsDisabled(true)
 			} else {
 				setIsDisabled(false)
 			}
 		}, [
 			currentUser.role,
-			currentStage.role
+			currentStage.role,
+			isCurrentStage
 		])
 
 		//не показываем выбранный элемент в дропдауне
@@ -50,24 +56,13 @@ function CellPickerHOC(renderItem, Wrapped) {
 
 		const openDropdown = (ev) => {
 			const dropdownHeight = dropdownRef.current.getBoundingClientRect().height;
-			const { x, y, height, width } = ev.currentTarget.getBoundingClientRect();
-			
-			// let target = dropdownRef.current
-			// const els = [];
-
-			// while (target) {
-			// 	els.unshift(target);
-			// 	target = target.parentNode;
-			// }
-
-			// els.forEach(x => {
-			// 	console.log(typeof x)
-				
-			// 	// console.log(els)
-			// 	// if(x.style?.fixed){
-			// 	// 	console.log('fixed')
-			// 	// }
-			// })
+			let { x, y, height, width } = ev.currentTarget.getBoundingClientRect();
+			const modal = ev.currentTarget.closest('.ReactModal__Content')
+			if (modal) {
+				const modalBox = modal.getBoundingClientRect();
+				x -= modalBox.x;
+				y -= modalBox.y;
+			}
 
 			let top;
 
@@ -83,6 +78,7 @@ function CellPickerHOC(renderItem, Wrapped) {
 				top,
 				width
 			})
+
 		}
 
 
@@ -110,9 +106,10 @@ function CellPickerHOC(renderItem, Wrapped) {
 					onClick={openDropdown}
 					className={`
 						${isDropDown ? 'shadow-default' : ''}
-						text-Regular(16_18) relative  w-[100%]
+						${small ? 'text-Regular(12_14) ' : 'text-Regular(16_18)'}
+						relative  w-[100%]
 					`}>
-					<Wrapped current={current} currentData={currentData} {...props}></Wrapped>
+					<Wrapped current={current} currentData={currentData} small={small} {...props}></Wrapped>
 					<div
 						ref={dropdownRef}
 						className={`

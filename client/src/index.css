@@ -44,6 +44,9 @@ code {
 	}
 }
 
+*{
+	user-select:none
+}
 
 @tailwind base;
 @tailwind components;

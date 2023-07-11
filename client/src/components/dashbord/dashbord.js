@@ -83,7 +83,7 @@ function Dashbord() {
 		if (id) {
 			getData();
 			getUsers();
-			intervalId.current = setInterval(getData, 50000);
+			intervalId.current = setInterval(() => getData(true), 5000);
 		}
 		return () => {
 			clearInterval(intervalId.current)
@@ -160,7 +160,6 @@ function Dashbord() {
 				users={users}
 				statuses={statuses}
 				status={currentStatus}
-				cPositionStageId={id}
 				comments={comments}
 				key={id}
 				onOrderDetail={onOrderDetail}
