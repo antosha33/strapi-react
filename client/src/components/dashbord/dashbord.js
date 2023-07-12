@@ -84,7 +84,6 @@ function Dashbord() {
 	useEffect(() => {
 		if (id) {
 			getData();
-
 			intervalId.current = setInterval(() => getData(true), 50000);
 		}
 		return () => {
@@ -154,7 +153,7 @@ function Dashbord() {
 	}
 
 
-	const render = ({ isUrgent, comments, stage: {role}, position, user, id, status: currentStatus, stageChangeTimeStamps }) => {
+	const render = ({ isUrgent, comments, stage: {id:stageId}, position, user, id, status: currentStatus, stageChangeTimeStamps }) => {
 
 		return (
 			<Position
@@ -173,40 +172,13 @@ function Dashbord() {
 				setComment={setComment}
 				getData={getData}
 				role={role}
+				stageId={stageId}
 			>
 			</Position>
 		)
 	}
 
 
-	// const sortBy = (items) => {
-	// 	if (!sort.key) return items;
-
-	// 	const { key, correction } = sort;
-
-	// 	const callback = (a, b) => {
-	// 		const getField = (obj) => {
-	// 			let field = obj;
-	// 			key.split('.').forEach(x => {
-	// 				if (field && field[x]) {
-	// 					field = field[x];
-	// 				}
-
-	// 			});
-	// 			return field;
-	// 		}
-	// 		a = getField(a)
-	// 		b = getField(b)
-	// 		if (a < b) {
-	// 			return -1 * correction
-	// 		}
-	// 		if (a > b) {
-	// 			return 1 * correction
-	// 		}
-	// 		return 0
-	// 	}
-	// 	return items.sort(callback);
-	// }
 
 
 	return (

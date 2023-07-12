@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "m_roles",
+  "info": {
+    "singularName": "m-role",
+    "pluralName": "m-roles",
+    "displayName": "MRole",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "stages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::stage.stage",
+      "mappedBy": "m_role"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "m_roles"
+    },
+    "godmod": {
+      "type": "boolean"
+    }
+  }
+}

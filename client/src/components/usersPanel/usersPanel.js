@@ -12,20 +12,20 @@ import useStorage from "../../hooks/storage.hook";
 const User = ({ username, name, active = false }) => {
 	return (
 		<div
-		className={`${!active ? 'hover:bg-Dominant/Dop hover:cursor-pointer' : ''} group p-[1.2rem] ease-in-out duration-300 bg-[#fff] `}>
-		<span className="w-[2.4rem]h - [2.4rem]"></span>
-		< div className="flex flex-col" >
-			<span className="text-Regular(14_16) text-Content/Dark mb-[2px]">{username}</span>
-			<div className="flex justify-between text-Regular(12_14) gap-[4rem]">
-				<span className={`${active ? 'text-Accent/Dark_Yellow' : ''}`}>{name}</span>
-				{active ?
-					<span className="text-Accent/Blue">Активен</span>
-					:
-					<span className="group-hover:opacity-100 ease-in-out duration-300 opacity-0 block rounded-[8px] border border-Accent/Green text-Regular(10_12) text-Accent/Green px-[0.6rem]">Выбрать</span>
-				}
+			className={`${!active ? 'hover:bg-Dominant/Dop hover:cursor-pointer' : ''} group p-[1.2rem] ease-in-out duration-300 bg-[#fff] `}>
+			<span className="w-[2.4rem]h - [2.4rem]"></span>
+			< div className="flex flex-col" >
+				<span className="text-Regular(14_16) text-Content/Dark mb-[2px]">{username}</span>
+				<div className="flex justify-between text-Regular(12_14) gap-[4rem]">
+					<span className={`${active ? 'text-Accent/Dark_Yellow' : ''}`}>{name}</span>
+					{active ?
+						<span className="text-Accent/Blue">Активен</span>
+						:
+						<span className="group-hover:opacity-100 ease-in-out duration-300 opacity-0 block rounded-[8px] border border-Accent/Green text-Regular(10_12) text-Accent/Green px-[0.6rem]">Выбрать</span>
+					}
+				</div>
 			</div>
 		</div>
-	</div>
 
 	)
 }
@@ -41,7 +41,7 @@ function UsersPanel() {
 
 	useEffect(() => {
 		const users = getData('users');
-		const current = users.find(x => x.active)
+		const current = users.find(x => x.active);
 		userStore.setCurrentUser(current);
 		const readyUsers = users.filter(x => !x.active);
 		setCandidates(readyUsers);
@@ -64,7 +64,7 @@ function UsersPanel() {
 				<div className="border border-Content/Border ">
 					<User
 						username={username}
-						name={role}
+						name={role?.name}
 						active={true}
 					></User>
 				</div>
@@ -82,7 +82,7 @@ function UsersPanel() {
 							>
 								<User
 									username={username}
-									name={role}
+									name={role?.name}
 								></User>
 							</div>
 

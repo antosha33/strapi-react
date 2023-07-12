@@ -36,17 +36,17 @@ function App() {
 
 	return (
 		<AuthContext.Provider value={{ authState, login, logout }}>
-		<AxiosProvider>
-			{authState.authenticated ?
-				<Layout>
-					<RouterProvider router={router} />
-				</Layout>
-				:
+			<AxiosProvider>
+				{authState.authenticated ?
+					<Layout>
+						<RouterProvider router={router} />
+					</Layout>
+					:
 
-				<Auth></Auth>
-			}
-		</AxiosProvider>
-	</AuthContext.Provider >
+					<Auth></Auth>
+				}
+			</AxiosProvider>
+		</AuthContext.Provider >
 	);
 }
 

@@ -1,10 +1,7 @@
 
 import { useContext } from 'react';
 import { AxiosContext } from '../context/request.context';
-import { AuthContext } from '../context/auth.context';
-
-import usersStore from '../store/users'
-
+const qs = require('qs');
 
 function useUsers() {
 
@@ -29,9 +26,20 @@ function useUsers() {
 		})
 	}
 
+
+
 	const getUsers = async () => {
+
+		const query = qs.stringify({
+			populate: {
+				m_roles: true,
+			},
+		}, {
+			encodeValuesOnly: true
+		});
+
 		return await authRequest({
-			url: 'users/?populate=role',
+			url: 'users/?' + query,
 		})
 	}
 
@@ -44,7 +52,7 @@ function useUsers() {
 		})
 	}
 
-	const saveSettings = async ({settings}) => {
+	const saveSettings = async ({ settings }) => {
 		return await authRequest({
 			method: 'PUT',
 			url: 'user/update',

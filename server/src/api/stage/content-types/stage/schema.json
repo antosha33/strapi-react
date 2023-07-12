@@ -46,6 +46,12 @@
     "endStage": {
       "type": "boolean",
       "default": false
+    },
+    "m_role": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::m-role.m-role",
+      "inversedBy": "stages"
     }
   }
 }

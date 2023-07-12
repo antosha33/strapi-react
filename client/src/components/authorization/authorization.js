@@ -8,6 +8,7 @@ import { simplifyStrapiObject } from "../../utils/simplifyStrapiObject";
 import { AuthContext } from "../../context/auth.context";
 import { AxiosContext } from '../../context/request.context';
 import useUsers from "../../hooks/users.hook";
+const qs = require('qs');
 
 
 function Authorization({ afterLogin }) {
@@ -40,13 +41,27 @@ function Authorization({ afterLogin }) {
 
 	const onSubmitHandler = async () => {
 		try {
-			const { jwt } = await authorize({
+			const { jwt, user: { username, id } } = await authorize({
 				identifier: credentials.login,
 				password: credentials.password
 			})
 
-			const data = await authRequest({
-				url: 'users/me?populate=role',
+
+			const query = qs.stringify({
+				populate: {
+					m_roles:{
+						populate: {
+							stages: true
+						}
+					},
+				},
+
+			}, {
+				encodeValuesOnly: true, // prettify URL
+			});
+
+			const { m_roles: roles } = await authRequest({
+				url: `users/${id}?` + query ,
 				headers: {
 					Authorization: `Bearer ${jwt}`
 				}
@@ -54,9 +69,9 @@ function Authorization({ afterLogin }) {
 
 			login({
 				accessToken: jwt,
-				username: data.username,
-				role: data.role.name,
-				id: data.id
+				username: username,
+				role: roles[0],
+				id
 			})
 
 			afterLogin && afterLogin();

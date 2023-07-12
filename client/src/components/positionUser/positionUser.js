@@ -1,5 +1,6 @@
 import CellPickerHOC from "../cellPickerHOC/cellPickerHOC";
 import usersStore from '../../store/users'
+import stageStore from '../../store/stage'
 
 const Cell = ({ current, currentData }) => {
 	return current ?
@@ -19,11 +20,8 @@ const UserCellPicker = CellPickerHOC(renderItem, Cell)
 function PositionUser({ onSetUserHandler, ...props }) {
 
 	if (!props.data) {
-		const users = usersStore.users.filter(x =>{
-			console.log(props.role)
-			return x.type?.toLowerCase() === props.role?.toLowerCase();
-		} );
-
+		const role = stageStore.stages.find(x => x.id == props.stageId)?.m_role;
+		const users = usersStore.users.filter(x => x.m_roles.find(y => y.id === role?.id));
 		props.data = users
 	}
 

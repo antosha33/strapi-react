@@ -17,7 +17,7 @@ function CellPickerHOC(renderItem, Wrapped) {
 
 		useEffect(() => {
 			if (
-				(currentUser?.role?.toLowerCase() !== currentStage?.role?.toLowerCase()) &&
+			
 				(isCurrentStage !== undefined &&  isCurrentStage === false)
 			) {
 				// setIsDisabled(false)

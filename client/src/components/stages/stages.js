@@ -7,13 +7,13 @@ import { useEffect } from "react";
 function Stages() {
 
 	const { stages = [] } = useStages();
-	const { currentStage:{id} } = stageStore;
+	const { currentStage: { id } } = stageStore;
 	const { role } = usersStore.currentUser;
 
 
 	useEffect(() => {
 		if (role && stages.length) {
-			const stage = stages.find(x => x.role?.toLowerCase() === role.toLowerCase());
+			const stage = stages.find(x => x?.id == role.stages[0]?.id);
 			stageStore.setCurrentStage(stage)
 			stageStore.setStages(stages)
 		}

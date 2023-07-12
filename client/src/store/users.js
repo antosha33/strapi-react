@@ -9,7 +9,7 @@ class Users {
 	}
 
 	setCurrentUser(user) {
-		this.currentUser = user
+		this.currentUser = user;
 	}
 
 	setUsers(users){

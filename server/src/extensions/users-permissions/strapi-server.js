@@ -36,7 +36,8 @@ module.exports = plugin => {
 									$eq: ctx.query.role
 								}
 							},
-						}
+						},
+						m_roles: true
 					}
 				}
 			);
@@ -46,7 +47,7 @@ module.exports = plugin => {
 				'plugin::users-permissions.user',
 				{
 					...ctx.params,
-					populate: ['role']
+					populate: ['role', 'm_roles']
 				}
 			);
 			ctx.body = users.map(user => sanitizeOutput(user));

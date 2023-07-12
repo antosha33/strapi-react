@@ -26,12 +26,12 @@ function Position({
 	users,
 	quantity,
 	positionStageId,
-	role,
 	status,
 	timestamps,
 	order,
 	setComment,
-	comments
+	comments,
+	stageId
 }) {
 
 
@@ -126,7 +126,7 @@ function Position({
 			</Cell>
 			<Cell {...settings.user}>
 				<PositionUser
-					role={role}
+					stageId={stageId}
 					currentData={user}
 					onSetData={onSetUser}
 				></PositionUser>
