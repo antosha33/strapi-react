@@ -1,8 +1,6 @@
 module.exports = (config, { strapi }) => {
 	return async (ctx, next) => {
-
 		const service = strapi.entityService;
-
 		// получаем stageId
 		const { id } = ctx.request.params;
 		// получаем текущую роль пользователя
