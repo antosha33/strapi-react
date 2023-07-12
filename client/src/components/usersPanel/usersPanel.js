@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import Authorization from "../authorization/authorization";
 import { AuthContext } from "../../context/auth.context";
 import Modal from "../modal/modal";
-import useUsers from "../../hooks/users.hook";
+import ConfirmModal from "../modals/confirmModal/confirmModal";
 import userStore from "../../store/users"
 import { observer } from "mobx-react-lite"
 import useStorage from "../../hooks/storage.hook";
@@ -33,6 +33,7 @@ const User = ({ username, name, active = false }) => {
 function UsersPanel() {
 
 	const [isModalOpened, setIsModalOpened] = useState(false);
+	const [isModalLogoutOpened, setIsModalLogoutOpened] = useState(false);
 	const { authState, login, logout } = useContext(AuthContext);
 	const { getData } = useStorage();
 	const { username, role } = userStore.currentUser;
@@ -52,11 +53,16 @@ function UsersPanel() {
 		login(props)
 	}
 
+	const onLogoutHandler = () => {
+		setIsModalLogoutOpened(false);
+		logout();
+	}
+
 
 	return (
 		<div>
 			<span
-				onClick={logout}
+				onClick={setIsModalLogoutOpened}
 				className="hover:cursor-pointer text-Regular(12_14) text-Content/Middle mb-[0.4rem] block">Выйти</span>
 			<div
 				onClick={() => setIsOtherShowed(!isOtherShowed)}
@@ -103,6 +109,16 @@ function UsersPanel() {
 					<Authorization
 						afterLogin={() => setIsModalOpened(false)}
 					></Authorization>
+				</Modal>
+				<Modal
+					isOpen={isModalLogoutOpened}
+					closeModal={() => setIsModalLogoutOpened(false)}
+				>
+					<ConfirmModal
+						onResolve={onLogoutHandler}
+						onReject={() => setIsModalOpened(false)}
+					>
+					</ConfirmModal>
 				</Modal>
 			</div>
 		</div>

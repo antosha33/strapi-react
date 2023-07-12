@@ -20,7 +20,7 @@ function CommentModal({ positionStageId, setCommentModal }) {
 			return;
 		}
 		await setComment({
-			roleOwner: currentUser.role,
+			roleOwner: currentUser.role.name,
 			nameOwner: currentUser.username,
 			'c_position_stage': positionStageId,
 			comment: textareaRef.current.value
