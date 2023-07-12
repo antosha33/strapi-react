@@ -32,6 +32,7 @@ function useDashbord() {
 
 		const query = qs.stringify({
 			populate: {
+				stage:true,
 				status: true,
 				user: true,
 				comments: {
@@ -52,7 +53,6 @@ function useDashbord() {
 			encodeValuesOnly: true, // prettify URL
 		});
 
-		console.log(sort.path)
 
 		return await authRequest({
 			url: 'c-position-stages?' + query,

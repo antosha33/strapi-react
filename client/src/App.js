@@ -1,4 +1,5 @@
 import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 import { AuthContext } from './context/auth.context';
 import {
@@ -34,23 +35,18 @@ function App() {
 
 
 	return (
-
 		<AuthContext.Provider value={{ authState, login, logout }}>
-			<AxiosProvider>
-				{authState.authenticated ?
-					<Layout>
-						<RouterProvider router={router} />
-					</Layout>
-					:
-					
-					<Auth></Auth>
-				}
-			</AxiosProvider>
-		</AuthContext.Provider >
+		<AxiosProvider>
+			{authState.authenticated ?
+				<Layout>
+					<RouterProvider router={router} />
+				</Layout>
+				:
 
-		// <ApolloProvider client={client}>
-
-		// </ApolloProvider>
+				<Auth></Auth>
+			}
+		</AxiosProvider>
+	</AuthContext.Provider >
 	);
 }
 

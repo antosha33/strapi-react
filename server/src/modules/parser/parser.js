@@ -123,7 +123,6 @@ class Parser {
 
 					//создаем сам заказ
 					Promise.all(stack).then(async (ev) => {
-						console.log('->>',userinfo)
 						const ids = ev.map(x => x.id);
 						if (ids.length) {
 							await strapiService.create('api::order.order', {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 
 import useOrder from "../../../hooks/order.hook";
@@ -11,6 +11,7 @@ import usePosition from "../../../hooks/position.hook";
 
 function OrderModal({ orderId }) {
 
+	const intervalId = useRef(null);
 	const { getOrder } = useOrder();
 	const { setUser, setStatus } = usePosition();
 	const { stages, currentStage: { statuses } } = stageStore;
@@ -18,47 +19,44 @@ function OrderModal({ orderId }) {
 	const [header, setHeader] = useState(['Название'])
 	const [loading, setLoading] = useState(false);
 
-	useEffect(() => {
+	const getData = async () => {
 
-		(async () => {
-			setLoading(true)
-			const { data } = await getOrder({
-				id: orderId,
-				currentStage: false
-			})
+		setLoading(true)
+		const { data } = await getOrder({
+			id: orderId,
+			currentStage: false
+		})
 
-			data.positions.forEach(x => {
-				const positonStages = stages.reduce((acc, curr) => {
-					acc.push({
-						id: curr.id,
-						item: x.c_position_stages.find(y => y.stage.id == curr.id)
-					})
-					return acc;
-				}, [])
-				x.stages = positonStages;
-			})
-
-			setData(data)
-
-			const options = data.positions.reduce((acc, curr) => {
-				acc.push('Название')
-				if (curr.c_position_stages) {
-					curr.c_position_stages.forEach(x => {
-						acc.push(x.status.title)
-					})
-				}
+		data.positions.forEach(x => {
+			const positonStages = stages.reduce((acc, curr) => {
+				acc.push({
+					id: curr.id,
+					item: x.c_position_stages.find(y => y.stage.id == curr.id)
+				})
 				return acc;
 			}, [])
+			x.stages = positonStages;
+		})
 
-			setHeader(options)
-			setLoading(false)
-		})();
+		setData(data)
 
+
+		setLoading(false)
+	}
+
+	useEffect(() => {
+		getData()
+		intervalId.current = setInterval(getData, 5000);
+		return () => {
+			console.log('clear')
+			clearInterval(intervalId.current)
+		}
 	}, [])
 
 	const onSetStatus = (positionStageId) => async (statusId) => {
 		await setStatus(positionStageId, statusId);
 	}
+
 
 
 	return (
@@ -105,6 +103,7 @@ function OrderModal({ orderId }) {
 										</Cell>
 										{stages.map(x =>
 											<Cell
+												key={x.id}
 												padding={false}
 												flex={false}
 												height="h-[8rem]"
@@ -117,7 +116,9 @@ function OrderModal({ orderId }) {
 									</tr>
 
 									{data.positions.map(x =>
-										<tr >
+										<tr
+											key={x.id}
+										>
 											<Cell
 												padding={false}
 												flex={false}
@@ -125,8 +126,10 @@ function OrderModal({ orderId }) {
 												className="p-[0.6rem] min-w-[13.5rem] text-Regular(12_14) border border-Content/Border">
 												<span className="line-clamp-3">{x.title}</span>
 											</Cell>
-											{x['stages'].map(({ item: {id, isCurrentStage, status = {}, user = {}, comments } = {} }) =>
+											{x['stages'].map(({ item: { id, isCurrentStage, status, user, comments, stageChangeTimeStamps } = {} }, index) =>
 												<Cell
+													disabled={!status}
+													key={index + (id || 0)}
 													padding={false}
 													flex={false}
 													height="h-[8rem]"
@@ -135,19 +138,20 @@ function OrderModal({ orderId }) {
 														<Comments comments={comments}></Comments>
 													}
 													<div className="flex flex-col gap-[0.8rem] max-w-[100%]">
-														<span className="line-clamp-1">{user?.username || 'Не выбран'}</span>
+														{/* <PositionUser
+															data={users}
+															currentData={user}
+															onSetData={() => {}}
+														></PositionUser> */}
 														<PositionStatus
 															className="text-Regular(12_14)"
-															data={statuses}
 															currentData={status}
 															small={true}
 															isCurrentStage={isCurrentStage}
 															onSetData={onSetStatus(id)}
-														// setIsVisible={setIsVisible}
-														// timestamps={timestamps}
+															timestamps={stageChangeTimeStamps}
 														></PositionStatus>
 													</div>
-
 												</Cell>
 											)}
 										</tr>

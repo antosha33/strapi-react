@@ -7,9 +7,7 @@ import usersStore from "../../store/users";
 function CellPickerHOC(renderItem, Wrapped) {
 
 	return function CellPicker({ currentData, isCurrentStage, data, onSetData, small, ...props }) {
-
-
-
+		
 		const dropdownRef = useRef(null);
 		const [isDropDown, setIsDropDown] = useState(false);
 		const [current, setCurrent] = useState(currentData);

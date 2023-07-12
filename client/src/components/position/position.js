@@ -26,7 +26,7 @@ function Position({
 	users,
 	quantity,
 	positionStageId,
-	statuses,
+	role,
 	status,
 	timestamps,
 	order,
@@ -126,7 +126,7 @@ function Position({
 			</Cell>
 			<Cell {...settings.user}>
 				<PositionUser
-					data={users}
+					role={role}
 					currentData={user}
 					onSetData={onSetUser}
 				></PositionUser>
@@ -144,13 +144,13 @@ function Position({
 			<Cell {...settings.order}>
 				<span
 					onClick={() => onOrderDetail(order.id)}
-					className="text-Accent/Blue text-Regular(16_18)">
+					className="text-Accent/Blue text-Regular(16_18) hover:cursor-pointer">
 					{order.orderId}
 				</span>
 			</Cell>
 			<Cell {...settings.status}>
 				<PositionStatus
-					data={statuses}
+					// data={statuses}
 					currentData={status}
 					onSetData={onSetStatus}
 					setIsVisible={setIsVisible}

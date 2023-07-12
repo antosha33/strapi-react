@@ -14,6 +14,7 @@ import ActionDropdown from '../actionDropdown/actionDropdown';
 import SortDropdown from '../sortDropdown/sortDropdown';
 import Settings from './settings/settings';
 import dashbordStore from '../../store/dashbord'
+import usersStore from '../../store/users'
 import Search from './search/search';
 import CommentModal from '../modals/commentModal/commentModal';
 import Loader from '../loader/loader';
@@ -66,7 +67,7 @@ function Dashbord() {
 	const [filter, setFilter] = useState(null);
 	const intervalId = useRef(null);
 	const { getDashbord } = useDashbord();
-	const { getUsersByRole } = useUsers();
+	const { getUsers } = useUsers();
 	const [items, setItems] = useState([]);
 	const [page, setPage] = useState(1);
 	const [meta, setMeta] = useState([]);
@@ -76,14 +77,15 @@ function Dashbord() {
 	const [commentModal, setCommentModal] = useState(false);
 	const { id, role, statuses } = stageStore.currentStage;
 	const { settings, sort } = dashbordStore;
+	
 	const [loading, setLoading] = useState(false);
 
 
 	useEffect(() => {
 		if (id) {
 			getData();
-			getUsers();
-			intervalId.current = setInterval(() => getData(true), 5000);
+
+			intervalId.current = setInterval(() => getData(true), 50000);
 		}
 		return () => {
 			clearInterval(intervalId.current)
@@ -93,6 +95,10 @@ function Dashbord() {
 	useEffect(() => {
 		setPage(1)
 	}, [id])
+
+	useEffect(() => {
+		getAllUsers();
+	}, [])
 
 	const getData = async (silent = false) => {
 		!silent && setLoading(true)
@@ -113,9 +119,9 @@ function Dashbord() {
 		!silent && setLoading(false)
 	}
 
-	const getUsers = async () => {
-		const data = await getUsersByRole(role);
-		setUsers(data)
+	const getAllUsers = async () => {
+		const data = await getUsers();
+		usersStore.setUsers(data);
 	}
 
 	const onPageChange = (page) => {
@@ -148,7 +154,7 @@ function Dashbord() {
 	}
 
 
-	const render = ({ isUrgent, comments, position, user, id, status: currentStatus, stageChangeTimeStamps }) => {
+	const render = ({ isUrgent, comments, stage: {role}, position, user, id, status: currentStatus, stageChangeTimeStamps }) => {
 
 		return (
 			<Position
@@ -166,6 +172,7 @@ function Dashbord() {
 				settings={settings}
 				setComment={setComment}
 				getData={getData}
+				role={role}
 			>
 			</Position>
 		)

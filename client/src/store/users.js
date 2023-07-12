@@ -13,7 +13,7 @@ class Users {
 	}
 
 	setUsers(users){
-		// this.users = user;
+		this.users = users;
 	}
 }
 

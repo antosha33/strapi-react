@@ -1,5 +1,5 @@
 import CellPickerHOC from "../cellPickerHOC/cellPickerHOC";
-
+import usersStore from '../../store/users'
 
 const Cell = ({ current, currentData }) => {
 	return current ?
@@ -8,15 +8,24 @@ const Cell = ({ current, currentData }) => {
 }
 
 const renderItem = (onClickHandler) => (item) =>
-<span
-	onClick={(ev) => {ev.stopPropagation();onClickHandler(item)}}
-	key={item.id} className="hover:opacity-60 ease-in-out duration-300 block px-[1.2rem] py-[1.2rem]">{item.username}
-</span>;
+	<span
+		onClick={(ev) => { ev.stopPropagation(); onClickHandler(item) }}
+		key={item.id} className="hover:opacity-60 ease-in-out duration-300 block px-[1.2rem] py-[1.2rem]">{item.username}
+	</span>;
 
 const UserCellPicker = CellPickerHOC(renderItem, Cell)
 
 
 function PositionUser({ onSetUserHandler, ...props }) {
+
+	if (!props.data) {
+		const users = usersStore.users.filter(x =>{
+			console.log(props.role)
+			return x.type?.toLowerCase() === props.role?.toLowerCase();
+		} );
+
+		props.data = users
+	}
 
 	return (
 		<UserCellPicker

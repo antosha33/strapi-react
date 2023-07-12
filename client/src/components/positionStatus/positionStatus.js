@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
-
 import useTimer from '../../hooks/timer.hook';
-
+import stageStore from '../../store/stage'
 import CellPickerHOC from "../cellPickerHOC/cellPickerHOC";
 
 
@@ -13,20 +12,21 @@ const renderItem = (onClickHandler) => (item) =>
 	</span>;
 
 const Cell = ({ current, currentData, setIsVisible, timestamps = '{}', small }) => {
-	
-	const prevStatusRef = useRef(current.stageTrigger);
-	const showTimer  = prevStatusRef.current !== current.stageTrigger;
 
 	const { changeTime } = JSON.parse(timestamps) || {};
-
-	const { start, clear, value } = useTimer({
-		onFinish: () => setIsVisible && setIsVisible(false)
+	const { start, clear, value, isFinished } = useTimer({
+		onFinish: () => {
+			setIsVisible && setIsVisible(false);
+		}
 	})
 
 	useEffect(() => {
 		if (current?.stageTrigger) {
-			const diff = ((changeTime - new Date().getTime()) / 1000) > 0 ? Math.ceil((changeTime - new Date().getTime()) / 1000) : 0
-			start(diff || current.triggerTimeout)
+			const diff = ((changeTime - new Date().getTime()) / 1000) > 0 ? Math.ceil((changeTime - new Date().getTime()) / 1000) : 0;
+			if (changeTime && changeTime < new Date().getTime()) return;
+			start(diff || current.triggerTimeout);
+		} else {
+			clear();
 		}
 		return () => {
 			clear()
@@ -40,14 +40,20 @@ const Cell = ({ current, currentData, setIsVisible, timestamps = '{}', small }) 
 			<div className={`
 				${small ? 'overflow-hidden text-ellipsis whitespace-nowrap' : ''}
 				px-[1.2rem] py-[0.9rem] h-[100%]`}>
-				{current?.title || currentData.title}
+				{current?.title || currentData?.title}
 			</div>
 			{
-				current?.stageTrigger  && (changeTime || showTimer) &&
+				!isFinished && !!value &&
 				<div className="relative p-[0.4rem]">
-					<i className="icon-ready text-Accent/Blue text-[2.4rem] ">
+					<i className={`
+							 icon-ready text-Accent/Blue
+							${small ? 'text-[2rem]' : 'text-[2.4rem]'}
+						`}>
 					</i>
-					<span className='absolute right-[0.9rem] top-[1.3rem] text-Accent/Blue text-[1.2rem]'>{value}</span>
+					<span className={`
+						absolute right-[0.9rem] top-[1.3rem] text-Accent/Blue 
+						${small ? 'text-[1rem]' : 'text-[1.2rem]'} 
+						`}>{value}</span>
 				</div>
 
 			}
@@ -59,6 +65,10 @@ const Cell = ({ current, currentData, setIsVisible, timestamps = '{}', small }) 
 const PositonCellPicker = CellPickerHOC(renderItem, Cell)
 
 function PositionStatus({ ...props }) {
+	if (!props.data) {
+		const stage = stageStore.stages.find(x => x.statuses.find(y => y.id == props.currentData.id));
+		props.data = stage.statuses
+	}
 	return (
 		<PositonCellPicker
 			{...props}
