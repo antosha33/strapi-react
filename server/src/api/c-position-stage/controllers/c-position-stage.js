@@ -42,10 +42,9 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 
 	async setPositionsToCanceled(ctx) {
 		const { data } = ctx.request.body;
-		const positionStageIds = data.map(x => x.positionStageId)
 		const stack = [];
 
-		positionStageIds.forEach(x => {
+		data.forEach(x => {
 			ctx.request.body = null;
 			ctx.params.nextSteps = [12];
 			ctx.params.id = x;
@@ -60,7 +59,7 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 		})
 
 		return Promise.all(stack).then(async () => {
-			return await strapi.service('api::c-position-stage.c-position-stage').updateById(positionStageIds, {
+			return await strapi.service('api::c-position-stage.c-position-stage').updateById(data, {
 				isCurrentStage: false
 			})
 		})
@@ -92,7 +91,12 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 
 	},
 
-
+	async setUrgentStage(ctx) {
+		const { data } = ctx.request.body;
+		return await strapi.service('api::c-position-stage.c-position-stage').updateById(data, {
+			isUrgent: true
+		})
+	},
 
 	async updateStatus(ctx) {
 		const { data } = ctx.request.body;
@@ -167,9 +171,31 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 				//снимаем с текущего этапа
 				if (data) {
 					data.isCurrentStage = false;
+					data.passed = true;
 					data.timeoutId = null;
 				}
 
+
+				//найдем позицию на следующем этапе
+				const positionAtStages = await strapi.entityService.findMany('api::c-position-stage.c-position-stage', {
+					populate: {
+						stage: {
+							filters: {
+								id: {
+									$eq: nextStage.id
+								}
+							}
+						},
+						position: {
+							filters: {
+								id: {
+									$eq: position.id
+								}
+							}
+						}
+					}
+				});
+				const { id, isUrgent } = positionAtStages.find(x => x.position && x.stage);
 
 				//определим начальный status позиции
 				const statuses = await strapi.entityService.findMany('api::status.status', {
@@ -189,16 +215,14 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 
 				const status = statuses.find(x => x.stage)
 
-				//создаем новою позицию на другом этапе
-				await strapi.entityService.create('api::c-position-stage.c-position-stage', {
+				//обновляем состояние позиции на след этапе (простави срочность этапа в зависимости от этапа или всей позиции)
+				await strapi.entityService.update('api::c-position-stage.c-position-stage',id, {
 					data: {
-						stage: nextStage.id,
-						position: position.id,
-						status: status?.id,
-						isUrgent: position.isUrgent
+						isCurrentStage: true,
+						status: status.id,
+						isUrgent: isUrgent || position.isUrgent
 					}
 				});
-
 
 				if (data) {
 					await super.update(ctx);

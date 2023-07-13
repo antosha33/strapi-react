@@ -11,7 +11,7 @@ class Dashbord {
 	}
 
 	addPosition(item) {
-		const isExist = this.selectedPositions.findIndex(x => x.positionStageId === item.positionStageId);
+		const isExist = this.selectedPositions.indexOf(item)
 		if (isExist > -1) {
 			this.selectedPositions.splice(isExist, 1)
 		} else {

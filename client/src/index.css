@@ -24,7 +24,7 @@ body::-webkit-scrollbar-thumb {
 
 .overflow-auto::-webkit-scrollbar {
 	width: 5px; /* ширина для вертикального скролла */
-	height: 5px; /* высота для горизонтального скролла */
+	height: 15px; /* высота для горизонтального скролла */
 	border-radius: 0px;
 	background-color: #f5f5f5;
 }

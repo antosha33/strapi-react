@@ -16,9 +16,6 @@
       "type": "string",
       "required": true
     },
-    "date": {
-      "type": "datetime"
-    },
     "c_position_stage": {
       "type": "relation",
       "relation": "manyToOne",

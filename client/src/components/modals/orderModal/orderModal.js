@@ -6,6 +6,7 @@ import Loader from "../../loader/loader";
 import Cell from '../../cell/cell';
 import stageStore from "../../../store/stage";
 import PositionStatus from "../../positionStatus/positionStatus";
+import PositionUser from "../../positionUser/positionUser";
 import Comments from "../../comments/comments";
 import usePosition from "../../../hooks/position.hook";
 
@@ -48,7 +49,6 @@ function OrderModal({ orderId }) {
 		getData()
 		intervalId.current = setInterval(getData, 5000);
 		return () => {
-			console.log('clear')
 			clearInterval(intervalId.current)
 		}
 	}, [])
@@ -57,7 +57,9 @@ function OrderModal({ orderId }) {
 		await setStatus(positionStageId, statusId);
 	}
 
-
+	const onSetUser = (userId) => async (positionStageId) => {
+		await setUser(positionStageId, userId);
+	}
 
 	return (
 		<div className="w-[90vw] max-w-[180rem] min-h-[50rem]">
@@ -126,33 +128,33 @@ function OrderModal({ orderId }) {
 												className="p-[0.6rem] min-w-[13.5rem] text-Regular(12_14) border border-Content/Border">
 												<span className="line-clamp-3">{x.title}</span>
 											</Cell>
-											{x['stages'].map(({ item: { id, isCurrentStage, status, user, comments, stageChangeTimeStamps } = {} }, index) =>
-												<Cell
-													disabled={!status}
-													key={index + (id || 0)}
-													padding={false}
-													flex={false}
-													height="h-[8rem]"
-													className="p-[0.6rem] min-w-[13.5rem] text-Regular(12_14) border border-Content/Border relative">
-													{comments?.length > 0 &&
-														<Comments comments={comments}></Comments>
-													}
-													<div className="flex flex-col gap-[0.8rem] max-w-[100%]">
-														{/* <PositionUser
-															data={users}
-															currentData={user}
-															onSetData={() => {}}
-														></PositionUser> */}
-														<PositionStatus
-															className="text-Regular(12_14)"
-															currentData={status}
-															small={true}
-															isCurrentStage={isCurrentStage}
-															onSetData={onSetStatus(id)}
-															timestamps={stageChangeTimeStamps}
-														></PositionStatus>
-													</div>
-												</Cell>
+											{x['stages'].map(({ id: stageId, item: { id, isCurrentStage, user, status, comments, stageChangeTimeStamps } = {} }, index) => <Cell
+												disabled={!status}
+												key={index + (id || 0)}
+												padding={false}
+												flex={false}
+												height="h-[8rem]"
+												className="p-[0.6rem] min-w-[13.5rem] text-Regular(12_14) border border-Content/Border relative">
+												{comments?.length > 0 &&
+													<Comments comments={comments}></Comments>
+												}
+												<div className="flex flex-col gap-[0.8rem] max-w-[100%]">
+													<PositionUser
+														stageId={stageId}
+														currentData={user}
+														onSetData={onSetUser(user?.id)}
+													></PositionUser>
+													<PositionStatus
+														className="text-Regular(12_14)"
+														currentData={status}
+														small={true}
+														isCurrentStage={isCurrentStage}
+														onSetData={onSetStatus(id)}
+														timestamps={stageChangeTimeStamps}
+													></PositionStatus>
+												</div>
+											</Cell>
+
 											)}
 										</tr>
 									)}

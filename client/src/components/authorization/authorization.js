@@ -92,11 +92,14 @@ function Authorization({ afterLogin }) {
 			<div className="p-[5rem] bg-Dominant/Dop w-[62.6rem] ">
 				<div className="flex flex-col gap-[2.6rem]">
 					<Input
+						icon="icon-user"
 						onInput={onLoginHandler}
 						label="Введите ваш логин"
 						placeholder="Введите ваш логин"
 					></Input>
 					<Input
+						icon="icon-lock"
+						password={true}
 						onInput={onPasswordHandler}
 						label="Введите ваш пароль"
 						placeholder="Введите ваш пароль"

@@ -7,28 +7,31 @@ import usersStore from "../../store/users";
 function CellPickerHOC(renderItem, Wrapped) {
 
 	return function CellPicker({ currentData, isCurrentStage, data, onSetData, small, ...props }) {
-		
+
 		const dropdownRef = useRef(null);
 		const [isDropDown, setIsDropDown] = useState(false);
 		const [current, setCurrent] = useState(currentData);
 		const [isDisabled, setIsDisabled] = useState(true);
-		const { currentUser } = usersStore;
-		const { currentStage } = stageStore;
+		const { currentUser: { role } } = usersStore;
+		const { stages } = stageStore;
+		const stage = stages.find(x => x.statuses.find(x => x?.id === currentData?.id));
+
+
 
 		useEffect(() => {
-			if (
-			
-				(isCurrentStage !== undefined &&  isCurrentStage === false)
-			) {
-				// setIsDisabled(false)
-				setIsDisabled(true)
+
+			const isRoleFitStage = role.godmod || role.stages.find(x => x?.id === stage?.id);
+			if ((isCurrentStage !== undefined && isCurrentStage === false)) {
+				return setIsDisabled('Невозможно внести изменения на предыдущем этапе')
+			} else if (!isRoleFitStage && stage) {
+				return setIsDisabled('Недостаточная роль')
 			} else {
 				setIsDisabled(false)
 			}
 		}, [
-			currentUser.role,
-			currentStage.role,
-			isCurrentStage
+			role,
+			isCurrentStage,
+			stage,
 		])
 
 		//не показываем выбранный элемент в дропдауне
@@ -97,15 +100,21 @@ function CellPickerHOC(renderItem, Wrapped) {
 		return (
 			<OutsideAlerter
 				onEvent={closeDropdown}
+				data-tooltip-hidden={!isDisabled}
+				data-tooltip-id={"role-alert"}
+				data-tooltip-content={isDisabled}
+				data-tooltip-place="top"
 				className={`
-					${isDisabled ? 'pointer-events-none' : 'hover:cursor-pointer'} w-[100%] flex self-stretch
+					w-[100%] flex self-stretch
 				`}>
 				<div
 					onClick={openDropdown}
 					className={`
+						${isDisabled ? 'pointer-events-none' : 'hover:cursor-pointer'} 
 						${isDropDown ? 'shadow-default' : ''}
 						${small ? 'text-Regular(12_14) ' : 'text-Regular(16_18)'}
-						relative  w-[100%]
+						relative 
+						w-[100%]
 					`}>
 					<Wrapped current={current} currentData={currentData} small={small} {...props}></Wrapped>
 					<div
@@ -128,6 +137,7 @@ function CellPickerHOC(renderItem, Wrapped) {
 					</div>
 
 				</div>
+
 			</OutsideAlerter>
 
 

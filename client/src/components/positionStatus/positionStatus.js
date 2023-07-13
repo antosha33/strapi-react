@@ -35,6 +35,7 @@ const Cell = ({ current, currentData, setIsVisible, timestamps = '{}', small }) 
 
 	return current ?
 		<div
+
 			style={{ background: current.color }}
 			className="flex h-[100%] gap-[0.8rem] justify-between w-[100%]">
 			<div className={`
@@ -66,8 +67,12 @@ const PositonCellPicker = CellPickerHOC(renderItem, Cell)
 
 function PositionStatus({ ...props }) {
 	if (!props.data) {
-		const stage = stageStore.stages.find(x => x.statuses.find(y => y.id == props.currentData.id));
-		props.data = stage.statuses
+		const stage = stageStore.stages.find(x => x.statuses.find(y => y.id == props?.currentData?.id));
+		if (!stage) {
+			return null
+		} else {
+			props.data = stage.statuses
+		}
 	}
 	return (
 		<PositonCellPicker

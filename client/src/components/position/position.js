@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react-lite";
-import { Tooltip } from 'react-tooltip'
+
 
 
 import PositionStatus from "../positionStatus/positionStatus";
@@ -39,7 +39,7 @@ function Position({
 	const { setUser, setStatus } = usePosition();
 	const [isVisible, setIsVisible] = useState(true);
 	const [actionsPanelOpen, setActionsPanelOpen] = useState(false);
-	const isSelected = dashbordStore.getIsPositionsSelected(id);
+	const isSelected = dashbordStore.getIsPositionsSelected(positionStageId);
 	const [active, setIsActive] = useState(false);
 	const [extra, setExtra] = useState(false);
 
@@ -57,7 +57,7 @@ function Position({
 	}
 
 	const onSelectPosition = () => {
-		dashbordStore.addPosition({ positionStageId, positionId: id })
+		dashbordStore.addPosition(positionStageId)
 	}
 
 	const onPositionHandler = () => {
@@ -65,7 +65,7 @@ function Position({
 	}
 
 	const onSetCommentHandler = () => {
-		setComment(positionStageId)
+		setComment(id)
 	}
 
 
@@ -94,9 +94,7 @@ function Position({
 			}
 		}
 	}, [positionRef])
-
-
-
+	
 	if (!isVisible) return null;
 	return (
 		<OutsideAlerter

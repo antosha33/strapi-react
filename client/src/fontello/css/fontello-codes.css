@@ -10,3 +10,8 @@
 .icon-arrow:before { content: '\e808'; } /* '' */
 .icon-arrow-right:before { content: '\e809'; } /* '' */
 .icon-ready:before { content: '\e80a'; } /* '' */
+.icon-times-circle:before { content: '\e80b'; } /* '' */
+.icon-fcheck-circle:before { content: '\e80c'; } /* '' */
+.icon-lock:before { content: '\e828'; } /* '' */
+.icon-eye:before { content: '\e829'; } /* '' */
+.icon-user:before { content: '\e82a'; } /* '' */

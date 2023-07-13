@@ -16,7 +16,7 @@ function DropdownItem({ title, onClick }) {
 function ActionDropdown({ onEvent }) {
 
 
-	const { setPositionsToUrgent, setPositionsToCanceled } = usePosition();
+	const { setStagesToUrgent, setPositionsToCanceled } = usePosition();
 
 
 
@@ -26,7 +26,7 @@ function ActionDropdown({ onEvent }) {
 	}
 
 	const setUrgent = async () => {
-		await setPositionsToUrgent(dashbordStore.getSelected());
+		await setStagesToUrgent(dashbordStore.getSelected());
 		finishAction()
 	}
 

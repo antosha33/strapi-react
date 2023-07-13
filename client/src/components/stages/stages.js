@@ -32,7 +32,7 @@ function Stages() {
 					key={x.id}
 					className={`
                         ${x.id == id ? 'bg-Accent/Yellow' : 'bg-Dominant/Dop'}
-                        p-[0.5rem] text-center flex-auto w-[12.6rem] h-[4.4rem]  border border-Content/Border flex items-center justify-center
+                        hover:cursor-pointer p-[0.5rem] text-center flex-auto w-[12.6rem] h-[4.4rem]  border border-Content/Border flex items-center justify-center
                     `}>
 					<div className="text-Regular(14_16)">{x.title}</div>
 				</div>

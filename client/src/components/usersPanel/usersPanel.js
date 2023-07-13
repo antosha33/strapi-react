@@ -7,6 +7,7 @@ import ConfirmModal from "../modals/confirmModal/confirmModal";
 import userStore from "../../store/users"
 import { observer } from "mobx-react-lite"
 import useStorage from "../../hooks/storage.hook";
+import OutsideAlerter from '../outsideAlerter/outsideAlerter'
 
 
 const User = ({ username, name, active = false }) => {
@@ -60,67 +61,75 @@ function UsersPanel() {
 
 
 	return (
-		<div>
+		<div
+			onClick={(ev) => ev.stopPropagation()}
+		>
 			<span
 				onClick={setIsModalLogoutOpened}
 				className="hover:cursor-pointer text-Regular(12_14) text-Content/Middle mb-[0.4rem] block">Выйти</span>
-			<div
-				onClick={() => setIsOtherShowed(!isOtherShowed)}
-				className="w-[32.8rem] relative">
-				<div className="border border-Content/Border ">
-					<User
-						username={username}
-						name={role?.name}
-						active={true}
-					></User>
-				</div>
-				<div className={`${isOtherShowed ? 'opacity-100 translate-y-0 duration-300 ease-in-out visible' : 'opacity-0 translate-y-[10%] invisible'} z-20  absolute  top-[100%] left-0 right-0 bg-white border border-Content/Border border-t-0`}>
-					<div className="max-h-[30rem] overflow-auto">
-						{candidates.map(({ accessToken, username, role, id }) =>
-							<div
-								key={accessToken}
-								onClick={() => onLoginHandler({
-									accessToken,
-									id,
-									username,
-									role
-								})}
-							>
-								<User
-									username={username}
-									name={role?.name}
-								></User>
-							</div>
-
-						)}
+			<OutsideAlerter
+				onEvent={() => setIsOtherShowed(false)}
+			>
+				<div
+					onClick={() => setIsOtherShowed(true)}
+					className="w-[32.8rem] relative hover:cursor-pointer">
+					<div className="border border-Content/Border ">
+						<User
+							username={username}
+							name={role?.name}
+							active={true}
+						></User>
 					</div>
-					<div className="p-[1.2rem] hover:cursor-pointer">
-						<span className="w-[2.4rem]h - [2.4rem]"></span>
-						<span
-							onClick={() => setIsModalOpened(true)}
-							className="text-Regular(14_16) text-Accent/Blue">Добавить нового пользователя</span>
+					<div className={`${isOtherShowed ? 'opacity-100 translate-y-0 duration-300 ease-in-out visible' : 'opacity-0 translate-y-[10%] invisible'} z-20  absolute  top-[100%] left-0 right-0 bg-white border border-Content/Border border-t-0`}>
+						<div className="max-h-[30rem] overflow-auto">
+							{candidates.map(({ accessToken, username, role, id }) =>
+								<div
+									key={accessToken}
+									onClick={() => onLoginHandler({
+										accessToken,
+										id,
+										username,
+										role
+									})}
+								>
+									<User
+										username={username}
+										name={role?.name}
+									></User>
+								</div>
+
+							)}
+						</div>
+						<div className="p-[1.2rem] hover:cursor-pointer">
+							<span className="w-[2.4rem]h - [2.4rem]"></span>
+							<span
+								onClick={() => setIsModalOpened(true)}
+								className="text-Regular(14_16) text-Accent/Blue">Добавить нового пользователя</span>
+						</div>
+
 					</div>
+					<Modal
+						isOpen={!!isModalOpened}
+						closeModal={() => setIsModalOpened(false)}
+					>
+						<Authorization
+							afterLogin={() => setIsModalOpened(false)}
+						></Authorization>
+					</Modal>
 
 				</div>
-				<Modal
-					isOpen={isModalOpened}
-					closeModal={() => setIsModalOpened(false)}
-				>
-					<Authorization
-						afterLogin={() => setIsModalOpened(false)}
-					></Authorization>
-				</Modal>
-				<Modal
-					isOpen={isModalLogoutOpened}
+			</OutsideAlerter>
+			<Modal
+					isOpen={!!isModalLogoutOpened}
 					closeModal={() => setIsModalLogoutOpened(false)}
 				>
 					<ConfirmModal
 						onResolve={onLogoutHandler}
-						onReject={() => setIsModalOpened(false)}
+						onReject={() => setIsModalLogoutOpened(false)}
 					>
 					</ConfirmModal>
 				</Modal>
-			</div>
+
 		</div>
 
 

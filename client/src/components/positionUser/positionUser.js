@@ -22,6 +22,7 @@ function PositionUser({ onSetUserHandler, ...props }) {
 	if (!props.data) {
 		const role = stageStore.stages.find(x => x.id == props.stageId)?.m_role;
 		const users = usersStore.users.filter(x => x.m_roles.find(y => y.id === role?.id));
+		console.log(role)
 		props.data = users
 	}
 

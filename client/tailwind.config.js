@@ -32,12 +32,12 @@ module.exports = {
 			fontSize: {
 				'Regular(14_16)': ['1.4rem', '1.6rem'],
 				'Regular(16_18)': ['1.6rem', '1.8rem'],
-				'Regular(16_20)': ['16px', '20px'],
-				'Regular(18_24)': ['18px', '24px'],
+				'Regular(16_20)': ['1.6rem', '2.0rem'],
+				'Regular(18_24)': ['1.8rem', '2.4rem'],
 				'Regular(12_14)': ['1.2rem', '1.4rem'],
-				'Regular(10_12)': ['10px', '12px'],
-				'Regular(24_30)': ['24px', '30px'],
-				'Regular(38_42)': ['38px', '42px'],
+				'Regular(10_12)': ['1rem', '1.2rem'],
+				'Regular(24_30)': ['2.4rem', '3rem'],
+				'Regular(38_42)': ['3.8rem', '4.2rem'],
 				'Regular(48_52)': ['4.8rem', '5.2rem'],
 			}
 		},

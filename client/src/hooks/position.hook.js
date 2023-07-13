@@ -46,6 +46,14 @@ function usePosition() {
 		})
 	}
 
+	const setStagesToUrgent = async (ids) => {
+		return await authRequest({
+			method: 'PUT',
+			url: 'c-position-stages/setUrgentStage',
+			data: ids
+		})
+	}
+
 	const setPositionsToCanceled = async (ids) => {
 		return await authRequest({
 			method: 'POST',
@@ -67,6 +75,7 @@ function usePosition() {
 		setUser,
 		setStatus,
 		setPositionsToUrgent,
+		setStagesToUrgent,
 		setComment,
 		setPositionsToCanceled
 	}

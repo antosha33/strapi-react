@@ -20,8 +20,11 @@ function DropdownHOC({ title, items }) {
 		return (
 			<span
 				key={title}
-				onClick={() => onEvent() && closeDropdown()}
-				className="block px-[1.2rem] py-[1.2rem] text-Regular(16_18) flex gap-[0.8rem] items-center">
+				onClick={() => {
+					onEvent();
+					closeDropdown()
+				}}
+				className="hover:bg-Content/Border ease-in-out duration-300 hover:cursor-pointer block px-[1.2rem] py-[1.2rem] text-Regular(16_18) flex gap-[0.8rem] items-center">
 				{color && <span
 					style={{background: color}}
 					className={`w-[1.4rem] h-[1.4rem] rounded-[50%]`}></span>}
@@ -31,7 +34,6 @@ function DropdownHOC({ title, items }) {
 			</span>
 		)
 	}
-
 
 	return (
 		<OutsideAlerter onEvent={closeDropdown} className="flex self-stretch">

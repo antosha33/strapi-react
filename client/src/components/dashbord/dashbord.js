@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
-
+import { Tooltip } from 'react-tooltip'
 import { observer } from "mobx-react-lite";
 import useDashbord from '../../hooks/dashbord.hook';
 import stageStore from '../../store/stage'
@@ -77,7 +77,7 @@ function Dashbord() {
 	const [commentModal, setCommentModal] = useState(false);
 	const { id, role, statuses } = stageStore.currentStage;
 	const { settings, sort } = dashbordStore;
-	
+
 	const [loading, setLoading] = useState(false);
 
 
@@ -143,8 +143,8 @@ function Dashbord() {
 		return Object.entries(group);
 	}
 
-	const setComment = (stageId) => {
-		setCommentModal(stageId);
+	const setComment = (positionId) => {
+		setCommentModal(positionId);
 	}
 
 	const closeCommentModalAndReftesh = () => {
@@ -153,7 +153,7 @@ function Dashbord() {
 	}
 
 
-	const render = ({ isUrgent, comments, stage: {id:stageId}, position, user, id, status: currentStatus, stageChangeTimeStamps }) => {
+	const render = ({ isUrgent, comments, stage: { id: stageId }, position, user, id, status: currentStatus, stageChangeTimeStamps }) => {
 
 		return (
 			<Position
@@ -249,7 +249,7 @@ function Dashbord() {
 				<Container>
 					<div className="p-[1.2rem] bg-white flex relative">
 						<div className="w-[50%]">
-							<ActionDropdown onEvent={() =>getData(true)}></ActionDropdown>
+							<ActionDropdown onEvent={() => getData(true)}></ActionDropdown>
 						</div>
 						<div className="w-[50%] ">
 							<Pagination {...meta} onPageChange={onPageChange}></Pagination>
@@ -267,8 +267,16 @@ function Dashbord() {
 				closeModal={() => setCommentModal(false)}
 				isOpen={!!commentModal}
 			>
-				<CommentModal setCommentModal={closeCommentModalAndReftesh} positionStageId={commentModal}></CommentModal>
+				<CommentModal setCommentModal={closeCommentModalAndReftesh} positionId={commentModal}></CommentModal>
 			</Modal>
+			<Tooltip
+				style={{
+					zIndex:1000,
+					fontSize: '14px'
+				}}
+				openOnClick={true}
+				id={'role-alert'}
+			></Tooltip>
 		</>
 
 	);

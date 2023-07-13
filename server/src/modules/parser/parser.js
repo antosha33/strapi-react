@@ -57,6 +57,9 @@ class Parser {
 
 					const stack = [];
 
+					//получим все возможные этапы
+					const stages = await strapiService.findMany('api::stage.stage');
+
 					//создаем позиции заказа
 					positions.forEach(({ id, title, quantity }) => {
 						stack.push(
@@ -68,12 +71,9 @@ class Parser {
 								//СМОДЕЛИРУЕМ СИТУАЦИЮ ЧТО У ПОЗИЦИИ ЕСТЬ/НЕТ ПЕЧАТИ
 								const HAS_STAMP = true;
 
-								//определим налальный stage позиции
-								const [stage] = await strapiService.findMany('api::stage.stage', {
-									filters: {
-										step: HAS_STAMP ? 1 : 3
-									}
-								})
+								//определим налальный этап позиции
+								const stage = stages.find(x => x.step === HAS_STAMP ? 1 : 3)
+
 
 								//определим налальный status позиции
 								const statuses = await strapiService.findMany('api::status.status', {
@@ -106,14 +106,30 @@ class Parser {
 									}
 								})
 
-								await strapiService.create('api::c-position-stage.c-position-stage', {
-									data: {
-										isCurrentStage: true,
-										stage: stageId,
-										status: statusId,
-										position: result.id
+
+								//пройдемся по все этапам и создадим позиции на каждом
+								for (const {id} of stages) {
+									if(stageId === id){
+										//если это стартовый этап то прокиним статус и зафлагуем что это текущий этап
+										await strapiService.create('api::c-position-stage.c-position-stage', {
+											data: {
+												isCurrentStage: true,
+												stage: stageId,
+												status: statusId,
+												position: result.id
+											}
+										})
+									}else{
+										await strapiService.create('api::c-position-stage.c-position-stage', {
+											data: {
+												isCurrentStage: false,
+												passed:false,
+												stage: id,
+												position: result.id
+											}
+										})
 									}
-								})
+								}
 
 								resolve(result)
 							})
@@ -146,11 +162,11 @@ Parser.prepareOrderData = ({
 	data: { orders },
 }) => {
 	const result = Object.entries(orders).reduce((
-		acc, 
-		[id, 
-			{ ORDER_DATA : {DATE_STATUS_SHORT, USER_NAME, USER_EMAIL, USER_LAST_NAME}, ORDER_ITEMS_DATA }
+		acc,
+		[id,
+			{ ORDER_DATA: { DATE_STATUS_SHORT, USER_NAME, USER_EMAIL, USER_LAST_NAME }, ORDER_ITEMS_DATA }
 		]
-		) => {
+	) => {
 
 		const item = {
 			id,

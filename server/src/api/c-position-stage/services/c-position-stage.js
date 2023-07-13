@@ -14,7 +14,7 @@ module.exports = createCoreService('api::c-position-stage.c-position-stage', ({ 
 					$in: ids
 				}
 			},
-			data: data,
+			data,
 		});
 	}
 }));
