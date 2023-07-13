@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Tooltip } from 'react-tooltip'
 import Comment from "../comment/comment";
 import OutsideAlerter from '../outsideAlerter/outsideAlerter'
@@ -7,11 +7,14 @@ import OutsideAlerter from '../outsideAlerter/outsideAlerter'
 
 function Comments({ comments }) {
 
-	const [isOpen, setIsOpen] = useState(false)
+	const [isOpen, setIsOpen] = useState(false);
+	const closeComments = useCallback(() => {
+		setIsOpen(false)
+	}, [])
 
 	return (
 		<OutsideAlerter
-			onEvent={() => setIsOpen(false)}
+			onEvent={closeComments}
 			className="absolute right-[3px] top-[3px] flex items-center justify-center"
 		>
 			<i

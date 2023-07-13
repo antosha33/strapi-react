@@ -1,4 +1,4 @@
-export default {
+export const date = {
 	transform(dateString) {
 
 		const addLeadingZeroes = (str) => {

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect,  } from "react";
 
 import useTimer from '../../hooks/timer.hook';
 import stageStore from '../../store/stage'
@@ -14,11 +14,15 @@ const renderItem = (onClickHandler) => (item) =>
 const Cell = ({ current, currentData, setIsVisible, timestamps = '{}', small }) => {
 
 	const { changeTime } = JSON.parse(timestamps) || {};
+
+	const onTimerFinish = useCallback(() => {
+		setIsVisible && setIsVisible(false);
+	}, [setIsVisible])
+
 	const { start, clear, value, isFinished } = useTimer({
-		onFinish: () => {
-			setIsVisible && setIsVisible(false);
-		}
+		onFinish: onTimerFinish
 	})
+
 
 	useEffect(() => {
 		if (current?.stageTrigger) {
@@ -31,7 +35,7 @@ const Cell = ({ current, currentData, setIsVisible, timestamps = '{}', small }) 
 		return () => {
 			clear()
 		}
-	}, [current?.stageTrigger, changeTime])
+	}, [current?.stageTrigger, changeTime, current.triggerTimeout, clear, start])
 
 	return current ?
 		<div
@@ -67,7 +71,7 @@ const PositonCellPicker = CellPickerHOC(renderItem, Cell)
 
 function PositionStatus({ ...props }) {
 	if (!props.data) {
-		const stage = stageStore.stages.find(x => x.statuses.find(y => y.id == props?.currentData?.id));
+		const stage = stageStore.stages.find(x => x.statuses.find(y => y.id === props?.currentData?.id));
 		if (!stage) {
 			return null
 		} else {

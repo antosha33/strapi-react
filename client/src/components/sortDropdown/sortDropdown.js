@@ -1,6 +1,6 @@
 import DropdownHOC from "../dropdownHOC/dropdownHOC";
 
-function SortDropdown({onEvent}) {
+function SortDropdown() {
 
 	
 	return (

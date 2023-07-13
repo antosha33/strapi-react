@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import OutsideAlerter from "../../outsideAlerter/outsideAlerter";
 import Multiselect from "../../multiselect/multiselect";
 import Button from "../../ui/button/button";
 import Input from "../../ui/input/input";
+import usersStore from '../../../store/users'
 
 const sanitizeScheme = (data) => {
 	const result = Object.entries(data || {}).reduce((acc, [path, { type, val }]) => {
@@ -20,10 +21,10 @@ const sanitizeScheme = (data) => {
 		}
 		const buildQuery = (obj) => {
 			if (!path.length) {
-				if (type == 'multi') {
+				if (type === 'multi') {
 					obj['$in'] = val.map(x => x.id);
 				}
-				if (type == 'search') {
+				if (type === 'search') {
 					obj['$contains'] = val
 				}
 				return;
@@ -43,15 +44,22 @@ const sanitizeScheme = (data) => {
 	return result
 }
 
-function Search({ statuses, setFilter, users }) {
+function Search({ statuses, setFilter }) {
+
 
 	const schemeRef = useRef({});
 	const [selected, setSelected] = useState([]);
 	const [isOpen, setIsOpen] = useState(false);
+	const  {users} = usersStore;
+	
 
 	const toggleOpen = () => {
 		setIsOpen(!isOpen)
 	}
+
+	const closeSearch = useCallback(() => {
+		setIsOpen(false)
+	}, [])
 
 	const updateScheme = ({ val, type, label, path }) => {
 		if ((Array.isArray(val) && !val.length) || !val) {
@@ -69,7 +77,7 @@ function Search({ statuses, setFilter, users }) {
 
 	const onSubmit = async () => {
 		const res = sanitizeScheme(schemeRef.current);
-		setFilter({...res});
+		setFilter({ ...res });
 		renderSelected();
 		setIsOpen(false);
 	}
@@ -90,14 +98,15 @@ function Search({ statuses, setFilter, users }) {
 		delete schemeRef.current[id];
 		onSubmit();
 	}
-
 	
+
+
 
 	return (
 		<div className="relative flex-1 flex ">
 			<OutsideAlerter
 				className=" w-[100%] flex"
-				onEvent={() => setIsOpen(false)}
+				onEvent={closeSearch}
 			>
 				<div
 					onClick={toggleOpen}

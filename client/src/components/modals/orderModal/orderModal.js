@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 
 import useOrder from "../../../hooks/order.hook";
@@ -15,14 +15,16 @@ function OrderModal({ orderId }) {
 	const intervalId = useRef(null);
 	const { getOrder } = useOrder();
 	const { setUser, setStatus } = usePosition();
-	const { stages, currentStage: { statuses } } = stageStore;
+	const { stages } = stageStore;
 	const [data, setData] = useState(null);
-	const [header, setHeader] = useState(['Название'])
 	const [loading, setLoading] = useState(false);
 
-	const getData = async () => {
+	const getData = useCallback(async () => {
+
+		if (!orderId) return;
 
 		setLoading(true)
+
 		const { data } = await getOrder({
 			id: orderId,
 			currentStage: false
@@ -32,18 +34,17 @@ function OrderModal({ orderId }) {
 			const positonStages = stages.reduce((acc, curr) => {
 				acc.push({
 					id: curr.id,
-					item: x.c_position_stages.find(y => y.stage.id == curr.id)
+					item: x.c_position_stages.find(y => y.stage.id === curr.id)
 				})
 				return acc;
 			}, [])
 			x.stages = positonStages;
 		})
 
-		setData(data)
+		setData(data);
+		setLoading(false);
 
-
-		setLoading(false)
-	}
+	}, [getOrder, orderId, stages])
 
 	useEffect(() => {
 		getData()
@@ -51,7 +52,7 @@ function OrderModal({ orderId }) {
 		return () => {
 			clearInterval(intervalId.current)
 		}
-	}, [])
+	}, [getData])
 
 	const onSetStatus = (positionStageId) => async (statusId) => {
 		await setStatus(positionStageId, statusId);

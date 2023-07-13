@@ -2,22 +2,24 @@ import { makeAutoObservable } from 'mobx';
 
 class Stage {
 	currentStage = {};
-	stages=[];
+	stages = [];
 
 	constructor() {
 		makeAutoObservable(this)
 	}
 
 	setCurrentStage(stage) {
-		if(stage){
+		if (stage) {
 			this.currentStage = stage
 		}
 	}
 	setStages(stages) {
-		if(stages.length){
+		if (stages.length) {
 			this.stages = stages
 		}
 	}
 }
 
-export default new Stage();
+const stage = new Stage()
+
+export default stage;

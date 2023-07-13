@@ -1,5 +1,5 @@
 
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { AxiosContext } from '../context/request.context';
 const qs = require('qs');
 
@@ -20,15 +20,15 @@ function useUsers() {
 
 	}
 
-	const getMe = async () => {
+	const getMe = useCallback(async () => {
 		return await authRequest({
 			url: 'users/me?populate=role',
 		})
-	}
+	},[authRequest])
 
 
 
-	const getUsers = async () => {
+	const getUsers = useCallback(async () => {
 
 		const query = qs.stringify({
 			populate: {
@@ -41,7 +41,7 @@ function useUsers() {
 		return await authRequest({
 			url: 'users/?' + query,
 		})
-	}
+	},[authRequest])
 
 	const getUsersByRole = async (role) => {
 		return await authRequest({

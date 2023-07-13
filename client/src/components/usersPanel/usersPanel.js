@@ -1,5 +1,5 @@
 
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import Authorization from "../authorization/authorization";
 import { AuthContext } from "../../context/auth.context";
 import Modal from "../modal/modal";
@@ -41,13 +41,17 @@ function UsersPanel() {
 	const [candidates, setCandidates] = useState([]);
 	const [isOtherShowed, setIsOtherShowed] = useState(false)
 
+	const closeOther = useCallback(() => {
+		setIsOtherShowed(false)
+	}, [])
+
 	useEffect(() => {
 		const users = getData('users');
 		const current = users.find(x => x.active);
 		userStore.setCurrentUser(current);
 		const readyUsers = users.filter(x => !x.active);
 		setCandidates(readyUsers);
-	}, [authState.accessToken])
+	}, [authState.accessToken, getData])
 
 
 	const onLoginHandler = (props) => {
@@ -68,7 +72,7 @@ function UsersPanel() {
 				onClick={setIsModalLogoutOpened}
 				className="hover:cursor-pointer text-Regular(12_14) text-Content/Middle mb-[0.4rem] block">Выйти</span>
 			<OutsideAlerter
-				onEvent={() => setIsOtherShowed(false)}
+				onEvent={closeOther}
 			>
 				<div
 					onClick={() => setIsOtherShowed(true)}
@@ -120,15 +124,15 @@ function UsersPanel() {
 				</div>
 			</OutsideAlerter>
 			<Modal
-					isOpen={!!isModalLogoutOpened}
-					closeModal={() => setIsModalLogoutOpened(false)}
+				isOpen={!!isModalLogoutOpened}
+				closeModal={() => setIsModalLogoutOpened(false)}
+			>
+				<ConfirmModal
+					onResolve={onLogoutHandler}
+					onReject={() => setIsModalLogoutOpened(false)}
 				>
-					<ConfirmModal
-						onResolve={onLogoutHandler}
-						onReject={() => setIsModalLogoutOpened(false)}
-					>
-					</ConfirmModal>
-				</Modal>
+				</ConfirmModal>
+			</Modal>
 
 		</div>
 

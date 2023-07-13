@@ -1,6 +1,6 @@
-import { useState, useCallback, useEffect, useContext } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import useStorage from './storage.hook';
-import { AxiosContext } from '../context/request.context';
+
 
 
 
@@ -14,9 +14,27 @@ export const useAuth = () => {
 		authenticated: null,
 	})
 
+
+	const loadJWT = useCallback(() => {
+		const localUsers = getData('users') || [];
+		const { accessToken, role } = localUsers.find(x => x.active) || {};
+		if (accessToken) {
+			setAuthState(prev => ({
+				...prev, ...{
+					accessToken,
+					authenticated: true,
+					role
+				}
+			}));
+		}
+		if (localUsers.length) {
+			// writeCache(localUsers)
+		}
+	}, [getData]);
+
 	useEffect(() => {
 		loadJWT()
-	}, [])
+	}, [loadJWT])
 
 
 
@@ -35,7 +53,7 @@ export const useAuth = () => {
 		if (!localUsers) {
 			localUsers = []
 		} else {
-			localUsers = localUsers.filter(x => x.id != props.id);
+			localUsers = localUsers.filter(x => x.id !== props.id);
 			localUsers.forEach(x => x.active = false);
 		}
 
@@ -46,7 +64,7 @@ export const useAuth = () => {
 
 
 		setData('users', localUsers);
-	})
+	}, [setData, getData])
 
 
 	const logout = useCallback(async () => {
@@ -58,7 +76,7 @@ export const useAuth = () => {
 			candidate.active = true
 			login({
 				accessToken: localUsers[0].accessToken,
-				role:  localUsers[0].role
+				role: localUsers[0].role
 			})
 		} else {
 			setAuthState(_ => ({
@@ -67,27 +85,12 @@ export const useAuth = () => {
 			}));
 		}
 		setData('users', localUsers);
-	});
+	}, [setData, getData, login, authState.accessToken]);
 
 
 
 
-	const loadJWT = () => {
-		const localUsers = getData('users') || [];
-		const { accessToken, role } = localUsers.find(x => x.active) || {};
-		if (accessToken) {
-			setAuthState(prev => ({
-				...prev, ...{
-					accessToken,
-					authenticated: true,
-					role
-				}
-			}));
-		}
-		if (localUsers.length) {
-			// writeCache(localUsers)
-		}
-	};
+
 
 
 

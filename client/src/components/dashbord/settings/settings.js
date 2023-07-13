@@ -1,6 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { observer } from "mobx-react-lite";
-
+import { useCallback, useEffect, useState } from "react";
 import Button from "../../ui/button/button";
 import dashbordStore from '../../../store/dashbord';
 import Checkbox from "../../ui/checkbox/checkbox";
@@ -73,14 +71,16 @@ function Settings() {
 	const { getMe, saveSettings } = useUsers();
 	const [isOpen, setIsOpen] = useState(false);
 
+	const closeSettings = useCallback(() => {
+		setIsOpen(false)
+	}, [])
 
 	useEffect(() => {
-
 		(async () => {
 			const { settings } = await getMe();
 			dashbordStore.setSettings(JSON.parse(JSON.stringify(settings || defaultSettings)));
 		})();
-	}, [])
+	}, [getMe])
 
 	useEffect(() => {
 		setNewSettings(JSON.parse(JSON.stringify(settings)));
@@ -119,7 +119,7 @@ function Settings() {
 
 
 	return (
-		<OutsideAlerter onEvent={() => setIsOpen(false)}>
+		<OutsideAlerter onEvent={closeSettings}>
 			<div className="relative">
 				<div
 					onClick={() => setIsOpen(!isOpen)}

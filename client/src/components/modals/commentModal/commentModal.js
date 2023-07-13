@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import DropdownHOC from "../../dropdownHOC/dropdownHOC";
 import stageStore from "../../../store/stage";
 import DefaultModal from "../defaultModal/defaultModal";
@@ -13,7 +13,7 @@ function CommentModal({ positionId, setCommentModal }) {
 	const textareaRef = useRef(null)
 	const [urgentStage, setUrgentStage] = useState(false);
 	const { setComment } = usePosition();
-	const { currentUser :{role:{name}, username} } = usersStore;
+	const { currentUser: { role: { name }, username } } = usersStore;
 	const { currentStage, stages } = stageStore;
 	const [stage, setStage] = useState(currentStage)
 
@@ -42,7 +42,7 @@ function CommentModal({ positionId, setCommentModal }) {
 		textareaRef.current.value = suggest
 	}
 
-	
+
 
 
 	return (

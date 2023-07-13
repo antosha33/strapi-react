@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { AxiosContext } from '../context/request.context';
 const qs = require('qs');
 
@@ -10,7 +10,7 @@ function useDashbord() {
 	const { authRequest } = useContext(AxiosContext);
 
 
-	const getDashbord = async ({ stage, page, filter, sort }) => {
+	const getDashbord = useCallback(async ({ stage, page, filter, sort }) => {
 
 		if (!sort.path) {
 			sort = ['isUrgent:desc', 'id:desc']
@@ -57,7 +57,7 @@ function useDashbord() {
 		return await authRequest({
 			url: 'c-position-stages?' + query,
 		})
-	}
+	},[authRequest])
 
 	return {
 		getDashbord

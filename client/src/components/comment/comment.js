@@ -1,4 +1,4 @@
-import date  from "../../utils/date";
+import { date } from "../../utils/date";
 
 function Comment({ comments }) {
 	return (

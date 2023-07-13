@@ -1,17 +1,8 @@
-import { useState } from 'react';
-import OutsideAlerter from '../outsideAlerter/outsideAlerter'
+
 import dashbordStore from '../../store/dashbord'
 import usePosition from '../../hooks/position.hook';
 import DropdownHOC from '../dropdownHOC/dropdownHOC';
 
-
-function DropdownItem({ title, onClick }) {
-	return (
-		<div
-			onClick={onClick}
-			className="p-[1.2rem] text-Regular(16_18)">{title}</div>
-	)
-}
 
 function ActionDropdown({ onEvent }) {
 

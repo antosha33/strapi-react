@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 
 function useTimer({ onFinish = undefined } = {}) {
 
@@ -8,27 +8,27 @@ function useTimer({ onFinish = undefined } = {}) {
 
 	const [value, setValue] = useState(null);
 
-	const start = (time) => {
+	const start = useCallback((time) => {
 		if (interval.current) return;
 		setIsFinished(false);
 		setValue(time);
 		interval.current = setInterval(() => {
 			setValue(prev => prev - 1)
 		}, 1000)
-	}
+	}, [])
 
-	const clear = () => {
+	const clear = useCallback(() => {
 		clearInterval(interval.current);
 		interval.current = null;
 		setIsFinished(true);
-	}
+	},[])
 
 	useEffect(() => {
 		if (value <= 0 && value != null) {
 			onFinish && onFinish()
 			clear();
 		}
-	}, [value])
+	}, [value, onFinish, clear])
 
 	useEffect(() => {
 		return clearInterval(interval.current)

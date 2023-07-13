@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useRef, useState } from 'react';
+import React, { createContext, useCallback, useContext } from 'react';
 import { AuthContext } from './auth.context';
 import axios from 'axios';
 
@@ -16,8 +16,7 @@ const { Provider } = AxiosContext;
 
 export const AxiosProvider = ({ children }) => {
 
-	const { authState: { accessToken, refreshToken, authenticated }, login, logout } = useContext(AuthContext);
-	const tempRefreshToken = useRef(null);
+	const { authState: { accessToken }, logout } = useContext(AuthContext);
 
 	const authAxios = axios.create({
 		baseURL: config.baseUrl
@@ -56,9 +55,9 @@ export const AxiosProvider = ({ children }) => {
 		} catch (error) {
 			throw error.response?.data?.error;
 		}
-	})
+	}, [publicAxios])
 
-	const authRequest = (async ({ url, method = 'GET', data = null, headers = {}, params = {} }) => {
+	const authRequest = useCallback(async ({ url, method = 'GET', data = null, headers = {}, params = {} }) => {
 		try {
 			const response = await authAxios(
 				{
@@ -71,12 +70,12 @@ export const AxiosProvider = ({ children }) => {
 			)
 			return response.data;
 		} catch (error) {
-			if(error.response.status == 401){
+			if (error.response.status === 401) {
 				logout();
 			}
 			throw error.response?.data;
 		}
-	})
+	}, [authAxios, logout])
 
 	const httpRequest = useCallback(async ({ url, method = 'GET', headers = {}, mode = 'cors', data }) => {
 		try {
@@ -93,7 +92,7 @@ export const AxiosProvider = ({ children }) => {
 			throw error;
 		}
 
-	})
+	}, [])
 
 
 

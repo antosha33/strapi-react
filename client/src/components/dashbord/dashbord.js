@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Tooltip } from 'react-tooltip'
 import { observer } from "mobx-react-lite";
 import useDashbord from '../../hooks/dashbord.hook';
@@ -30,7 +30,7 @@ const TdCell = ({ height = 'h-[6rem]', name, sort: { path, correction } = {}, av
 
 	let direction;
 
-	if (path == sortPath) {
+	if (path === sortPath) {
 		direction = correction;
 	}
 
@@ -48,7 +48,7 @@ const TdCell = ({ height = 'h-[6rem]', name, sort: { path, correction } = {}, av
 			<div className="flex gap-[0.6rem] items-center">
 				<span className='text-Regular(12_14) text-Content/Dark font-semibold'>{title}</span>
 				{props.configurable &&
-					<span className={`${direction == 'asc' ? 'text-Content/Dark' : direction == 'desc' ? 'text-Content/Dark rotate-180' : 'text-Content/Light'}`}>
+					<span className={`${direction === 'asc' ? 'text-Content/Dark' : direction === 'desc' ? 'text-Content/Dark rotate-180' : 'text-Content/Light'}`}>
 						<i className={`icon-sort text-[1.6rem] flex-auto`}></i>
 					</span>
 				}
@@ -71,7 +71,7 @@ function Dashbord() {
 	const [items, setItems] = useState([]);
 	const [page, setPage] = useState(1);
 	const [meta, setMeta] = useState([]);
-	const [users, setUsers] = useState([]);
+
 	const [groupMod, setGroupMod] = useState(false);
 	const [detailModal, setDetailModal] = useState(false);
 	const [commentModal, setCommentModal] = useState(false);
@@ -80,26 +80,7 @@ function Dashbord() {
 
 	const [loading, setLoading] = useState(false);
 
-
-	useEffect(() => {
-		if (id) {
-			getData();
-			intervalId.current = setInterval(() => getData(true), 50000);
-		}
-		return () => {
-			clearInterval(intervalId.current)
-		}
-	}, [id, groupMod, page, filter, sort])
-
-	useEffect(() => {
-		setPage(1)
-	}, [id])
-
-	useEffect(() => {
-		getAllUsers();
-	}, [])
-
-	const getData = async (silent = false) => {
+	const getData = useCallback(async (silent = false) => {
 		!silent && setLoading(true)
 		if (id) {
 			const { data, meta: { pagination } } = await getDashbord({
@@ -116,12 +97,33 @@ function Dashbord() {
 			setMeta(pagination)
 		}
 		!silent && setLoading(false)
-	}
+	}, [getDashbord, groupMod, id, page, filter, sort])
 
-	const getAllUsers = async () => {
+	useEffect(() => {
+		if (id) {
+			getData();
+			intervalId.current = setInterval(() => getData(true), 50000);
+		}
+		return () => {
+			clearInterval(intervalId.current)
+		}
+	}, [id, groupMod, page, filter, sort, getData])
+
+	useEffect(() => {
+		setPage(1)
+	}, [id])
+
+
+	const getAllUsers = useCallback(async () => {
 		const data = await getUsers();
 		usersStore.setUsers(data);
-	}
+	}, [getUsers])
+
+	useEffect(() => {
+		getAllUsers();
+	}, [getAllUsers])
+
+
 
 	const onPageChange = (page) => {
 		setPage(page)
@@ -162,7 +164,6 @@ function Dashbord() {
 				positionStageId={id}
 				timestamps={stageChangeTimeStamps}
 				user={user}
-				users={users}
 				statuses={statuses}
 				status={currentStatus}
 				comments={comments}
@@ -190,7 +191,6 @@ function Dashbord() {
 						<Settings></Settings>
 						<Search
 							setFilter={setFilter}
-							users={users}
 							statuses={statuses}></Search>
 						{!!Object.keys(sort).length &&
 							<div
@@ -271,7 +271,7 @@ function Dashbord() {
 			</Modal>
 			<Tooltip
 				style={{
-					zIndex:1000,
+					zIndex: 1000,
 					fontSize: '14px'
 				}}
 				openOnClick={true}

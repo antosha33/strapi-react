@@ -1,6 +1,6 @@
 import OutsideAlerter from '../outsideAlerter/outsideAlerter'
 import Dropdown from "../ui/dropdown/dropdown";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import stageStore from '../../store/stage'
 import usersStore from "../../store/users";
 
@@ -11,28 +11,29 @@ function CellPickerHOC(renderItem, Wrapped) {
 		const dropdownRef = useRef(null);
 		const [isDropDown, setIsDropDown] = useState(false);
 		const [current, setCurrent] = useState(currentData);
-		const [isDisabled, setIsDisabled] = useState(true);
+		const [isDisabled, setIsDisabled] = useState(false);
 		const { currentUser: { role } } = usersStore;
 		const { stages } = stageStore;
 		const stage = stages.find(x => x.statuses.find(x => x?.id === currentData?.id));
 
+		console.log('->>',isCurrentStage)
 
 
-		useEffect(() => {
+		// useEffect(() => {
 
-			const isRoleFitStage = role.godmod || role.stages.find(x => x?.id === stage?.id);
-			if ((isCurrentStage !== undefined && isCurrentStage === false)) {
-				return setIsDisabled('Невозможно внести изменения на предыдущем этапе')
-			} else if (!isRoleFitStage && stage) {
-				return setIsDisabled('Недостаточная роль')
-			} else {
-				setIsDisabled(false)
-			}
-		}, [
-			role,
-			isCurrentStage,
-			stage,
-		])
+		// 	const isRoleFitStage = role.godmod || role.stages.find(x => x?.id === stage?.id);
+		// 	if ((isCurrentStage !== undefined && isCurrentStage === false)) {
+		// 		return setIsDisabled('Невозможно внести изменения на предыдущем этапе')
+		// 	} else if (!isRoleFitStage && stage) {
+		// 		return setIsDisabled('Недостаточная роль')
+		// 	} else {
+		// 		setIsDisabled(false)
+		// 	}
+		// }, [
+		// 	role,
+		// 	isCurrentStage,
+		// 	stage,
+		// ])
 
 		//не показываем выбранный элемент в дропдауне
 		const filteredData = data.filter(x => x.id !== currentData?.id)
@@ -84,9 +85,9 @@ function CellPickerHOC(renderItem, Wrapped) {
 
 
 
-		const closeDropdown = () => {
+		const closeDropdown = useCallback(() => {
 			setIsDropDown(false)
-		}
+		}, [])
 
 		const onChooseHanlder = (user) => {
 			setIsDropDown(false)

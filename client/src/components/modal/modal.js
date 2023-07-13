@@ -1,6 +1,5 @@
 import ReactModal from 'react-modal';
 import './style.css'
-import { useRef } from 'react';
 
 function Modal({ isOpen, title, children, closeModal }) {
 

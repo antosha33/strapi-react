@@ -13,7 +13,7 @@ function Stages() {
 
 	useEffect(() => {
 		if (role && stages.length) {
-			const stage = stages.find(x => x?.id == role.stages[0]?.id);
+			const stage = stages.find(x => x?.id === role.stages[0]?.id);
 			stageStore.setCurrentStage(stage)
 			stageStore.setStages(stages)
 		}
@@ -31,7 +31,7 @@ function Stages() {
 					onClick={() => onStageChange(x)}
 					key={x.id}
 					className={`
-                        ${x.id == id ? 'bg-Accent/Yellow' : 'bg-Dominant/Dop'}
+                        ${x.id === id ? 'bg-Accent/Yellow' : 'bg-Dominant/Dop'}
                         hover:cursor-pointer p-[0.5rem] text-center flex-auto w-[12.6rem] h-[4.4rem]  border border-Content/Border flex items-center justify-center
                     `}>
 					<div className="text-Regular(14_16)">{x.title}</div>

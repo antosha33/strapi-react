@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { AxiosContext } from '../context/request.context';
 const qs = require('qs');
 
@@ -6,7 +6,7 @@ function useOrder() {
 
 	const { authRequest } = useContext(AxiosContext);
 
-	const getOrder = async ({ id, currentStage = true }) => {
+	const getOrder = useCallback(async ({ id, currentStage = true }) => {
 
 		const filters = currentStage ? {
 			isCurrentStage: true
@@ -20,7 +20,7 @@ function useOrder() {
 
 					},
 					populate: {
-						['c_position_stages']: {
+						c_position_stages: {
 							filters: filters,
 							populate: {
 								stage: true,
@@ -42,7 +42,7 @@ function useOrder() {
 			url: `orders/${id}?` + query,
 		})
 
-	}
+	}, [authRequest])
 
 	return {
 		getOrder

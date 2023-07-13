@@ -12,9 +12,11 @@ class Users {
 		this.currentUser = user;
 	}
 
-	setUsers(users){
+	setUsers(users) {
 		this.users = users;
 	}
 }
 
-export default new Users();
+const users = new Users();
+
+export default users;

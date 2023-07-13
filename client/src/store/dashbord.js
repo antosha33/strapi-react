@@ -23,7 +23,7 @@ class Dashbord {
 		this.sort = {
 			path,
 			name,
-			correction: this.sort?.correction == 'asc' ? 'desc' : 'asc'
+			correction: this.sort?.correction === 'asc' ? 'desc' : 'asc'
 		}
 	}
 
@@ -49,4 +49,6 @@ class Dashbord {
 
 }
 
-export default new Dashbord();
+const dashbord = new Dashbord()
+
+export default dashbord;

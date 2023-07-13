@@ -14,7 +14,7 @@ function Pagination({ pageCount, page, total, onPageChange, pageSize }) {
 						key={index}
 						onClick={() => onPageChangeHandler(index)}
 						className={`
-                        ${index + 1 == page ? 'bg-[#D5E6FF] text-Accent/Blue border-[#D5E6FF] pointer-events-none' : 'border-Content/Border'}
+                        ${index + 1 === page ? 'bg-[#D5E6FF] text-Accent/Blue border-[#D5E6FF] pointer-events-none' : 'border-Content/Border'}
                         hover:cursor-pointer hover:border-Accent/Blue ease-in-out duration-300 border  w-[3.8rem] h-[3.8rem] flex justify-center items-center
                     `}>
 						<span className="text-Content/Middle text-Regular(14_16)">

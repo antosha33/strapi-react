@@ -17,7 +17,7 @@ const query = qs.stringify({
 
 function useStages() {
 
-	const { publicRequest, authRequest } = useContext(AxiosContext);
+	const { authRequest } = useContext(AxiosContext);
 	const [stages, setStages] = useState([]);
 
 	useEffect(() => {
@@ -27,7 +27,7 @@ function useStages() {
 			})
 			setStages(data)
 		})();
-	}, [])
+	}, [authRequest])
 
 
 	return {

@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import OutsideAlerter from '../outsideAlerter/outsideAlerter'
 import Dropdown from '../ui/dropdown/dropdown';
-import dashbordStore from '../../store/dashbord'
+
 
 function DropdownHOC({ title, items }) {
 
 	const [isOpen, setIsOpen] = useState(false);
 
-	const closeDropdown = () => {
+	const closeDropdown = useCallback(() => {
 		setIsOpen(false);
-	}
+	},[])
 
 	const toggleDropdown = () => {
 		setIsOpen(!isOpen);
@@ -41,7 +41,7 @@ function DropdownHOC({ title, items }) {
 				<div
 					onClick={toggleDropdown}
 					className="hover:cursor-pointer hover:border-Accent/Blue ease-in-out duration-300 border border-Content/Border p-[1.2rem] text-Regular(16_18) flex gap-[0.8rem] justify-between">
-					<span>{title}</span>
+					<span className='whitespace-nowrap'>{title}</span>
 					<i className={`icon-arrow ease-in-out duration-300
 						${isOpen ? 'text-Accent/Blue rotate-180' : 'text-Content/Middle'}
 						`} style={{ fontSize: "1.4rem" }} />

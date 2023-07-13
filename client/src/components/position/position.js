@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 
 
@@ -43,6 +43,9 @@ function Position({
 	const [active, setIsActive] = useState(false);
 	const [extra, setExtra] = useState(false);
 
+	const setInactive = useCallback(() => {
+		setIsActive(false)
+	},[])
 
 	const onSetUser = async (userId) => {
 		await setUser(positionStageId, userId);
@@ -99,7 +102,7 @@ function Position({
 	return (
 		<OutsideAlerter
 			tr={true}
-			onEvent={() => setIsActive(false)}
+			onEvent={setInactive}
 			setRef={setPositionRef}
 			// ref={ref => (ref)}
 			className={`

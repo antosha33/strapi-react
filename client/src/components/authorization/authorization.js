@@ -1,10 +1,7 @@
 
 import { useState, useContext } from "react";
-// import { gql, useMutation, useLazyQuery } from '@apollo/client';
-
 import Input from "../ui/input/input";
 import Button from "../ui/button/button";
-import { simplifyStrapiObject } from "../../utils/simplifyStrapiObject";
 import { AuthContext } from "../../context/auth.context";
 import { AxiosContext } from '../../context/request.context';
 import useUsers from "../../hooks/users.hook";
