@@ -9,15 +9,17 @@ import PositionStatus from "../../positionStatus/positionStatus";
 import PositionUser from "../../positionUser/positionUser";
 import Comments from "../../comments/comments";
 import usePosition from "../../../hooks/position.hook";
+import Checkbox from '../../ui/checkbox/checkbox'
 
 function OrderModal({ orderId }) {
 
 	const intervalId = useRef(null);
 	const { getOrder } = useOrder();
-	const { setUser, setStatus } = usePosition();
+	const { setUser, setStatus, setPositionsToUrgent } = usePosition();
 	const { stages } = stageStore;
 	const [data, setData] = useState(null);
 	const [loading, setLoading] = useState(false);
+	const [isUrgent, setIsUrgent] = useState(false);
 
 	const getData = useCallback(async () => {
 
@@ -42,6 +44,7 @@ function OrderModal({ orderId }) {
 		})
 
 		setData(data);
+		setIsUrgent(data.isUrgent);
 		setLoading(false);
 
 	}, [getOrder, orderId, stages])
@@ -62,14 +65,31 @@ function OrderModal({ orderId }) {
 		await setUser(positionStageId, userId);
 	}
 
+	const onUrgent = async () => {
+		setIsUrgent(!isUrgent);
+	}
+
+	useEffect(() => {
+		if (intervalId.current && data?.positions) {
+			(async () => {
+				const positionsIds = data.positions.map(x => x.id)
+				await setPositionsToUrgent({
+					ids: positionsIds,
+					isUrgent
+				});
+			})();
+		}
+
+	}, [isUrgent])
+
 	return (
 		<div className="w-[90vw] max-w-[180rem] min-h-[50rem]">
 			{loading && !data && <Loader></Loader>}
 			{data &&
 				<>
-					<div className="py-[3.6rem] px-[11rem] bg-Accent/Light_Yellow">
+					<div className="py-[3.6rem] pt-[5.2rem] px-[11rem] bg-Accent/Light_Yellow">
 						<div className="grid grid-cols-2 gap-[2.6rem] mb-[2.4rem]">
-							<div className="flex gap-[3.6rem]">
+							<div className="flex gap-[3.6rem] items-center">
 								<div className="flex gap-[0.5rem]">
 									<span className="block text-Regular(16_20)">Заказ:</span>
 									<span className="block text-Regular(16_20) font-bold">№{orderId}</span>
@@ -77,7 +97,16 @@ function OrderModal({ orderId }) {
 								<div className="flex gap-[0.5rem]">
 									<span className="block text-Regular(16_20)">Дата заказа:</span>
 									<span className="block text-Regular(16_20) font-bold">{data.date}</span>
+
+
 								</div>
+							</div>
+							<div className="ml-auto">
+								<Checkbox
+									onChange={onUrgent}
+									label="Срочный заказ"
+									active={isUrgent}
+								></Checkbox>
 							</div>
 						</div>
 						<div className="grid grid-cols-2 gap-x-[2.6rem] gap-y-[1.2rem]">

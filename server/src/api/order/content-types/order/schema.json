@@ -32,6 +32,9 @@
       "type": "component",
       "repeatable": false,
       "component": "userinfo.userinfo"
+    },
+    "isUrgent": {
+      "type": "boolean"
     }
   }
 }

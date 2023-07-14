@@ -73,26 +73,11 @@ function PositionModal({ positionId, setCommentModal }) {
 			{data &&
 				<>
 					<div className="py-[3.6rem] px-[11rem] bg-Accent/Light_Yellow">
-						<div className="grid grid-cols-2 gap-[2.6rem] mb-[2.4rem]">
-							<div className="flex gap-[3.6rem]">
-								<div className="flex gap-[0.5rem]">
-									<span className="block text-Regular(16_20)">Заказ:</span>
-									{/* <span className="block text-Regular(16_20) font-bold">№{orderId}</span> */}
-								</div>
-								<div className="flex gap-[0.5rem]">
-									<span className="block text-Regular(16_20)">Дата заказа:</span>
-									<span className="block text-Regular(16_20) font-bold">{data.date}</span>
-								</div>
+						<div className="grid grid-cols-5 gap-[2.6rem] mb-[2.4rem]">
+							<div className="flex gap-[0.5rem]">
+								<span className="block text-Regular(16_20)">Заказ:</span>
+								<span className="block text-Regular(16_20) font-bold">№{data.order.id}</span>
 							</div>
-						</div>
-						<div className="grid grid-cols-2 gap-x-[2.6rem] gap-y-[1.2rem]">
-							<div className="bg-white px-[2.6rem] py-[1.8rem] grid grid-cols-[auto_1fr] gap-x-[1rem] gap-y-[1.2rem]">
-								<div className="text-Regular(14_16)">ФИО клиента:</div>
-								<div className="text-Regular(14_16) font-bold">{data.userinfo?.name + ' ' + data.userinfo?.surname}</div>
-								<div className="text-Regular(14_16)">EMAIL клиента:</div>
-								<div className="text-Regular(14_16) font-bold">{data.userinfo?.email}</div>
-							</div>
-
 						</div>
 					</div>
 				</>

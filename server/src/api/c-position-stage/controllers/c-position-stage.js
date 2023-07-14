@@ -66,10 +66,12 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 	},
 
 	async setUrgentPosition(ctx) {
-		const { data } = ctx.request.body;
+		const { ids, isUrgent } = ctx.request.body.data;
 
-		await strapi.service('api::positions.positions').updateById(data, {
-			isUrgent: true
+		console.log(ids, isUrgent)
+
+		await strapi.service('api::positions.positions').updateById(ids, {
+			isUrgent: isUrgent
 		})
 
 		const positions = await strapi.entityService.findMany('api::c-position-stage.c-position-stage', {
@@ -77,16 +79,42 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 				position: {
 					filters: {
 						id: {
-							$in: data
+							$in: ids
+						}
+					},
+					populate: {
+						order: true
+					}
+				}
+			}
+		})
+		const positionsCandidates = positions.filter(x => x.position).map(x => x.id);
+
+		//определи заказ, которому принадлежит позиция
+		const orders = await strapi.entityService.findMany('api::order.order', {
+			fields: ['id'],
+			populate: {
+				positions: {
+					filters: {
+						id: {
+							$in: ids
 						}
 					},
 				}
 			}
 		})
-		const candidates = positions.filter(x => x.position).map(x => x.id);
+		const orderCandidates = orders.find(x => x.positions.length);
 
-		return await strapi.service('api::c-position-stage.c-position-stage').updateById(candidates, {
-			isUrgent: true
+		//обновляем срочность заказа
+		await strapi.entityService.update('api::order.order', orderCandidates.id, {
+			data: {
+				isUrgent: isUrgent
+			}
+		});
+
+
+		return await strapi.service('api::c-position-stage.c-position-stage').updateById(positionsCandidates, {
+			isUrgent: isUrgent
 		})
 
 	},
@@ -113,6 +141,7 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 				clearTimeout(timeoutId)
 			}
 		}
+
 		return await super.update(ctx);
 	},
 
@@ -216,7 +245,7 @@ module.exports = createCoreController('api::c-position-stage.c-position-stage', 
 				const status = statuses.find(x => x.stage)
 
 				//обновляем состояние позиции на след этапе (простави срочность этапа в зависимости от этапа или всей позиции)
-				await strapi.entityService.update('api::c-position-stage.c-position-stage',id, {
+				await strapi.entityService.update('api::c-position-stage.c-position-stage', id, {
 					data: {
 						isCurrentStage: true,
 						status: status.id,
