@@ -22,6 +22,7 @@ function Position({
 	settings,
 	title,
 	onOrderDetail,
+	onPositionDetail,
 	user,
 	users,
 	quantity,
@@ -31,7 +32,8 @@ function Position({
 	order,
 	setComment,
 	comments,
-	stageId
+	stageId,
+	isCurrentStage
 }) {
 
 
@@ -45,7 +47,7 @@ function Position({
 
 	const setInactive = useCallback(() => {
 		setIsActive(false)
-	},[])
+	}, [])
 
 	const onSetUser = async (userId) => {
 		await setUser(positionStageId, userId);
@@ -97,7 +99,7 @@ function Position({
 			}
 		}
 	}, [positionRef])
-	
+
 	if (!isVisible) return null;
 	return (
 		<OutsideAlerter
@@ -130,10 +132,13 @@ function Position({
 					stageId={stageId}
 					currentData={user}
 					onSetData={onSetUser}
+					isCurrentStage={isCurrentStage}
 				></PositionUser>
 			</Cell>
 			<Cell {...settings.title} >
-				<span className="line-clamp-3">{title}</span>
+				<span 
+				onClick={()  => onPositionDetail(id)}
+				className="line-clamp-3">{title}</span>
 			</Cell>
 			<Cell {...settings.code} >
 				<span className="">34543.34</span>
@@ -151,7 +156,8 @@ function Position({
 			</Cell>
 			<Cell {...settings.status}>
 				<PositionStatus
-					// data={statuses}
+					stageId={stageId}
+					isCurrentStage={isCurrentStage}
 					currentData={status}
 					onSetData={onSetStatus}
 					setIsVisible={setIsVisible}

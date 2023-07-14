@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DropdownHOC from "../../dropdownHOC/dropdownHOC";
 import stageStore from "../../../store/stage";
 import DefaultModal from "../defaultModal/defaultModal";
@@ -8,7 +8,9 @@ import usersStore from '../../../store/users'
 import ButtonBorder from "../../ui/buttonBorder/buttonBorder";
 import Checkbox from '../../ui/checkbox/checkbox'
 
-function CommentModal({ positionId, setCommentModal }) {
+function CommentModal({ positionId, stageId, callback, isFullMod }) {
+
+
 
 	const textareaRef = useRef(null)
 	const [urgentStage, setUrgentStage] = useState(false);
@@ -17,6 +19,12 @@ function CommentModal({ positionId, setCommentModal }) {
 	const { currentStage, stages } = stageStore;
 	const [stage, setStage] = useState(currentStage)
 
+	useEffect(() => {
+		if (stageId) {
+			const candidate = stages.find(x => x.id == stageId);
+			setStage(candidate)
+		}
+	}, [stageId])
 
 	const dropdownItems = stages.map(x => ({
 		onEvent: () => setStage(x),
@@ -35,7 +43,7 @@ function CommentModal({ positionId, setCommentModal }) {
 			comment: textareaRef.current.value,
 			urgentStage
 		})
-		setCommentModal();
+		callback();
 	}
 
 	const onSuggestHandler = (suggest) => {
@@ -48,20 +56,22 @@ function CommentModal({ positionId, setCommentModal }) {
 	return (
 		<div className="w-[90vw] max-w-[76rem] min-h-[10rem]">
 			<DefaultModal>
-				<div className="flex gap-[1.8rem] items-center mb-[1.6rem]">
-					<span className="text-Regular(18_24)">Отправить комментарий на этап</span>
-					<div className="min-w-[20rem]">
-						<DropdownHOC
-							items={dropdownItems}
-							title={stage.title}
-						></DropdownHOC>
+				{isFullMod &&
+					<div className="flex gap-[1.8rem] items-center mb-[1.6rem]">
+						<span className="text-Regular(18_24)">Отправить комментарий на этап</span>
+						<div className="min-w-[20rem]">
+							<DropdownHOC
+								items={dropdownItems}
+								title={stage.title}
+							></DropdownHOC>
+						</div>
 					</div>
+				}
 
-				</div>
 				<div className="flex flex-col gap-[2.4rem]">
 					<textarea ref={textareaRef} className="p-[1.2rem] text-Regular(16_20) border w-[100%] border-Content/Border rounded-[4px] min-h-[14rem]" />
 					{
-						!!stage.suggests.length &&
+						!!stage.suggests?.length &&
 						<div className="flex gap-[1.8rem]">
 							{stage.suggests?.map(x =>
 								<ButtonBorder
@@ -73,18 +83,23 @@ function CommentModal({ positionId, setCommentModal }) {
 						</div>
 					}
 
-					<div className="flex justify-start">
-						<Checkbox
-							onChange={() => setUrgentStage(!urgentStage)}
-							label="Сделать этап срочным"
-						></Checkbox>
-					</div>
+
+					{isFullMod &&
+						<div className="flex justify-start">
+							<Checkbox
+								onChange={() => setUrgentStage(!urgentStage)}
+								label="Сделать этап срочным"
+							></Checkbox>
+						</div>
+					}
 					<div className="self-end">
 						<Button
 							onPress={onCommentHandler}
 							name="Отправить">
 						</Button>
 					</div>
+
+
 
 
 				</div>

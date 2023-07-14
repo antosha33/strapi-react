@@ -1,39 +1,38 @@
 import OutsideAlerter from '../outsideAlerter/outsideAlerter'
 import Dropdown from "../ui/dropdown/dropdown";
 import { useEffect, useState, useRef, useCallback } from "react";
-import stageStore from '../../store/stage'
 import usersStore from "../../store/users";
 
 function CellPickerHOC(renderItem, Wrapped) {
 
-	return function CellPicker({ currentData, isCurrentStage, data, onSetData, small, ...props }) {
+	return function CellPicker({ currentData, data, stageId, isCurrentStage, onSetData, small, ...props }) {
 
 		const dropdownRef = useRef(null);
 		const [isDropDown, setIsDropDown] = useState(false);
 		const [current, setCurrent] = useState(currentData);
-		const [isDisabled, setIsDisabled] = useState(false);
+		const [isDisabled, setIsDisabled] = useState(true);
 		const { currentUser: { role } } = usersStore;
-		const { stages } = stageStore;
-		const stage = stages.find(x => x.statuses.find(x => x?.id === currentData?.id));
-
-		console.log('->>',isCurrentStage)
+		const isRoleFitStage = role.godmod || role.stages.find(x => x?.id === stageId);
 
 
-		// useEffect(() => {
+		useEffect(() => {
 
-		// 	const isRoleFitStage = role.godmod || role.stages.find(x => x?.id === stage?.id);
-		// 	if ((isCurrentStage !== undefined && isCurrentStage === false)) {
-		// 		return setIsDisabled('Невозможно внести изменения на предыдущем этапе')
-		// 	} else if (!isRoleFitStage && stage) {
-		// 		return setIsDisabled('Недостаточная роль')
-		// 	} else {
-		// 		setIsDisabled(false)
-		// 	}
-		// }, [
-		// 	role,
-		// 	isCurrentStage,
-		// 	stage,
-		// ])
+			let cause = false;
+
+			if (!isRoleFitStage) {
+				cause = 'Недостаточная роль';
+			}
+
+			if (!isCurrentStage) {
+				cause = 'Невозможно внести изменения на предыдущем этапе'
+			}
+
+			setIsDisabled(cause)
+
+		}, [
+			isCurrentStage,
+			isRoleFitStage,
+		])
 
 		//не показываем выбранный элемент в дропдауне
 		const filteredData = data.filter(x => x.id !== currentData?.id)
@@ -74,6 +73,7 @@ function CellPickerHOC(renderItem, Wrapped) {
 				top = y - dropdownHeight
 			}
 
+			if(!filteredData.length) return;
 
 			setIsDropDown({
 				left: x,
@@ -105,6 +105,7 @@ function CellPickerHOC(renderItem, Wrapped) {
 				data-tooltip-id={"role-alert"}
 				data-tooltip-content={isDisabled}
 				data-tooltip-place="top"
+				data-tooltip-delay-hide={1000}
 				className={`
 					w-[100%] flex self-stretch
 				`}>

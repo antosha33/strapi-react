@@ -31,8 +31,8 @@ function Stages() {
 					onClick={() => onStageChange(x)}
 					key={x.id}
 					className={`
-                        ${x.id === id ? 'bg-Accent/Yellow' : 'bg-Dominant/Dop'}
-                        hover:cursor-pointer p-[0.5rem] text-center flex-auto w-[12.6rem] h-[4.4rem]  border border-Content/Border flex items-center justify-center
+                        ${x.id === id ? 'bg-Accent/Yellow pointer-events-none' : 'bg-Dominant/Dop'}
+                        hover:cursor-pointer hover:bg-white hover:border-Accent/Yellow p-[0.5rem] text-center flex-auto w-[12.6rem] h-[4.4rem]  border border-Content/Border flex items-center justify-center
                     `}>
 					<div className="text-Regular(14_16)">{x.title}</div>
 				</div>

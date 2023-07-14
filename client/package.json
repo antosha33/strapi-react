@@ -23,7 +23,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "CHOKIDAR_USEPOLLING=true react-scripts start",
     "fontello": "fontello-cli install",
     "build": "react-scripts build",
     "test": "react-scripts test",

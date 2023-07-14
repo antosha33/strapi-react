@@ -7,6 +7,7 @@ import Position from "../position/position";
 import Container from "../container/container";
 import useUsers from '../../hooks/users.hook';
 import OrderModal from '../modals/orderModal/orderModal';
+import PositionModal from '../modals/positionModal/positionModal';
 import Modal from '../modal/modal'
 import Switcher from '../ui/swticher/switcher'
 import Pagination from '../pagination/pagination';
@@ -74,7 +75,14 @@ function Dashbord() {
 
 	const [groupMod, setGroupMod] = useState(false);
 	const [detailModal, setDetailModal] = useState(false);
-	const [commentModal, setCommentModal] = useState(false);
+	const [positionModal, setPositionModal] = useState(false);
+	const [commentModal, setCommentModal] = useState({
+		isOpen: false,
+		positionId: null,
+		stageId: null,
+		isFullMod: true,
+		callback: null
+	});
 	const { id, role, statuses } = stageStore.currentStage;
 	const { settings, sort } = dashbordStore;
 
@@ -133,6 +141,10 @@ function Dashbord() {
 		setDetailModal(id);
 	}
 
+	const onPositionDetail = (id) => {
+		setPositionModal(id);
+	}
+
 	const groupItems = (data) => {
 		const group = data.reduce((acc, curr) => {
 			if (acc[curr.position.order.id]) {
@@ -146,16 +158,31 @@ function Dashbord() {
 	}
 
 	const setComment = (positionId) => {
-		setCommentModal(positionId);
+		setCommentModal(prev => ({
+			...prev,
+			isOpen: true,
+			positionId,
+			isFullMod: true
+		}));
 	}
 
-	const closeCommentModalAndReftesh = () => {
-		setCommentModal(false);
-		getData(true);
+	const closeCommentModalAndReftesh = async () => {
+		commentModal.callback && await commentModal.callback();
+
+		setCommentModal(prev => ({
+			...prev,
+			isOpen: false,
+			isFullMod: true,
+			stageId: null,
+			positionId: null,
+			callback: null
+		}));
+
+		await getData(true);
 	}
 
 
-	const render = ({ isUrgent, comments, stage: { id: stageId }, position, user, id, status: currentStatus, stageChangeTimeStamps }) => {
+	const render = ({ isUrgent, comments, stage: { id: stageId }, position, user, id, status: currentStatus, isCurrentStage, stageChangeTimeStamps }) => {
 
 		return (
 			<Position
@@ -169,16 +196,17 @@ function Dashbord() {
 				comments={comments}
 				key={id}
 				onOrderDetail={onOrderDetail}
+				onPositionDetail={onPositionDetail}
 				settings={settings}
 				setComment={setComment}
 				getData={getData}
 				role={role}
 				stageId={stageId}
+				isCurrentStage={isCurrentStage}
 			>
 			</Position>
 		)
 	}
-
 
 
 
@@ -264,10 +292,16 @@ function Dashbord() {
 				<OrderModal orderId={detailModal}></OrderModal>
 			</Modal>
 			<Modal
-				closeModal={() => setCommentModal(false)}
-				isOpen={!!commentModal}
+				closeModal={() => setPositionModal(false)}
+				isOpen={!!positionModal}
 			>
-				<CommentModal setCommentModal={closeCommentModalAndReftesh} positionId={commentModal}></CommentModal>
+				<PositionModal setCommentModal={setCommentModal} positionId={positionModal}></PositionModal>
+			</Modal>
+			<Modal
+				closeModal={() => setCommentModal({ stageId: null, positionId: null, isFullMod: true, isOpen: false })}
+				isOpen={commentModal.isOpen}
+			>
+				<CommentModal stageId={commentModal.stageId} isFullMod={commentModal.isFullMod} callback={closeCommentModalAndReftesh} positionId={commentModal.positionId}></CommentModal>
 			</Modal>
 			<Tooltip
 				style={{

@@ -52,6 +52,9 @@
       "relation": "manyToOne",
       "target": "api::m-role.m-role",
       "inversedBy": "stages"
+    },
+    "color": {
+      "type": "string"
     }
   }
 }

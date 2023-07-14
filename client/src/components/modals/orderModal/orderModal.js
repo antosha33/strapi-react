@@ -58,7 +58,7 @@ function OrderModal({ orderId }) {
 		await setStatus(positionStageId, statusId);
 	}
 
-	const onSetUser = (userId) => async (positionStageId) => {
+	const onSetUser = (positionStageId) => async (userId) => {
 		await setUser(positionStageId, userId);
 	}
 
@@ -141,13 +141,16 @@ function OrderModal({ orderId }) {
 												}
 												<div className="flex flex-col gap-[0.8rem] max-w-[100%]">
 													<PositionUser
+														small={true}
 														stageId={stageId}
 														currentData={user}
-														onSetData={onSetUser(user?.id)}
+														onSetData={onSetUser(id)}
+														isCurrentStage={isCurrentStage}
 													></PositionUser>
 													<PositionStatus
 														className="text-Regular(12_14)"
 														currentData={status}
+														stageId={stageId}
 														small={true}
 														isCurrentStage={isCurrentStage}
 														onSetData={onSetStatus(id)}

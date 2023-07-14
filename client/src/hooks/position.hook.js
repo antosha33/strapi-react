@@ -1,6 +1,6 @@
-import { useContext } from "react";
+import { useContext, useCallback } from "react";
 import { AxiosContext } from '../context/request.context';
-
+const qs = require('qs');
 
 
 
@@ -18,9 +18,7 @@ function usePosition() {
 				}
 			})
 		} catch {
-
 		}
-
 	}
 
 	const setStatus = async (positionStageId, statusId) => {
@@ -70,6 +68,29 @@ function usePosition() {
 		})
 	}
 
+	const getPosition = useCallback(async ({ positionId }) => {
+
+		const query = qs.stringify({
+			populate: {
+				order: true,
+				c_position_stages: {
+					populate: {
+						user: true,
+						status:true,
+						stage: true,
+						comments: true
+					},
+				}
+			}
+		}, {
+			encodeValuesOnly: true, // prettify URL
+		});
+
+		return await authRequest({
+			url: `positionss/${positionId}?` + query,
+		})
+	}, [authRequest])
+
 
 	return {
 		setUser,
@@ -77,7 +98,8 @@ function usePosition() {
 		setPositionsToUrgent,
 		setStagesToUrgent,
 		setComment,
-		setPositionsToCanceled
+		setPositionsToCanceled,
+		getPosition
 	}
 
 
